@@ -205,10 +205,13 @@ main{padding:8px 16px}
 
 /* riquadro foto: ottagono come su AP, in tono caldo */
 .thumb{width:100%;aspect-ratio:1;cursor:zoom-in;position:relative;overflow:hidden;
-  background:radial-gradient(circle at 50% 38%, #3f2d1e, #1b120c 78%);
-  clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);
-  display:grid;place-items:center}
-.thumb img{width:84%;height:92%;object-fit:contain;transition:transform .25s}
+  background:radial-gradient(circle at 50% 34%, #402e1f, #17100a 82%);
+  border:1px solid rgba(176,141,87,.28);border-radius:6px;
+  box-shadow:inset 0 1px 0 rgba(216,188,138,.10), 0 2px 10px rgba(0,0,0,.35);
+  display:grid;place-items:center;transition:border-color .2s, box-shadow .2s}
+.card:hover .thumb{border-color:rgba(176,141,87,.55);
+  box-shadow:inset 0 1px 0 rgba(216,188,138,.18), 0 4px 16px rgba(0,0,0,.45)}
+.thumb img{width:86%;height:90%;object-fit:contain;transition:transform .25s}
 .card:hover .thumb img{transform:scale(1.06)}
 .thumb .noimg{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--dim);text-align:center;padding:0 12px}
@@ -413,7 +416,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 l · bilingue IT/EN</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 m · riquadro quadrato</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
