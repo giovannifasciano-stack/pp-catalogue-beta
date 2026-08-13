@@ -33,16 +33,21 @@ h1 img{width:26px;height:26px;border-radius:50%;background:#fff;padding:2px}
 h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#b08d3f;color:#12182b;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;margin-right:6px;vertical-align:middle}
 #lastSync{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)}
 .btn.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
-.cacts{position:absolute;top:10px;left:10px;z-index:3;display:flex;gap:6px}
-.ca{width:30px;height:30px;border-radius:3px;border:1px solid var(--line);background:rgba(34,23,16,.72);
-  color:var(--dim);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.ca.on{color:var(--gold2);border-color:var(--gold)}
+
+.ca{position:absolute;top:10px;left:10px;z-index:3;width:32px;height:32px;border-radius:3px;
+  border:1px solid var(--line);background:rgba(27,18,12,.75);color:var(--dim);font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.ca.on{color:#e0577a;border-color:#e0577a;background:rgba(224,87,122,.14)}
 .ca.own.on{color:var(--green);border-color:var(--green)}
-.card.picked{outline:2px solid var(--gold);outline-offset:-2px}
-.csel{position:absolute;left:10px;bottom:auto;top:46px;z-index:3;border:1px solid var(--line);border-radius:20px;
-  background:rgba(34,23,16,.86);color:var(--dim);font-family:'Outfit';font-size:11px;padding:6px 11px;
-  cursor:pointer;backdrop-filter:blur(4px)}
-.csel.on{background:var(--gold);border-color:var(--gold);color:#221710;font-weight:600}
+.card.picked{border-color:var(--green)}
+.cbox{position:absolute;top:10px;right:10px;z-index:3;width:32px;height:32px;border-radius:3px;
+  border:1px solid var(--green);background:rgba(27,18,12,.75);color:var(--green);font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.cbox.on{background:var(--green);color:#1b120c;font-weight:700}
+.cown{width:100%;background:rgba(27,18,12,.6);border:1px solid var(--line);border-radius:20px;
+  color:var(--dim);font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+  padding:7px 8px;cursor:pointer;margin-top:2px}
+.cown.on{border-color:var(--gold);color:var(--gold2)}
 .vuoto{text-align:center;color:var(--dim);font-size:13.5px;line-height:1.8;padding:40px 12px}
 .ordhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:14px}
 .ordhead h2{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin:0}
@@ -187,19 +192,19 @@ main{padding:8px 16px}
 .brand-head h2{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
 .brand-head .cnt{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
 
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
-.card{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;
-  background:var(--card);border:1px solid var(--line);border-radius:3px;padding:16px 14px 14px;
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(245px,1fr))}
+.card{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;
+  background:var(--card);border:1px solid var(--line);border-radius:3px;padding:12px 12px 14px;
   text-decoration:none;color:inherit;transition:border-color .18s, transform .18s}
 .card:hover{border-color:var(--gold);transform:translateY(-2px)}
 .card:active{border-color:var(--gold)}
 
 /* riquadro foto: ottagono come su AP, in tono caldo */
-.thumb{width:100%;aspect-ratio:1;max-width:200px;cursor:zoom-in;position:relative;overflow:hidden;
+.thumb{width:100%;aspect-ratio:1;cursor:zoom-in;position:relative;overflow:hidden;
   background:radial-gradient(circle at 50% 38%, #3f2d1e, #1b120c 78%);
   clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);
   display:grid;place-items:center}
-.thumb img{width:76%;height:88%;object-fit:contain;transition:transform .25s}
+.thumb img{width:84%;height:92%;object-fit:contain;transition:transform .25s}
 .card:hover .thumb img{transform:scale(1.06)}
 .thumb .noimg{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--dim);text-align:center;padding:0 12px}
@@ -207,8 +212,11 @@ main{padding:8px 16px}
 .meta{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
 .card .ref{cursor:pointer;text-decoration:underline;text-decoration-color:transparent;transition:text-decoration-color .15s}
 .card .ref:hover{text-decoration-color:currentColor}
-.meta .ref{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;letter-spacing:.06em;
-  color:var(--txt);text-align:center;line-height:1.25;min-height:1.3em}
+.meta .mname{font-family:'Outfit',sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--txt);text-align:center;line-height:1.35;min-height:2.7em;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta .ref{font-family:'DM Mono',monospace;font-size:12.5px;letter-spacing:.04em;
+  color:var(--dim);text-align:center;line-height:1.3;min-height:1.3em}
 .meta .mat{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--gold);text-align:center;min-height:1.2em;line-height:1.4}
 .meta .col{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
@@ -227,8 +235,12 @@ main{padding:8px 16px}
 
 @media (max-width:640px){
   .grid{grid-template-columns:repeat(2,1fr);gap:9px}
-  .card{padding:12px 9px 11px;gap:6px}
-  .meta .ref{font-size:15px}
+  .card{padding:9px 8px 11px;gap:6px}
+  .meta .mname{font-size:10.5px;min-height:2.6em}
+  .meta .ref{font-size:11px}
+  .ca,.cbox{width:28px;height:28px;font-size:13px;top:7px}
+  .ca{left:7px}.cbox{right:7px}
+  .cown{font-size:8.5px;letter-spacing:.08em;padding:6px 6px}
   .meta .prices .pc{font-size:9.5px}
   .meta .prices .pv{font-size:10.5px}
 }
@@ -396,7 +408,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 h · card in stile AP</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 i · card AP con nome modello</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
@@ -1294,15 +1306,13 @@ function render(){
       card.className = 'card';
       card.innerHTML =
         (added.includes(p.id) ? '<span class="badge">NEW</span>' : '') +
-        '<div class="cacts">' +
-          '<button class="ca'+(inWish(p.ref)?' on':'')+'" data-w="'+esc(p.ref)+'" title="Lista desideri">'+(inWish(p.ref)?'\u2665':'\u2661')+'</button>' +
-          '<button class="ca own'+(inOwn(p.ref)?' on':'')+'" data-o="'+esc(p.ref)+'" title="Posseduto">\u2713</button>' +
-        '</div>' +
+        '<button class="ca'+(inWish(p.ref)?' on':'')+'" data-w="'+esc(p.ref)+'" title="Lista desideri">'+(inWish(p.ref)?'\u2665':'\u2661')+'</button>' +
         '<div class="thumb">' + (p.img ? '<img loading="lazy" decoding="async" src="'+esc(thumbURL(p.img))+'" data-orig="'+esc(p.img)+'" alt="" onerror="imgFail(this)">' : '<span class="noimg">NO IMG</span>') + '</div>' +
-        '<div class="meta"><div class="ref">'+esc(p.ref)+'</div>' +
+        '<div class="meta">' +
+        '<div class="mname">'+esc(nomeModello(p))+'</div>' +
+        '<div class="ref">'+esc(p.ref)+'</div>' +
         '<div class="mat">'+esc(p.mat || '')+'</div>' +
-        retailLine(p.ref) +
-        '<div class="col">'+esc(p.col)+'</div></div>';
+        retailLine(p.ref) + '</div>';
       const bw = card.querySelector('[data-w]');
       if(bw) bw.addEventListener('click', ev => { ev.stopPropagation(); togWish(p.ref); });
       const bo = card.querySelector('[data-o]');
@@ -1335,17 +1345,36 @@ function render(){
 
 // ---------- viste Lista desideri e Posseduti, con barra ordine in stile AP ----------
 function cardMini(p){
-  const selMode = (vista === 'wish' && ordineAperto);
+  const selMode = (vista === 'wish');
   return '<div class="card' + (selMode && inSel(p.ref) ? ' picked' : '') + '">' +
-    (selMode ? '<button class="csel'+(inSel(p.ref)?' on':'')+'" data-x="'+esc(p.ref)+'">'+
-       (inSel(p.ref) ? '\u2713 In ordine' : 'Aggiungi all\u2019ordine') + '</button>' : '') +
-    '<div class="cacts">' +
-      '<button class="ca'+(inWish(p.ref)?' on':'')+'" data-w="'+esc(p.ref)+'">'+(inWish(p.ref)?'\u2665':'\u2661')+'</button>' +
-      '<button class="ca own'+(inOwn(p.ref)?' on':'')+'" data-o="'+esc(p.ref)+'">\u2713</button>' +
-    '</div>' +
+    '<button class="ca'+(inWish(p.ref)?' on':'')+'" data-w="'+esc(p.ref)+'" title="Lista desideri">'+(inWish(p.ref)?'\u2665':'\u2661')+'</button>' +
+    (selMode ? '<button class="cbox'+(inSel(p.ref)?' on':'')+'" data-x="'+esc(p.ref)+'" title="Metti in ordine">'+(inSel(p.ref)?'\u2713':'')+'</button>' : '') +
     '<div class="thumb" data-s="'+esc(p.ref)+'">' + (p.img ? '<img loading="lazy" src="'+esc(thumbURL(p.img))+'" data-orig="'+esc(p.img)+'" onerror="imgFail(this)">' : '<span class="noimg">NO IMG</span>') + '</div>' +
-    '<div class="meta"><div class="ref">'+esc(p.ref)+'</div><div class="mat">'+esc(p.mat||'')+'</div>' +
-    retailLine(p.ref) + '<div class="col">'+esc(p.col)+'</div></div></div>';
+    '<button class="cown'+(inOwn(p.ref)?' on':'')+'" data-o="'+esc(p.ref)+'">' +
+      (inOwn(p.ref) ? '\u2713 Posseduto' : '\u25A2 Segna come posseduto') + '</button>' +
+    '<div class="meta">' +
+      '<div class="mname">'+esc(nomeModello(p))+'</div>' +
+      '<div class="ref">'+esc(p.ref)+'</div>' +
+      '<div class="mat">'+esc(p.mat||'')+'</div>' +
+      retailLine(p.ref) + '</div></div>';
+}
+
+// nome del modello: Patek non lo pubblica per referenza, uso la collezione
+// e, quando la scheda tecnica e' gia' in cache, la complicazione principale
+function nomeModello(p){
+  const c = descCache[p.ref];
+  if(c && c.v){
+    const mov = (c.v.find(s => /movement|caliber|calibre/i.test(s.t)) || {}).b || '';
+    const compl = [];
+    if(/perpetual calendar/i.test(mov)) compl.push('Perpetual Calendar');
+    else if(/annual calendar/i.test(mov)) compl.push('Annual Calendar');
+    if(/chronograph/i.test(mov)) compl.push('Chronograph');
+    if(/minute repeater/i.test(mov)) compl.push('Minute Repeater');
+    if(/tourbillon/i.test(mov)) compl.push('Tourbillon');
+    if(/moon\s?phase/i.test(mov)) compl.push('Moon Phases');
+    if(compl.length) return compl.join(' \u00B7 ');
+  }
+  return p.col || '';
 }
 
 function renderLista(main, q){
@@ -1391,6 +1420,7 @@ function renderLista(main, q){
   }
 
   main.querySelectorAll('[data-x]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togSel(b.dataset.x); });
+  main.querySelectorAll('.cown').forEach(b => b.onclick = ev => { ev.stopPropagation(); togOwn(b.dataset.o); });
   main.querySelectorAll('[data-w]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togWish(b.dataset.w); });
   main.querySelectorAll('[data-o]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togOwn(b.dataset.o); });
   main.querySelectorAll('[data-s]').forEach(t => t.onclick = () => {
@@ -1617,15 +1647,7 @@ function legaOrdine(list){
   if(aa) aa.oninput = () => { WL.acqMan.testo = aa.value; saveWL(); };
 
   // selezione referenze dalle card
-  document.querySelectorAll('.card').forEach(c => {
-    const ref = (c.querySelector('.ref')||{}).textContent;
-    if(!ref) return;
-    if(vista === 'wish' && ordineAperto){
-      c.classList.toggle('picked', inSel(ref));
-      c.style.cursor = 'pointer';
-      c.onclick = ev => { if(ev.target.closest('.cacts') || ev.target.closest('.thumb')) return; togSel(ref); };
-    }
-  });
+
 }
 
 function renderChips(cols, byCol){
