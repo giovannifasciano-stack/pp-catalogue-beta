@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="PP Catalogue">
+<meta name="theme-color" content="#221710">
+<meta name="googlebot" content="noindex, nofollow">
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PP Catalogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#221710; --navy2:#2d1f15; --card:#362619; --line:#4d3826;
+  --gold:#b08d57; --gold2:#d8bc8a; --txt:#f0e8da; --dim:#a89680;
+  --green:#8fb573; --red:#c96a5e;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--navy);color:var(--txt);font-family:'Outfit',sans-serif;min-height:100vh;padding-bottom:60px}
+
+header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--navy) 70%,rgba(34,23,16,.94));backdrop-filter:blur(8px);padding:calc(12px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line)}
+.brandline{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
+h1{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0;min-width:0}
+h1 span{color:var(--gold2)}
+h1 img{width:26px;height:26px;border-radius:50%;background:#fff;padding:2px}
+.src.dis{font-size:7px;opacity:.4;letter-spacing:0;max-width:none;line-height:1.2}
+h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#b08d3f;color:#12182b;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;margin-right:6px;vertical-align:middle}
+#lastSync{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)}
+.btn.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
+.cacts{position:absolute;top:8px;right:8px;z-index:3;display:flex;flex-direction:column;gap:6px}
+.ca{width:31px;height:31px;border-radius:50%;border:1px solid var(--line);background:rgba(34,23,16,.82);
+  color:var(--dim);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.ca.on{color:var(--gold2);border-color:var(--gold)}
+.ca.own.on{color:var(--green);border-color:var(--green)}
+.card.picked{outline:2px solid var(--gold);outline-offset:-2px}
+.vuoto{text-align:center;color:var(--dim);font-size:13.5px;line-height:1.8;padding:40px 12px}
+.ordhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:14px}
+.ordhead h2{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin:0}
+.obtns{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+.ob{background:transparent;border:1px solid var(--line);border-radius:6px;color:var(--dim);
+  font-family:'Outfit';font-size:11.5px;letter-spacing:.04em;padding:8px 13px;cursor:pointer}
+.ob.sel{border-color:var(--green);color:var(--green)}
+.ob.gold{background:var(--gold);border-color:var(--gold);color:#221710;font-weight:600}
+.wishbar{background:var(--navy2);border:1px solid var(--line);border-radius:12px;padding:15px;margin-bottom:18px}
+.wsec{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin:12px 0 9px}
+.wsec:first-child{margin-top:0}
+.wrow{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+.wf{flex:1;min-width:170px;margin-bottom:8px}
+.wf label{display:block;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.wishbar input,.wishbar select,.wishbar textarea{width:100%;background:var(--navy);border:1px solid var(--line);
+  border-radius:8px;color:var(--txt);font-family:'Outfit';font-size:16px;padding:9px 11px;outline:none}
+.wishbar textarea{font-size:14px;height:62px;resize:vertical;margin-top:7px}
+.wishbar input.wpc{width:58px;display:inline-block;padding:4px 7px;font-size:13px;text-align:right;margin:0 4px}
+.wchk{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--txt);margin:9px 0;cursor:pointer}
+.wchk input{width:auto!important}
+.pick{display:flex;gap:6px;flex-wrap:wrap}
+.pick button{flex:1;background:var(--navy);border:1px solid var(--line);border-radius:8px;color:var(--dim);
+  font-family:'DM Mono',monospace;font-size:12px;padding:9px 6px;cursor:pointer}
+.pick button.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
+.wboxes{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media (max-width:820px){.wboxes{grid-template-columns:1fr}}
+.wbox{background:var(--navy);border:1px solid var(--line);border-radius:10px;padding:12px}
+.wbh{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:9px}
+.waddr{font-size:12.5px;line-height:1.7;color:var(--txt);opacity:.9;padding:9px 0}
+.wman-h{font-size:11px;color:var(--dim);margin:10px 0 6px;padding-top:9px;border-top:1px solid var(--line)}
+.btabs{display:flex;gap:6px;flex-wrap:wrap}
+.btabs button{flex:1 1 45%;background:var(--navy2);border:1px solid var(--line);border-radius:8px;color:var(--dim);
+  font-family:'Outfit';font-size:12px;padding:9px 6px;cursor:pointer}
+.btabs button.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
+.srow{display:flex;gap:7px}
+.srow input{flex:1}
+.mini{background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--gold2);
+  font-size:13px;padding:8px 12px;cursor:pointer;white-space:nowrap}
+.mini.x{color:var(--dim);font-size:12px;padding:5px 9px}
+.fstat{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);margin:6px 0}
+.fstat .cerca{color:var(--gold2)}
+.fstat .ko{color:var(--red)}
+.fres-r{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)}
+.fres-r .n{font-size:12.5px;color:var(--txt)}
+.fres-r .s{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);margin-top:2px}
+.fres-r button{margin-left:auto}
+.flist{max-height:160px;overflow:auto;margin-top:8px}
+.wfoot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:15px;padding-top:13px;border-top:1px solid var(--line)}
+.wact{margin-left:auto;display:flex;gap:8px}
+.wtot{display:flex;align-items:baseline;gap:13px;font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
+.wtot .big{font-size:18px;color:var(--gold2)}
+.wsync{font-family:'DM Mono',monospace;font-size:9.5px;color:var(--dim);margin-top:11px}
+.wsync span{color:var(--green)}
+.sheet .paddr2{font-size:12px;line-height:1.65;color:#2a2a2a}
+.sheet .dtx{margin-top:13px;background:#f6f2e8;border-left:3px solid #b08d3f;padding:11px 13px;
+  font-family:'DM Mono',monospace;font-size:11px;color:#3a3a3a;line-height:1.6}
+.sheet .dtx b{color:#6b5a34}
+.sheet .dtxn{font-size:8px;color:#a2a2a2}
+.betaflag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#221710;background:var(--gold);border-radius:5px;padding:4px 9px;margin:8px 0 2px;display:inline-block}
+#setBox{display:none;margin-top:10px;background:var(--navy2);border:1px solid var(--line);border-radius:12px;padding:13px}
+#setBox.on{display:block}
+.setTitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.setHint{font-size:11.5px;color:var(--dim);line-height:1.5;margin-bottom:10px}
+.improw{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.improw .st{margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)}
+.btn.mini{padding:5px 11px;font-size:11px}
+#impBar{display:none;height:3px;background:var(--line);border-radius:2px;margin-top:10px;overflow:hidden}
+#impFill{height:100%;width:0;background:var(--gold);transition:width .2s}
+.chfInfo .ok{color:var(--green)}
+.chfInfo .ko{color:var(--red)}
+.chfTitle{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+#chfText{width:100%;height:78px;background:var(--navy);border:1px solid var(--line);border-radius:9px;color:var(--txt);font-family:'DM Mono',monospace;font-size:11px;padding:9px;outline:none;resize:vertical}
+.chfBtns{display:flex;gap:7px;margin-top:9px}
+.chfInfo{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);margin-top:8px}
+@media (max-width:430px){h1{font-size:15px;letter-spacing:.04em}h1 .mark{width:22px;height:22px;font-size:9px;margin-right:2px}#lastSync{font-size:9px}}
+
+.toolbar{display:flex;gap:8px;margin-top:12px}
+.toolbar input{flex:1;background:var(--navy2);border:1px solid var(--line);border-radius:10px;color:var(--txt);font-family:'DM Mono',monospace;font-size:13px;padding:9px 12px;outline:none}
+.toolbar input:focus{border-color:var(--gold)}
+button{cursor:pointer;border:none;font-family:'Outfit',sans-serif}
+.btn{background:var(--navy2);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 13px;font-size:13px;font-weight:500;white-space:nowrap}
+.btn.gold{background:var(--gold);color:#14233f;border-color:var(--gold);font-weight:600}
+
+.chips{display:flex;gap:7px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;background:var(--navy2);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:6px 13px;font-size:12px;font-weight:500}
+.chip b{color:var(--txt);font-weight:600}
+.chip.active{background:var(--gold);border-color:var(--gold);color:#14233f}
+.chip.active b{color:#14233f}
+
+#status{padding:10px 16px;font-family:'DM Mono',monospace;font-size:12px;color:var(--dim)}
+#status .hl{color:var(--gold2)}
+
+#newsbar{display:none;margin:0 16px 4px;padding:12px 14px;background:linear-gradient(135deg,#2e2a14,#362619);border:1px solid var(--gold);border-radius:12px}
+#newsbar.show{display:block}
+#newsbar h3{font-size:13px;color:var(--gold2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+#newsbar p{font-size:12.5px;color:var(--dim);line-height:1.5}
+#newsbar p b{color:var(--txt)}
+
+main{padding:8px 16px}
+.brand-section{margin-top:22px}
+.brand-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:12px}
+.brand-head h2{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
+.brand-head .cnt{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.card{position:relative;display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .15s}
+.card:active{border-color:var(--gold)}
+.thumb{width:100%;aspect-ratio:1;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:contain}
+.thumb .noimg{font-family:'DM Mono',monospace;font-size:10px;color:#999}
+.thumb{cursor:zoom-in}
+
+.card .ref{cursor:pointer;text-decoration:underline;text-decoration-color:transparent;transition:text-decoration-color .15s}
+.card .ref:hover{text-decoration-color:currentColor}
+.meta{padding:9px 10px 11px}
+.meta .ref{font-family:'DM Mono',monospace;font-size:14px;color:var(--gold2)}
+.meta .mat{font-size:12px;color:var(--txt);margin-top:4px;line-height:1.3;min-height:2.6em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta .col{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:5px}
+.meta .price{font-family:'DM Mono',monospace;font-size:14px;color:var(--gold2);margin-top:6px}
+.meta .price.est{font-size:10.5px;color:var(--dim);margin-top:2px}
+.meta .prices{margin-top:6px}
+.meta .prices{border-top:1px solid var(--line);padding-top:7px}
+.meta .prices .price{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:'DM Mono',monospace;margin:2px 0}
+.meta .prices .pc{font-size:11px;letter-spacing:.06em;color:var(--dim);white-space:nowrap}
+.meta .prices .pv{font-size:13px;color:var(--gold2);text-align:right;letter-spacing:.01em}
+.meta .prices .price.wait{color:var(--dim);opacity:.45}
+.badge{position:absolute;top:8px;left:8px;font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.08em;padding:3px 8px;border-radius:6px;z-index:2;background:var(--green);color:#0a1428}
+
+#empty{display:none;text-align:center;padding:60px 20px;color:var(--dim);font-size:14px}
+#loader{display:none;flex-direction:column;align-items:center;gap:16px;padding:70px 20px}
+#loader.on{display:flex}
+.spin{width:46px;height:46px;border-radius:50%;background:conic-gradient(var(--gold),rgba(176,141,63,.05) 70%);animation:sp 1.05s linear infinite;position:relative}
+.spin::after{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--navy)}
+@keyframes sp{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+#loadPhase{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:.28em;text-transform:uppercase}
+#loadCount{display:flex;gap:26px;justify-content:center}
+#loadCount div{text-align:center}
+#loadCount b{display:block;font-family:'DM Mono',monospace;font-size:26px;font-weight:500;color:var(--gold2);line-height:1.15;font-variant-numeric:tabular-nums}
+#loadCount span{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+
+footer{position:fixed;bottom:0;left:0;right:0;padding:4px 12px calc(4px + env(safe-area-inset-bottom));background:rgba(34,23,16,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:1px}
+footer .src{font-family:'DM Mono',monospace;font-size:8.5px;color:var(--dim);text-align:center;line-height:1.25}
+footer .src a{color:var(--gold);text-decoration:none}
+/* ---------- scheda / stampa ---------- */
+#sheetOverlay{display:none;position:fixed;inset:0;background:rgba(20,13,8,.72);z-index:100;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:0 0 env(safe-area-inset-bottom)}
+#sheetOverlay.open{display:block}
+body.sheet-open{overflow:hidden}
+.sheet{max-width:880px;margin:0 auto;background:#fff;color:#2a2a2a}
+.sheet-btns{position:sticky;top:0;z-index:2;display:flex;justify-content:flex-end;align-items:center;gap:9px;padding:calc(11px + env(safe-area-inset-top)) 14px 11px;background:#efece7;border-bottom:1px solid #e0dad0}
+.sheet-btns button{font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;letter-spacing:.04em;padding:9px 15px;border-radius:5px;border:1px solid #cfc7ba;background:#fff;color:#3a3a3a;cursor:pointer;white-space:nowrap;flex:0 0 auto}
+.sheet-btns .bprint{background:#6b5a34;border-color:#6b5a34;color:#fff}
+.sbody{padding:28px 34px 26px}
+
+.sheet .shd{text-align:center;border-bottom:1px solid #e6e0d6;padding-bottom:13px}
+.sheet .shd .pp{font-family:'Cormorant Garamond',serif;font-size:23px;letter-spacing:.16em;text-transform:uppercase;color:#1a1a1a;font-weight:500}
+.sheet .shd .gv{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:#8a8a8a;margin-top:1px}
+.sheet .photo{display:block;margin:16px auto 8px;max-width:190px;max-height:210px;object-fit:contain}
+.sheet .rc{text-align:center;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#b08d3f}
+.sheet h1{text-align:center;font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:#1a1a1a;margin:2px 0 1px;letter-spacing:.01em}
+.sheet .rs{text-align:center;font-size:11.5px;color:#8a8a8a;margin-bottom:20px}
+
+.sheet .grid2{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.sheet .sec{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#b08d3f;border-bottom:1px solid #e6e0d6;padding-bottom:6px;margin-bottom:9px}
+.sheet .kv{display:flex;justify-content:space-between;gap:12px;font-size:11.5px;padding:5px 0;border-bottom:1px solid #f4f1ec}
+.sheet .kv .k{color:#8a8a8a}
+.sheet .kv .v{color:#2a2a2a;text-align:right}
+
+.sheet .sprices .price{display:flex;justify-content:space-between;align-items:center;font-family:'DM Mono',monospace;font-size:11.5px;padding:7px 0;border-bottom:1px solid #f4f1ec;margin:0}
+.sheet .sprices .pc{color:#777;letter-spacing:.06em}
+.sheet .sprices .pv{color:#b08d3f}
+.sheet .sprices .price.best{background:#f6f2e8;margin:0 -8px;padding:7px 8px;border-bottom:none;border-radius:4px}
+.sheet .sprices .price.best .pv{color:#6b5a34;font-weight:500}
+.sheet .sprices .price.best .pc{color:#6b5a34}
+.sheet .sprices .tag,.sheet .exptab .badge{display:inline-block;margin-left:6px;background:#6b5a34;color:#fff;font-size:6.5px;letter-spacing:.1em;text-transform:uppercase;padding:2px 5px;border-radius:3px;vertical-align:middle}
+.sheet .fxnote{font-family:'DM Mono',monospace;font-size:8px;color:#b3aca1;margin-top:8px;line-height:1.65;text-align:left;border:none;padding:0}
+.sheet .fxnote .save{color:#6b5a34}
+
+.sheet .tech{margin-top:24px}
+.sheet .tcols{column-count:2;column-gap:32px}
+.sheet .tc{break-inside:avoid;-webkit-column-break-inside:avoid;margin-bottom:11px}
+.sheet .tct{font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;color:#b08d3f;margin-bottom:3px}
+.sheet .tcb{font-size:10.5px;line-height:1.55;color:#3a3a3a}
+
+.sheet .exp{margin-top:22px;text-align:left}
+.sheet .exph{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#b08d3f;border-bottom:1px solid #e6e0d6;padding-bottom:6px;margin-bottom:8px}
+.sheet .exptab{width:100%;border-collapse:collapse;font-family:'DM Mono',monospace;font-size:9.5px}
+.sheet .exptab th{font-weight:400;font-size:7px;letter-spacing:.13em;text-transform:uppercase;color:#a2a2a2;padding:0 6px 6px;text-align:left}
+.sheet .exptab td{padding:7px 6px;border-top:1px solid #f0ece6;color:#3a3a3a;white-space:nowrap}
+.sheet .exptab .r{text-align:right}
+.sheet .exptab .nch{color:#b08d3f}
+.sheet .exptab tr.bestrow td{background:#f6f2e8}
+.sheet .bestbox{margin-top:13px;background:#f6f2e8;border-left:3px solid #b08d3f;padding:11px 13px}
+.sheet .bestbox .bl{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:#b08d3f;margin-bottom:4px}
+.sheet .bestbox .bb{font-size:13.5px;color:#1a1a1a}
+.sheet .bestbox .eq{font-family:'DM Mono',monospace;font-size:9px;color:#8a8a8a}
+.sheet .expnote{font-family:'DM Mono',monospace;font-size:7px;line-height:1.7;color:#b3aca1;margin-top:13px;padding-top:9px;border-top:1px solid #f0ece6;text-align:left}
+.sheet .sfoot{margin-top:16px;padding-top:9px;border-top:1px solid #e6e0d6;font-family:'DM Mono',monospace;font-size:7px;color:#b3aca1;line-height:1.7}
+.sheet .sfoot b{color:#6a6a6a;font-weight:500}
+
+@media (max-width:640px){
+  .sheet-btns{gap:7px;padding-left:10px;padding-right:10px}
+  .sheet-btns button{font-size:11.5px;padding:9px 12px;flex:1 1 0;text-align:center}
+  .sbody{padding:20px 16px}
+  .sheet .grid2{grid-template-columns:1fr;gap:20px}
+  .sheet .tcols{column-count:1}
+  .sheet .exptab{font-size:8.5px}
+  .sheet .exptab td,.sheet .exptab th{padding-left:3px;padding-right:3px}
+  .sheet .exp{overflow-x:auto}
+}
+
+@media print{
+  @page{margin:10mm}
+  html,body{background:#fff!important}
+  body.sheet-open > *:not(#sheetOverlay){display:none!important}
+  #sheetOverlay{position:static!important;inset:auto;background:#fff!important;padding:0!important;overflow:visible;height:auto}
+  .sheet{max-width:none!important;margin:0;box-shadow:none}
+  .sheet-btns{display:none!important}
+  .sbody{padding:0}
+  .sheet .photo{max-width:150px;max-height:150px;margin:10px auto 6px}
+  .sheet h1{font-size:23px}
+  .sheet .grid2{gap:22px}
+  .sheet .tech{margin-top:16px}
+  .sheet .tcb{font-size:9px;line-height:1.45}
+  .sheet .exp{margin-top:16px}
+  .sheet .exptab{font-size:8.5px}
+  .sheet .exptab tr.bestrow td,.sheet .bestbox,.sheet .sprices .price.best{background:#f6f2e8!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet .exptab .badge,.sheet .sprices .tag{background:#6b5a34!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brandline">
+    <h1><span class="mark">PP</span>Patek Philippe <span>Catalogue</span></h1>
+    <div id="lastSync">—</div>
+  </div>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Cerca referenza, materiale…" autocomplete="off">
+    <button class="btn gold" id="btnRefresh">Aggiorna</button>
+    <button class="btn" id="btnWish" title="Lista desideri">♡ Lista</button>
+    <button class="btn" id="btnOwn" title="Posseduti">✓ Posseduti</button>
+    <button class="btn" id="btnSet" title="Impostazioni e aggiornamento listini">Impostazioni</button>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="betaflag">Versione di prova · lista desideri e ordine</div>
+  <div id="setBox">
+    <div class="setTitle">Aggiornamento listini</div>
+    <div class="setHint">Attiva la VPN sul paese del mercato, poi premi Aggiorna. Il browser legge patek.com con l’indirizzo della VPN, quindi riceve il listino di quel paese.</div>
+    <div id="impStato"></div>
+    <div id="impBar"><div id="impFill"></div></div>
+    <div class="chfInfo" id="impInfo"></div>
+    <div class="chfBtns">
+      <button class="btn" id="btnProva">Prova connessione</button>
+      <button class="btn" id="btnEsporta">Esporta listini</button>
+      <button class="btn" id="btnSetClose">Chiudi</button>
+    </div>
+    <div class="setTitle" style="margin-top:14px">Importazione manuale</div>
+    <textarea id="chfText" placeholder="Incolla qui un listino raccolto altrove"></textarea>
+    <div class="chfBtns">
+      <button class="btn gold" id="chfSave">Importa</button>
+      <button class="btn" id="chfClear">Svuota importati</button>
+    </div>
+    <div class="chfInfo" id="chfInfo"></div>
+  </div>
+  </div>
+</header>
+
+<div id="status"></div>
+
+<div id="newsbar">
+  <h3>Novità a catalogo</h3>
+  <p id="newsTxt"></p>
+</div>
+
+<div id="loader">
+  <span class="spin"></span>
+  <div id="loadPhase">Connessione al catalogo</div>
+  <div id="loadCount">
+    <div><b id="cModels">0</b><span>modelli</span></div>
+    <div><b id="cCols">0</b><span>collezioni</span></div>
+  </div>
+</div>
+<main id="main"></main>
+<div id="empty">Nessun risultato con questi filtri.</div>
+
+<footer>
+  <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 f · lista desideri</div>
+  <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
+</footer>
+
+<script>
+(() => {
+const FINDER = 'https://www.patek.com/en/collection/watch-finder';
+const SNAP_KEY = 'pp_snapshot_v1';
+const CAT_KEY = 'pp_catalog_v1';
+const CAT_TTL = 24 * 60 * 60 * 1000;
+
+const COLLECTIONS = {
+  'grand-complications':'Grand Complications',
+  'complications':'Complications',
+  'calatrava':'Calatrava',
+  'gondolo':'Gondolo',
+  'golden-ellipse':'Golden Ellipse',
+  'cubitus':'Cubitus',
+  'nautilus':'Nautilus',
+  'aquanaut':'Aquanaut',
+  'twenty4':'Twenty~4',
+  'pocket-watches':'Pocket Watches',
+  'rare-handcrafts':'Rare Handcrafts'
+};
+
+const RETAIL = {
+  '5810/1G-001':[75000,'CHF'],
+  '5810G-001':[60000,'CHF'],
+  '5610/1P-001':[90000,'CHF'],
+  '958G-001':[205000,'CHF'],
+  '6105G-001':[350000,'CHF'],
+  '5840P-001':[150000,'CHF'],
+  '5249R-001':[320000,'CHF'],
+  '7047G-001':[445000,'CHF'],
+  '5322G-001':[225000,'CHF'],
+  '5322G-010':[225000,'CHF'],
+  '5738G-001':[34400,'CHF'],
+  '3738/100G-014':[32400,'CHF']
+};
+
+let items = [];
+let snapshot = null;
+let added = [];
+const PROXY = 'https://watch-proxy.owscan.workers.dev/?u=';
+function imgFail(el){
+  if(el.dataset.orig){
+    const o = el.dataset.orig;
+    delete el.dataset.orig;
+    el.src = 'https://wsrv.nl/?url=' + encodeURIComponent(o.replace(/^https?:\/\//,'')) + '&w=440&output=webp';
+  }else{
+    el.parentNode.innerHTML = '<span class="noimg">NO IMG</span>';
+  }
+}
+function bigURL(u){
+  return 'https://images.weserv.nl/?url=' + encodeURIComponent(u.replace(/^https?:\/\//,'')) + '&w=1100&output=webp&q=88';
+}
+function thumbURL(u){
+  return 'https://images.weserv.nl/?url=' + encodeURIComponent(u.replace(/^https?:\/\//,'')) + '&w=440&h=440&fit=contain&output=webp&q=72';
+}
+let activeCol = 'ALL';
+
+// ---------- listini ufficiali per mercato ----------
+// patek.com serve il prezzo nella valuta del paese da cui arriva la richiesta:
+// niente conversioni, si interroga il sito da tre uscite diverse.
+const PRICE_KEY = 'pp_price_v6', ROUTE_KEY = 'pp_routes_v2';
+const PRICE_TTL = 7 * 24 * 60 * 60 * 1000;
+const ROUTE_TTL = 7 * 24 * 60 * 60 * 1000;
+let priceCache = (() => { try{ const r = localStorage.getItem(PRICE_KEY); return r ? JSON.parse(r) : {}; }catch(e){ return {}; } })();
+let routeMap = (() => { try{ const r = localStorage.getItem(ROUTE_KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } })();
+const pricePending = new Set();
+function savePrices(){ try{ localStorage.setItem(PRICE_KEY, JSON.stringify(priceCache)); }catch(e){} }
+
+// uscite disponibili: la prima e' il tuo Worker, le altre servono solo a cambiare paese di provenienza
+const ROUTES = [
+  u => PROXY + encodeURIComponent(u)
+];
+// lettore con uscita a Francoforte: patek.com gli serve il listino in euro
+const EU_API = 'https://pp-eu-probe.vercel.app/api/price?u=';
+// L'uscita e' a Francoforte, quindi patek.com serve il prezzo con IVA tedesca (19%).
+// Patek fissa un netto europeo unico: si toglie l'IVA tedesca e si applica quella italiana (22%).
+const VAT_DE = 0.19, VAT_IT = 0.22;
+function deToIt(v){ return Math.round(v / (1 + VAT_DE) * (1 + VAT_IT)); }
+async function eurOf(url){
+  const r = await fetch(EU_API + encodeURIComponent(url), {cache:'no-store'});
+  if(!r.ok) throw new Error('eu ' + r.status);
+  const d = await r.json();
+  if(d && d.ok && d.valuta === 'EUR' && d.prezzo) return deToIt(d.prezzo);
+  return null;
+}
+function cleanNum(s){
+  let x = s.replace(/[\u2019'\u00a0\s]/g, '');
+  x = x.replace(/[.,](\d{2})$/, '');
+  return +x.replace(/[^0-9]/g, '');
+}
+function parsePrice(raw){
+  const t = String(raw)
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/&euro;/gi, '\u20AC')
+    .replace(/&#8217;|&rsquo;/gi, '\u2019')
+    .replace(/\s+/g, ' ');
+  const tries = [
+    [/(?:CHF|SFr\.?)\s?([\d][\d\u2019'.,\s]{3,})/i, 'CHF'],
+    [/([\d][\d\u2019'.,\s]{3,})\s?(?:CHF|SFr\.?)/i, 'CHF'],
+    [/\u20AC\s?([\d][\d.,\s]{3,})/, 'EUR'],
+    [/([\d][\d.,\s]{3,})\s?\u20AC/, 'EUR'],
+    [/\$\s?([\d][\d,]{3,})/, 'USD']
+  ];
+  for(const [re, cur] of tries){
+    const m = t.match(re);
+    if(m){
+      const v = cleanNum(m[1]);
+      if(v > 1000 && v < 100000000) return {v, cur};
+    }
+  }
+  return null;
+}
+function priceOf(ref){
+  const c = priceCache[ref];
+  return (c && Date.now() - c.ts < PRICE_TTL) ? c : null;
+}
+async function viaRoute(i, url){
+  const r = await fetch(ROUTES[i](url), {cache:'no-store'});
+  if(!r.ok) throw new Error('route ' + i);
+  return parsePrice(await r.text());
+}
+// sonda: scopre quale uscita restituisce quale valuta ufficiale
+let probing = null;
+async function probeRoutes(sampleUrl){
+  if(routeMap && Date.now() - routeMap.ts < ROUTE_TTL) return routeMap;
+  if(probing) return probing;
+  probing = (async () => {
+  const map = {};
+  for(let i = 0; i < ROUTES.length; i++){
+    try{
+      const p = await viaRoute(i, sampleUrl);
+      if(p && map[p.cur] == null) map[p.cur] = i;
+    }catch(e){}
+  }
+    routeMap = {map, ts: Date.now()};
+    try{ localStorage.setItem(ROUTE_KEY, JSON.stringify(routeMap)); }catch(e){}
+    return routeMap;
+  })();
+  try{ return await probing; } finally { probing = null; }
+}
+// prezzo dalla tua uscita: e' quello che vedresti tu aprendo patek.com
+async function loadPrice(ref, url){
+  if(pricePending.has(ref)) return;
+  const cached = priceOf(ref);
+  if(cached && cached.EUR != null) return;      // gia' completo
+  pricePending.add(ref);
+  try{
+    if(cached) throw new Error('salta usd');     // dollaro gia' noto: vai diritto all'euro
+    const p = await viaRoute(0, url);
+    if(p){
+      const rec = priceCache[ref] && Date.now() - priceCache[ref].ts < PRICE_TTL ? priceCache[ref] : {ts: Date.now()};
+      rec[p.cur] = p.v;
+      rec.ts = Date.now();
+      const rt = RETAIL[ref];
+      if(rt && rec[rt[1]] == null) rec[rt[1]] = rt[0];
+      priceCache[ref] = rec;
+      savePrices();
+      refreshPrices(ref);
+    }
+  }catch(e){}
+  // listino europeo ufficiale
+  try{
+    const rec = priceCache[ref] || {ts: Date.now()};
+    if(rec.EUR == null){
+      const e = await eurOf(url);
+      if(e){
+        rec.EUR = e;
+        rec.ts = Date.now();
+        priceCache[ref] = rec;
+        savePrices();
+        refreshPrices(ref);
+      }
+    }
+  }catch(e){}
+  finally{ pricePending.delete(ref); }
+}
+// listini mancanti, interrogando patek.com dalle altre uscite
+async function loadAllMarkets(ref, url, onUpdate){
+  await probeRoutes(url);
+  const map = (routeMap && routeMap.map) || {};
+  for(const cur of ['CHF','EUR','USD']){
+    const rec = priceCache[ref] || {ts: Date.now()};
+    if(rec[cur] != null) continue;
+    const i = map[cur];
+    if(i == null) continue;
+    try{
+      const p = await viaRoute(i, url);
+      if(p && p.cur === cur){
+        rec[cur] = p.v;
+        rec.ts = Date.now();
+        priceCache[ref] = rec;
+        savePrices();
+        if(onUpdate) onUpdate();
+      }
+    }catch(e){}
+  }
+}
+// ogni mercato con la propria convenzione, come sul sito ufficiale
+const FLAG = {CHF: '\uD83C\uDDE8\uD83C\uDDED', EUR: '\uD83C\uDDEA\uD83C\uDDFA', USD: '\uD83C\uDDFA\uD83C\uDDF8'};
+function fmtAmount(cur, v){
+  const n = Math.round(v);
+  if(cur === 'CHF') return n.toLocaleString('en-US').replace(/,/g, '\u2019') + '.00';
+  if(cur === 'EUR') return n.toLocaleString('it-IT') + ',00';
+  return n.toLocaleString('en-US') + '.00';
+}
+function fmt(cur, v){ return cur + ' ' + fmtAmount(cur, v); }
+// solo listini ufficiali: mai valori convertiti
+// listino svizzero importato dal browser (raccolto su patek.com dalla Svizzera)
+const CHF_KEY = 'pp_chf_beta_v1', CHF_REPO_KEY = 'pp_chf_repo_v1';
+let chfList = (() => { try{ const r = localStorage.getItem(CHF_KEY); return r ? JSON.parse(r) : {}; }catch(e){ return {}; } })();
+// listino ufficiale svizzero pubblicato nel repository: unica fonte per tutti i dispositivi
+let chfRepo = (() => { try{ const r = localStorage.getItem(CHF_REPO_KEY); return r ? JSON.parse(r) : {}; }catch(e){ return {}; } })();
+let chfRepoInfo = null;
+async function loadChfRepo(){
+  try{
+    const r = await fetch('chf.json?v=' + Date.now(), {cache:'no-store'});
+    if(!r.ok) return;
+    const d = await r.json();
+    const p = (d && d.prezzi) ? d.prezzi : d;
+    if(p && typeof p === 'object' && !Array.isArray(p)){
+      const clean = {};
+      for(const k of Object.keys(p)){
+        const v = +p[k];
+        if(v > 1000 && v < 100000000) clean[String(k).toUpperCase()] = Math.round(v);
+      }
+      if(Object.keys(clean).length){
+        chfRepo = clean;
+        chfRepoInfo = (d && d.aggiornato) ? d.aggiornato : null;
+        try{ localStorage.setItem(CHF_REPO_KEY, JSON.stringify(chfRepo)); }catch(e){}
+        render();
+        chfInfo();
+      }
+    }
+  }catch(e){}
+}
+// listini raccolti dal browser con la VPN, uno per mercato
+const LIST_KEY = 'pp_listini_beta_v1';
+let listini = (() => { try{ const r = localStorage.getItem(LIST_KEY); return r ? JSON.parse(r) : {}; }catch(e){ return {}; } })();
+if(!listini.mercati) listini = {mercati: {CHF: {}, EUR: {}, USD: {}}, meta: {}};
+function saveListini(){ try{ localStorage.setItem(LIST_KEY, JSON.stringify(listini)); }catch(e){} }
+function listOf(cur, ref){
+  const m = listini.mercati[cur];
+  return (m && m[ref] != null) ? m[ref] : null;
+}
+function chfOf(ref){
+  const l = listOf('CHF', ref);
+  if(l != null) return l;
+  if(chfRepo[ref] != null) return chfRepo[ref];
+  if(chfList[ref] != null) return chfList[ref];
+  return null;
+}
+function chfCount(){ return Object.keys(chfList).length; }
+function chfInfo(){
+  const el = document.getElementById('chfInfo');
+  if(!el) return;
+  const nr = Object.keys(chfRepo).length, nl = chfCount();
+  const parts = [];
+  if(nr) parts.push(nr + ' dal listino pubblicato' + (chfRepoInfo ? ' (' + chfRepoInfo + ')' : ''));
+  if(nl) parts.push(nl + ' importate su questo dispositivo');
+  el.textContent = parts.length ? parts.join(' \u00B7 ') : 'nessun listino in franchi';
+}
+function chfImport(txt){
+  let d;
+  try{ d = JSON.parse(txt); }catch(e){ return {ok:false, msg:'testo non valido: incolla il listino cosi\u2019 com\u2019e\u0300'}; }
+  if(!d || typeof d !== 'object' || Array.isArray(d)) return {ok:false, msg:'formato non riconosciuto'};
+  let n = 0;
+  for(const k of Object.keys(d)){
+    const v = +d[k];
+    if(v > 1000 && v < 100000000){ chfList[String(k).toUpperCase()] = Math.round(v); n++; }
+  }
+  try{ localStorage.setItem(CHF_KEY, JSON.stringify(chfList)); }catch(e){}
+  return {ok:true, msg: n + ' prezzi importati'};
+}
+// cambi del giorno, per capire quale mercato conviene davvero
+const FX_KEY = 'pp_fx_v2', FX_TTL = 12 * 60 * 60 * 1000;
+let fx = (() => { try{ const r = localStorage.getItem(FX_KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } })();
+// tre fonti: se la prima non risponde si passa alla successiva
+const FX_SOURCES = [
+  ['https://api.frankfurter.dev/v1/latest?base=CHF&symbols=EUR,USD', j => j && j.rates, j => j.date],
+  ['https://api.frankfurter.app/latest?from=CHF&to=EUR,USD', j => j && j.rates, j => j.date],
+  ['https://open.er-api.com/v6/latest/CHF', j => j && j.result === 'success' && j.rates, j => (j.time_last_update_utc || '').slice(5, 16)]
+];
+async function loadFX(){
+  if(fx && Date.now() - fx.ts < FX_TTL) return fx;
+  for(const [url, pick, dateOf] of FX_SOURCES){
+    try{
+      const r = await fetch(url, {cache: 'no-store'});
+      if(!r.ok) continue;
+      const j = await r.json();
+      const rates = pick(j);
+      if(rates && rates.EUR && rates.USD){
+        fx = {EURCHF: 1 / rates.EUR, USDCHF: 1 / rates.USD, data: dateOf(j) || null, ts: Date.now()};
+        try{ localStorage.setItem(FX_KEY, JSON.stringify(fx)); }catch(e){}
+        return fx;
+      }
+    }catch(e){}
+  }
+  return fx;
+}
+function inCHF(cur, v){
+  if(cur === 'CHF') return v;
+  if(!fx) return null;
+  return cur === 'EUR' ? v * fx.EURCHF : v * fx.USDCHF;
+}
+// valori dei tre listini, convertiti in franchi
+function marketsCHF(ref){
+  const rec = priceSet(ref);
+  const out = {};
+  for(const cur of ['CHF','EUR','USD']){
+    if(rec[cur] != null){
+      const c = inCHF(cur, rec[cur]);
+      if(c != null) out[cur] = c;
+    }
+  }
+  return out;
+}
+function bestMarket(ref){
+  const m = marketsCHF(ref);
+  const keys = Object.keys(m);
+  if(keys.length < 2) return null;
+  keys.sort((a, b) => m[a] - m[b]);
+  return {cur: keys[0], chf: m[keys[0]], secondo: keys[1], scarto: m[keys[1]] - m[keys[0]], tutti: m};
+}
+// blocco riepilogo sotto i listini, in stile scheda
+// ---------- raccolta listini dal browser (con VPN) ----------
+// Il browser esce con l'IP della VPN: patek.com serve il listino di quel paese.
+// Funziona solo se patek.com accetta richieste da un altro sito: il test lo verifica.
+let raccoltaInCorso = false;
+function setImpInfo(t){ const el = document.getElementById('impInfo'); if(el) el.innerHTML = t; }
+
+async function provaDiretta(){
+  const out = {diretta: false, valuta: null, prezzo: null, errore: null};
+  try{
+    const r = await fetch(FINDER.replace('/watch-finder', '/nautilus/5811-1g-001'), {mode: 'cors', cache: 'no-store'});
+    if(!r.ok){ out.errore = 'HTTP ' + r.status; return out; }
+    const p = parsePrice(await r.text());
+    out.diretta = true;
+    if(p){ out.valuta = p.cur; out.prezzo = p.v; }
+    else out.errore = 'pagina letta ma senza prezzo';
+  }catch(e){
+    out.errore = 'patek.com non accetta richieste dirette da questo sito';
+  }
+  return out;
+}
+
+// elenco modelli letto direttamente da patek.com
+async function elencoDiretto(){
+  const r = await fetch(FINDER, {mode: 'cors', cache: 'no-store'});
+  if(!r.ok) throw new Error('elenco HTTP ' + r.status);
+  const t = await r.text();
+  const doc = new DOMParser().parseFromString(t, 'text/html');
+  const seen = new Set(), out = [];
+  doc.querySelectorAll('a[href]').forEach(a => {
+    const href = a.getAttribute('href') || '';
+    const m = href.match(/\/collection\/([a-z0-9-]+)\/([a-z0-9-]+)\/?$/i);
+    if(!m) return;
+    const col = m[1].toLowerCase(), slug = m[2].toLowerCase();
+    if(!COLLECTIONS[col] || /all-watches|all-models/.test(slug)) return;
+    const id = col + '/' + slug;
+    if(seen.has(id)) return;
+    seen.add(id);
+    out.push({ref: slugToRef(slug), url: 'https://www.patek.com/en/collection/' + id});
+  });
+  return out;
+}
+
+async function raccogli(curAtteso){
+  if(raccoltaInCorso) return;
+  raccoltaInCorso = true;
+  const bar = document.getElementById('impBar');
+  const fill = document.getElementById('impFill');
+  if(bar) bar.style.display = 'block';
+  try{
+    setImpInfo('Lettura elenco modelli\u2026');
+    const items = await elencoDiretto();
+    setImpInfo(items.length + ' modelli trovati. Lettura prezzi\u2026');
+
+    const trovati = {};
+    let fatti = 0, senza = 0, sbagliati = 0;
+    const coda = items.slice();
+    const worker = async () => {
+      while(coda.length){
+        const it = coda.shift();
+        try{
+          const r = await fetch(it.url, {mode: 'cors', cache: 'no-store'});
+          const p = parsePrice(await r.text());
+          if(p && p.cur === curAtteso) trovati[it.ref] = p.v;
+          else if(p) sbagliati++;
+          else senza++;
+        }catch(e){ senza++; }
+        fatti++;
+        if(fill) fill.style.width = Math.round(fatti / items.length * 100) + '%';
+        if(fatti % 10 === 0) setImpInfo('Lette ' + fatti + ' di ' + items.length + ' \u00B7 ' + Object.keys(trovati).length + ' prezzi in ' + curAtteso);
+      }
+    };
+    await Promise.all([worker(), worker(), worker(), worker()]);
+
+    const n = Object.keys(trovati).length;
+    if(sbagliati > n && n === 0){
+      setImpInfo('<span class="ko">patek.com risponde in un\u2019altra valuta: la VPN non \u00E8 sul paese giusto.</span>');
+    }else if(n === 0){
+      setImpInfo('<span class="ko">Nessun prezzo raccolto.</span>');
+    }else{
+      listini.mercati[curAtteso] = trovati;
+      listini.meta[curAtteso] = {n, data: new Date().toISOString().slice(0, 10)};
+      saveListini();
+      render();
+      statoListini();
+      setImpInfo('<span class="ok">' + n + ' prezzi in ' + curAtteso + ' aggiornati.</span>' +
+                 (sbagliati ? ' ' + sbagliati + ' in altra valuta ignorati.' : ''));
+    }
+  }catch(e){
+    setImpInfo('<span class="ko">Raccolta non riuscita: ' + esc(String(e.message || e)) + '</span>');
+  }
+  if(bar) bar.style.display = 'none';
+  if(fill) fill.style.width = '0';
+  raccoltaInCorso = false;
+}
+
+function statoListini(){
+  const el = document.getElementById('impStato');
+  if(!el) return;
+  const nomi = {CHF: '\uD83C\uDDE8\uD83C\uDDED Svizzera', EUR: '\uD83C\uDDEA\uD83C\uDDFA Italia', USD: '\uD83C\uDDFA\uD83C\uDDF8 Stati Uniti'};
+  el.innerHTML = ['CHF','EUR','USD'].map(c => {
+    const m = listini.meta[c];
+    const rep = (c === 'CHF' && Object.keys(chfRepo).length) ? Object.keys(chfRepo).length + ' pubblicate' : '';
+    const stato = m ? m.n + ' ref \u00B7 ' + m.data : (rep || 'mai aggiornato');
+    return '<div class="improw"><span>' + nomi[c] + '</span>' +
+           '<span class="st">' + esc(stato) + '</span>' +
+           '<button class="btn mini" data-cur="' + c + '">Aggiorna</button></div>';
+  }).join('');
+  el.querySelectorAll('button[data-cur]').forEach(b => {
+    b.onclick = () => raccogli(b.dataset.cur);
+  });
+}
+
+function esportaListini(){
+  const j = JSON.stringify(listini, null, 0);
+  navigator.clipboard.writeText(j).then(
+    () => setImpInfo('<span class="ok">Listini copiati negli appunti.</span>'),
+    () => setImpInfo('Copia non riuscita. Testo:<br><textarea style="width:100%;height:60px">' + esc(j) + '</textarea>')
+  );
+}
+
+// ---------- analisi export, netto IVA ----------
+// CH 8.1%, IT 22%; il listino USA e' gia' al netto (la sales tax si aggiunge alla cassa e non si recupera)
+const VAT = {CHF: 0.081, EUR: 0.22, USD: 0};
+const MERCATI = {CHF: ['\uD83C\uDDE8\uD83C\uDDED', 'Svizzera'], EUR: ['\uD83C\uDDEA\uD83C\uDDFA', 'Italia (UE)'], USD: ['\uD83C\uDDFA\uD83C\uDDF8', 'Stati Uniti']};
+function n2(cur, v){
+  const o = {minimumFractionDigits: 2, maximumFractionDigits: 2};
+  if(cur === 'CHF') return v.toLocaleString('en-US', o).replace(/,/g, '\u2019');
+  if(cur === 'EUR') return v.toLocaleString('it-IT', o);
+  return v.toLocaleString('en-US', o);
+}
+function exportRows(ref){
+  const rec = priceSet(ref);
+  if(!fx) return null;
+  const rows = [];
+  for(const cur of ['CHF','EUR','USD']){
+    if(rec[cur] == null) continue;
+    const net = rec[cur] / (1 + VAT[cur]);
+    const netCHF = inCHF(cur, net);
+    if(netCHF == null) continue;
+    rows.push({cur, listino: rec[cur], vat: VAT[cur], net, netCHF,
+               netEUR: netCHF / fx.EURCHF, netUSD: netCHF / fx.USDCHF});
+  }
+  if(rows.length < 2) return null;
+  let best = rows[0];
+  for(const r of rows) if(r.netCHF < best.netCHF) best = r;
+  for(const r of rows) r.delta = r === best ? 0 : (r.netCHF / best.netCHF - 1) * 100;
+  return {rows, best};
+}
+function exportBlock(ref){
+  const d = exportRows(ref);
+  if(!d) return '';
+  const {rows, best} = d;
+  let t = '<div class="exp"><div class="exph">Analisi export \u00B7 netto IVA</div>' +
+    '<table class="exptab"><thead><tr>' +
+    '<th>Mercato</th><th class="r">Listino</th><th class="r">IVA</th>' +
+    '<th class="r">Net CHF</th><th class="r">Net EUR</th><th class="r">Net USD</th><th class="r">\u0394</th>' +
+    '</tr></thead><tbody>';
+  for(const r of rows){
+    const isBest = r === best;
+    t += '<tr' + (isBest ? ' class="bestrow"' : '') + '>' +
+      '<td>' + MERCATI[r.cur][0] + ' ' + MERCATI[r.cur][1] + '</td>' +
+      '<td class="r">' + r.cur + ' ' + n2(r.cur, r.listino) + '</td>' +
+      '<td class="r">' + (r.vat ? (r.vat * 100).toFixed(1).replace('.0', '') + '%' : '\u2014') + '</td>' +
+      '<td class="r nch">' + n2('CHF', r.netCHF) + '</td>' +
+      '<td class="r">' + n2('EUR', r.netEUR) + '</td>' +
+      '<td class="r">' + n2('USD', r.netUSD) + '</td>' +
+      '<td class="r">' + (isBest ? '<span class="badge">Migliore</span>' : '+' + r.delta.toFixed(1) + '%') + '</td>' +
+      '</tr>';
+  }
+  t += '</tbody></table>';
+  t += '<div class="bestbox"><div class="bl">Mercato migliore</div>' +
+    '<div class="bb">' + MERCATI[best.cur][0] + ' <b>' + MERCATI[best.cur][1] + ' \u00B7 ' +
+    best.cur + ' ' + n2(best.cur, best.net) + ' netto</b> ' +
+    '<span class="eq">(CHF ' + n2('CHF', best.netCHF) + ') (USD ' + n2('USD', best.netUSD) + ')</span></div></div>';
+  t += '<div class="expnote">I prezzi netti escludono l\u2019IVA (Svizzera 8.1%, Italia 22%) e sono indicativi di un acquisto in esenzione/export; il rimborso reale \u00E8 di norma inferiore per via delle commissioni d\u2019agenzia. I listini USA sono al netto della sales tax locale, aggiunta alla cassa e non recuperabile. Cambi: 1 CHF = ' +
+    (1 / fx.EURCHF).toFixed(4) + ' EUR = ' + (1 / fx.USDCHF).toFixed(4) + ' USD. Dazi, sdoganamento e condizioni di garanzia non sono inclusi in questo confronto.</div></div>';
+  return t;
+}
+function bestBlock(ref){
+  const b = bestMarket(ref);
+  if(!b || !fx) return '';
+  const nf = v => Math.round(v).toLocaleString('en-US').replace(/,/g, '\u2019');
+  const MERCATO = {CHF: 'Svizzera', EUR: 'Italia', USD: 'Stati Uniti'};
+  const riga = ['CHF','EUR','USD'].filter(c => b.tutti[c] != null)
+    .map(c => MERCATO[c] + ' ' + nf(b.tutti[c])).join(' \u00B7 ');
+  let dt = '';
+  if(fx.data){
+    const d = /^\d{4}-\d{2}-\d{2}$/.test(fx.data) ? new Date(fx.data + 'T00:00:00') : new Date(fx.data);
+    dt = isNaN(d) ? String(fx.data) : d.toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'});
+  }
+  const nomi = MERCATO;
+  return '<div class="fxnote">' +
+    'Costo effettivo in franchi' + (dt ? ', cambio del ' + esc(dt) : ', cambio del giorno') + '<br>' +
+    riga + '<br>' +
+    '1 USD = ' + fx.USDCHF.toFixed(4) + ' CHF \u00B7 1 EUR = ' + fx.EURCHF.toFixed(4) + ' CHF<br>' +
+    '<span class="save">' + nomi[b.cur] + ' pi\u00F9 conveniente di CHF ' + nf(b.scarto) +
+    ' sul secondo mercato</span></div>';
+}
+// insieme dei tre listini per una referenza
+function priceSet(ref){
+  const rec = Object.assign({}, priceOf(ref) || {});
+  const rt = RETAIL[ref];
+  if(rt && rec[rt[1]] == null) rec[rt[1]] = rt[0];
+  const c = chfOf(ref);
+  if(c != null) rec.CHF = c;
+  for(const cur of ['EUR','USD']){
+    const l = listOf(cur, ref);
+    if(l != null) rec[cur] = l;
+  }
+  return rec;
+}
+function priceRows(ref){
+  const rec = priceSet(ref);
+  const evidenzia = arguments.length > 1 && arguments[1];
+  const b = evidenzia ? bestMarket(ref) : null;
+  let out = '';
+  let any = false;
+  for(const cur of ['CHF','EUR','USD']){
+    if(rec[cur] != null){
+      const best = b && b.cur === cur;
+      out += '<div class="price' + (best ? ' best' : '') + '">' +
+             '<span class="pc">' + FLAG[cur] + ' ' + cur +
+             (best ? '<span class="tag">Migliore</span>' : '') + '</span>' +
+             '<span class="pv">' + fmtAmount(cur, rec[cur]) + '</span></div>';
+      any = true;
+    }
+  }
+  return any ? out : '<div class="price"><span style="opacity:.4">\u2026</span></div>';
+}
+// coda: al massimo tre letture in parallelo, cosi' le card si popolano senza intasare la rete
+const pq = [];
+let pqRunning = 0;
+function pqPush(fn){
+  pq.push(fn);
+  pqNext();
+}
+function pqNext(){
+  while(pqRunning < 3 && pq.length){
+    const fn = pq.shift();
+    pqRunning++;
+    Promise.resolve().then(fn).catch(() => {}).finally(() => { pqRunning--; pqNext(); });
+  }
+}
+function refreshPrices(ref){
+  document.querySelectorAll('[data-pp="'+CSS.escape(ref)+'"]').forEach(el => { el.innerHTML = priceRows(ref); });
+}
+// carica i tre listini per una card
+async function loadCard(ref, url){
+  const need = () => {
+    const rec = priceOf(ref) || {};
+    return ['CHF','EUR','USD'].some(c => rec[c] == null);
+  };
+  if(!need()) return;
+  await loadPrice(ref, url);
+  refreshPrices(ref);
+}
+function usdOf(ref){
+  const rec = priceOf(ref);
+  return rec && rec.USD != null ? rec.USD : null;
+}
+const priceObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(entries => {
+  for(const en of entries){
+    if(en.isIntersecting){
+      const el = en.target;
+      priceObserver.unobserve(el);
+      pqPush(() => loadCard(el.dataset.ref, el.dataset.purl));
+    }
+  }
+}, {rootMargin: '200px'}) : null;
+
+let memStore = {};
+
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return memStore[k] || null; } }
+function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){ memStore[k] = v; } }
+
+// ---------- fetch HTML con fallback proxy ----------
+async function getHTML(url){
+  const routes = [
+    u => PROXY + encodeURIComponent(u),
+    u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
+    u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+    u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u)
+  ];
+  let lastErr = null;
+  for(const route of routes){
+    try{
+      const r = await fetch(route(url), {cache:'no-store'});
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      const html = await r.text();
+      if(html && html.length > 5000 && /collection/i.test(html)) return html;
+      throw new Error('Risposta non valida');
+    }catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error('Nessuna via di accesso disponibile');
+}
+
+// ---------- parsing ----------
+function slugToRef(slug){
+  const s = slug.toUpperCase().split('-');
+  if(s.length >= 3) return s[0] + '/' + s[1] + '-' + s.slice(2).join('-');
+  return s.join('-');
+}
+function parseCatalog(html){
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const seen = new Set();
+  const out = [];
+  doc.querySelectorAll('a[href*="/collection/"]').forEach(a => {
+    const href = a.getAttribute('href') || '';
+    const m = href.match(/\/collection\/([a-z0-9-]+)\/([a-z0-9-]+)\/?$/i);
+    if(!m) return;
+    const colSlug = m[1].toLowerCase();
+    if(!COLLECTIONS[colSlug]) return;               // esclude link di navigazione
+    if(/all-watches|all-models/.test(m[2])) return;
+    const slug = m[2].toLowerCase();
+    const id = colSlug + '/' + slug;
+    if(seen.has(id)) return;
+    seen.add(id);
+
+    const ref = slugToRef(slug);
+    const colLabel = COLLECTIONS[colSlug];
+
+    // materiale/nome: testo dell'anchor dopo referenza e collezione
+    let mat = '';
+    const t = (a.textContent || '').replace(/\s+/g, ' ').trim();
+    const ri = t.indexOf(ref);
+    if(ri !== -1){
+      let rest = t.slice(ri + ref.length);
+      const ci = rest.indexOf(colLabel);
+      if(ci !== -1) rest = rest.slice(ci + colLabel.length);
+      mat = rest.trim();
+    }
+
+    // immagine: img dentro l'anchor (anche lazy)
+    let img = null;
+    const im = a.querySelector('img');
+    if(im) img = im.getAttribute('src') || im.getAttribute('data-src') || (im.getAttribute('srcset')||'').split(' ')[0] || null;
+    if(img && img.startsWith('/')) img = 'https://www.patek.com' + img;
+
+    out.push({
+      id, ref, col: colLabel, mat,
+      url: href.startsWith('http') ? href : 'https://www.patek.com' + href,
+      img
+    });
+  });
+  return out;
+}
+
+// ---------- novità ----------
+function computeAdded(){
+  added = [];
+  if(!snapshot) return;
+  for(const p of items){
+    if(!snapshot.ids.includes(p.id)) added.push(p.id);
+  }
+}
+function renderNews(){
+  const bar = document.getElementById('newsbar');
+  if(!snapshot || !added.length){ bar.classList.remove('show'); return; }
+  const names = items.filter(p => added.includes(p.id)).slice(0,6).map(p => esc(p.ref));
+  document.getElementById('newsTxt').innerHTML =
+    '<b>' + added.length + ' nuove referenze</b> dall\'ultima visita (' +
+    new Date(snapshot.ts).toLocaleDateString('it-IT') + '): ' + names.join(' · ') +
+    (added.length > 6 ? ' …' : '');
+  bar.classList.add('show');
+}
+
+// ---------- render ----------
+// ---------- lista desideri, posseduti, ordine ----------
+const WL_KEY = 'pp_wl_beta_v1';
+let WL = (()=>{ try{ const r = localStorage.getItem(WL_KEY); if(r) return JSON.parse(r); }catch(e){}
+  return {wish:[], own:[], sel:[], forn:[], negSel:'', acq:'ch', acqMan:{nome:'',testo:''}}; })();
+for(const k of ['wish','own','sel','forn']) if(!Array.isArray(WL[k])) WL[k] = [];
+if(!WL.acqMan) WL.acqMan = {nome:'',testo:''};
+function saveWL(){ try{ localStorage.setItem(WL_KEY, JSON.stringify(WL)); }catch(e){} pushSync(); }
+
+const ACQ = [
+  {id:'us', flag:'\uD83C\uDDFA\uD83C\uDDF8', nome:'Giovanni Fasciano', testo:'1440 W 23rd St\n33140 Miami Beach, FL\nUnited States'},
+  {id:'ch', flag:'\uD83C\uDDE8\uD83C\uDDED', nome:'Giovanni Fasciano', testo:'Via Zorzi 28\n6900 Paradiso\nSvizzera'}
+];
+const VENDOR_API = 'https://watch-proxy.owscan.workers.dev/vendorsearch?q=';
+const SYNC_URL = 'https://watch-proxy.owscan.workers.dev/sync?code=giovanni-fasciano-pp-wl-7f3k2';
+
+let vista = 'cat';                       // cat · wish · own
+let ordineAperto = false;
+let trovatiForn = [];
+
+const inWish = r => WL.wish.includes(r);
+const inOwn  = r => WL.own.includes(r);
+const inSel  = r => WL.sel.includes(r);
+function togWish(r){ inWish(r) ? WL.wish = WL.wish.filter(x=>x!==r) : WL.wish.push(r); saveWL(); render(); }
+function togOwn(r){
+  if(inOwn(r)) WL.own = WL.own.filter(x=>x!==r);
+  else { WL.own.push(r); WL.wish = WL.wish.filter(x=>x!==r); }
+  saveWL(); render();
+}
+function togSel(r){ inSel(r) ? WL.sel = WL.sel.filter(x=>x!==r) : WL.sel.push(r); saveWL(); render(); }
+
+// sincronizzazione su tutti i dispositivi, come su AP
+let syncTimer = null;
+function pushSync(){
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(async () => {
+    try{
+      await fetch(SYNC_URL, {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(WL)});
+      const el = document.getElementById('syncSt');
+      if(el) el.textContent = 'sincronizzato ' + new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+    }catch(e){}
+  }, 1200);
+}
+async function pullSync(){
+  try{
+    const r = await fetch(SYNC_URL, {cache:'no-store'});
+    if(!r.ok) return;
+    const d = await r.json();
+    const dati = d && d.wish ? d : (d && d.value) ? d.value : null;
+    if(dati && Array.isArray(dati.wish)){
+      WL = Object.assign(WL, dati);
+      try{ localStorage.setItem(WL_KEY, JSON.stringify(WL)); }catch(e){}
+      render();
+    }
+  }catch(e){}
+}
+
+// ---------- anagrafica fornitori ----------
+async function cercaFornitore(){
+  const q = (document.getElementById('fq')||{}).value || '';
+  const st = document.getElementById('fstat'), box = document.getElementById('fres');
+  if(q.trim().length < 3){ if(st) st.textContent = 'Scrivi almeno tre lettere.'; return; }
+  st.innerHTML = '<span class="cerca">ricerca in corso\u2026</span>';
+  box.innerHTML = '';
+  trovatiForn = [];
+  try{
+    const r = await fetch(VENDOR_API + encodeURIComponent(q.trim()));
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    const arr = d.results || d.vendors || d.items || (Array.isArray(d) ? d : []);
+    trovatiForn = arr.map(v => ({
+      nome: v.name || v.nome || q, ind: v.street || v.address || v.ind || '',
+      cap: v.postcode || v.zip || v.cap || '', citta: v.city || v.citta || '',
+      paese: v.country || v.paese || '', cc: String(v.countryCode || v.cc || '').toUpperCase()
+    }));
+    st.textContent = trovatiForn.length ? trovatiForn.length + ' risultati dal web' : 'nessun risultato';
+  }catch(e){
+    st.innerHTML = '<span class="ko">ricerca non riuscita</span> \u00B7 inserisci il fornitore a mano';
+  }
+  box.innerHTML = trovatiForn.map((v,i) =>
+    '<div class="fres-r"><div><div class="n">'+esc(v.nome)+'</div><div class="s">'+
+    esc([v.ind,[v.cap,v.citta].filter(Boolean).join(' '),v.paese].filter(Boolean).join(' \u00B7 '))+
+    '</div></div><button class="mini" onclick="importaForn('+i+')">Importa</button></div>').join('');
+}
+function importaForn(i){
+  const v = trovatiForn[i];
+  if(!v) return;
+  const rec = Object.assign({id: 'f' + Date.now()}, v);
+  WL.forn.push(rec);
+  WL.negSel = rec.id;
+  saveWL();
+  render();
+}
+function rimuoviForn(id){
+  const n = WL.forn.find(x=>x.id===id);
+  if(!n || !confirm('Rimuovere ' + n.nome + ' dall\u2019anagrafica?')) return;
+  WL.forn = WL.forn.filter(x=>x.id!==id);
+  if(WL.negSel === id) WL.negSel = '';
+  saveWL();
+  render();
+}
+
+function render(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  const byCol = {};
+  for(const p of items) (byCol[p.col] = byCol[p.col] || []).push(p);
+  const cols = Object.values(COLLECTIONS).filter(c => byCol[c]);
+
+  renderChips(cols, byCol);
+
+  if(vista !== 'cat'){ renderLista(main, q); return; }
+
+  let shown = 0;
+  for(const c of cols){
+    if(activeCol !== 'ALL' && c !== activeCol) continue;
+    let list = byCol[c];
+    if(q) list = list.filter(p => (p.ref + ' ' + p.mat + ' ' + p.col).toLowerCase().includes(q));
+    if(!list.length) continue;
+
+    const sec = document.createElement('section');
+    sec.className = 'brand-section';
+    sec.innerHTML = '<div class="brand-head"><h2>'+esc(c)+'</h2><span class="cnt">'+list.length+' modelli</span></div>';
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    for(const p of list){
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML =
+        (added.includes(p.id) ? '<span class="badge">NEW</span>' : '') +
+        '<div class="cacts">' +
+          '<button class="ca'+(inWish(p.ref)?' on':'')+'" data-w="'+esc(p.ref)+'" title="Lista desideri">'+(inWish(p.ref)?'\u2665':'\u2661')+'</button>' +
+          '<button class="ca own'+(inOwn(p.ref)?' on':'')+'" data-o="'+esc(p.ref)+'" title="Posseduto">\u2713</button>' +
+        '</div>' +
+        '<div class="thumb">' + (p.img ? '<img loading="lazy" decoding="async" src="'+esc(thumbURL(p.img))+'" data-orig="'+esc(p.img)+'" alt="" onerror="imgFail(this)">' : '<span class="noimg">NO IMG</span>') + '</div>' +
+        '<div class="meta"><div class="ref">'+esc(p.ref)+'</div>' +
+        '<div class="mat">'+esc(p.mat || '')+'</div>' +
+        retailLine(p.ref) +
+        '<div class="col">'+esc(p.col)+'</div></div>';
+      const bw = card.querySelector('[data-w]');
+      if(bw) bw.addEventListener('click', ev => { ev.stopPropagation(); togWish(p.ref); });
+      const bo = card.querySelector('[data-o]');
+      if(bo) bo.addEventListener('click', ev => { ev.stopPropagation(); togOwn(p.ref); });
+      const th = card.querySelector('.thumb');
+      if(th) th.addEventListener('click', () => openSheet(p));
+      const rf = card.querySelector('.ref');
+      if(rf) rf.addEventListener('click', () => window.open(p.url, '_blank', 'noopener'));
+      grid.appendChild(card);
+      const priceEl = card.querySelector('[data-pp]');
+      if(priceEl){
+        priceEl.style.cursor = 'pointer';
+        priceEl.title = 'Analisi export \u00B7 netto IVA';
+        priceEl.addEventListener('click', ev => { ev.stopPropagation(); openSheet(p, true); });
+      }
+      const recNow = priceOf(p.ref) || {};
+      const missing = ['CHF','EUR','USD'].some(c => recNow[c] == null);
+      if(priceEl && priceObserver && missing){
+        priceEl.dataset.ref = p.ref;
+        priceEl.dataset.purl = p.url;
+        priceObserver.observe(priceEl);
+      }
+      shown++;
+    }
+    sec.appendChild(grid);
+    main.appendChild(sec);
+  }
+  document.getElementById('empty').style.display = shown ? 'none' : 'block';
+}
+
+// ---------- viste Lista desideri e Posseduti, con barra ordine in stile AP ----------
+function cardMini(p){
+  return '<div class="card">' +
+    '<div class="cacts">' +
+      '<button class="ca'+(inWish(p.ref)?' on':'')+'" data-w="'+esc(p.ref)+'">'+(inWish(p.ref)?'\u2665':'\u2661')+'</button>' +
+      '<button class="ca own'+(inOwn(p.ref)?' on':'')+'" data-o="'+esc(p.ref)+'">\u2713</button>' +
+    '</div>' +
+    '<div class="thumb" data-s="'+esc(p.ref)+'">' + (p.img ? '<img loading="lazy" src="'+esc(thumbURL(p.img))+'" data-orig="'+esc(p.img)+'" onerror="imgFail(this)">' : '<span class="noimg">NO IMG</span>') + '</div>' +
+    '<div class="meta"><div class="ref">'+esc(p.ref)+'</div><div class="mat">'+esc(p.mat||'')+'</div>' +
+    retailLine(p.ref) + '<div class="col">'+esc(p.col)+'</div></div></div>';
+}
+
+function renderLista(main, q){
+  const refs = vista === 'wish' ? WL.wish : WL.own;
+  let list = items.filter(p => refs.includes(p.ref));
+  if(q) list = list.filter(p => (p.ref+' '+p.mat+' '+p.col).toLowerCase().includes(q));
+  const scelti = list.filter(p => inSel(p.ref));
+
+  const sec = document.createElement('section');
+  sec.className = 'brand-section';
+
+  if(vista === 'wish'){
+    sec.innerHTML =
+      '<div class="ordhead"><h2>Lista desideri</h2>' +
+      '<span class="cnt">'+list.length+' orologi \u00B7 '+scelti.length+' selezionati</span>' +
+      '<div class="obtns">' +
+        '<button class="ob sel" id="bAll">Seleziona tutti</button>' +
+        '<button class="ob" id="bNone">Deseleziona tutti</button>' +
+        '<button class="ob gold" id="bOrd">'+(ordineAperto?'Chiudi ordine':'Crea ordine')+'</button>' +
+      '</div></div>' +
+      (ordineAperto ? wishBarHTML(scelti) : '');
+  }else{
+    const tot = {};
+    for(const p of list){ const r = priceSet(p.ref); for(const c of ['CHF','EUR','USD']) if(r[c]!=null) tot[c] = (tot[c]||0) + r[c]; }
+    const righe = ['CHF','EUR','USD'].filter(c=>tot[c]).map(c=>fmt(c, tot[c])).join(' \u00B7 ');
+    sec.innerHTML = '<div class="ordhead"><h2>Posseduti</h2>' +
+      '<span class="cnt">'+list.length+' orologi'+(righe?' \u00B7 valore a listino '+righe:'')+'</span></div>';
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+  if(list.length) grid.innerHTML = list.map(cardMini).join('');
+  sec.appendChild(grid);
+  main.appendChild(sec);
+
+  if(!list.length){
+    const e = document.createElement('div');
+    e.className = 'vuoto';
+    e.innerHTML = vista === 'wish'
+      ? 'Nessun orologio in lista.<br>Tocca il cuore su una card del catalogo.'
+      : 'Nessun orologio registrato.<br>Tocca la spunta su una card del catalogo.';
+    main.appendChild(e);
+  }
+
+  main.querySelectorAll('[data-w]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togWish(b.dataset.w); });
+  main.querySelectorAll('[data-o]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togOwn(b.dataset.o); });
+  main.querySelectorAll('[data-s]').forEach(t => t.onclick = () => {
+    const p = items.find(x => x.ref === t.dataset.s);
+    if(p) openSheet(p, true);
+  });
+  legaOrdine(list);
+  document.getElementById('empty').style.display = 'none';
+}
+
+function wishBarHTML(scelti){
+  const cur = wlCur();
+  const iva = VAT[cur];
+  const lordo = scelti.reduce((s,p) => s + (priceSet(p.ref)[cur] || 0), 0);
+  const forn = WL.forn.find(f => f.id === WL.negSel);
+  const a = ACQ.find(x => x.id === WL.acq) || ACQ[1];
+
+  return '<div class="wishbar">' +
+    '<div class="wsec">Ordine</div>' +
+    '<div class="wrow">' +
+      '<div class="wf" style="max-width:230px"><label>N. ordine</label><input id="wOrd" value="'+esc(WL.ordNo || ('PP-' + new Date().toISOString().slice(2,10).replace(/-/g,'') + '-' + String(Math.floor(Math.random()*90)+10)))+'"></div>' +
+      '<div class="wf"><label>Acquisto in</label><div class="pick" id="wPick">' +
+        ['CHF','EUR','USD'].map(c=>'<button class="'+(cur===c?'on':'')+'" data-c="'+c+'">'+FLAG[c]+' '+c+'</button>').join('') +
+      '</div></div>' +
+    '</div>' +
+    '<label class="wchk"><input type="checkbox" id="wCons"'+(WL.cons?' checked':'')+'> Includi data di consegna</label>' +
+    (WL.cons ? '<div class="wf" style="max-width:230px"><label>Data di consegna</label><input type="date" id="wConsD" value="'+esc(WL.consD||'')+'"></div>' : '') +
+    '<label class="wchk"><input type="checkbox" id="wPay"'+(WL.pay?' checked':'')+'> Includi dettagli di pagamento</label>' +
+    (WL.pay ? '<div class="wrow">' +
+      '<div class="wf"><label>Metodo</label><select id="wPayM"><option value="b"'+(WL.payM==='b'?' selected':'')+'>Bonifico bancario</option><option value="c"'+(WL.payM==='c'?' selected':'')+'>Carta di credito</option></select></div>' +
+      '<div class="wf"><label>Data pagamento</label><input type="date" id="wPayD" value="'+esc(WL.payD||'')+'"></div></div>' : '') +
+
+    '<div class="wsec">Tax</div>' +
+    '<label class="wchk"><input type="checkbox" id="wDetax"'+(WL.detax?' checked':'')+'> Mostra prezzo netto (detax)' +
+      (WL.detax ? ' <input class="wpc" id="wIva" value="'+((iva*100).toFixed(1).replace('.0',''))+'"> %' : '') + '</label>' +
+
+    '<div class="wsec">Parties</div>' +
+    '<div class="wboxes">' +
+      '<div class="wbox"><div class="wbh">Venditore</div>' +
+        '<select id="wNeg">' +
+          '<option value="">\u2014 Altro rivenditore (inserisci manualmente) \u2014</option>' +
+          WL.forn.map(f=>'<option value="'+esc(f.id)+'"'+(WL.negSel===f.id?' selected':'')+'>'+esc(f.nome)+' \u00B7 '+esc(f.citta||'')+'</option>').join('') +
+        '</select>' +
+        (forn
+          ? '<div class="waddr">'+esc([forn.ind,[forn.cap,forn.citta].filter(Boolean).join(' '),forn.paese].filter(Boolean).join('\n')).replace(/\n/g,'<br>')+'</div>'
+          : '<input id="wNegN" placeholder="Nome (se manuale)" value="'+esc(WL.negN||'')+'">' +
+            '<textarea id="wNegA" placeholder="Via, CAP, citt\u00E0, paese \u00B7 telefono">'+esc(WL.negA||'')+'</textarea>') +
+        '<div class="wman-h">Aggiungi fornitore \u00B7 ricerca sul web</div>' +
+        '<div class="srow"><input id="fq" placeholder="Nome del negozio o della boutique">' +
+          '<button class="mini" onclick="cercaFornitore()">\uD83D\uDD0E</button></div>' +
+        '<div class="fstat" id="fstat"></div><div id="fres"></div>' +
+        (WL.forn.length ? '<div class="flist">' + WL.forn.map(f=>'<div class="fres-r"><div><div class="n">'+esc(f.nome)+'</div>' +
+          '<div class="s">'+esc([f.citta,f.paese].filter(Boolean).join(' \u00B7 '))+'</div></div>' +
+          '<button class="mini x" onclick="rimuoviForn(\''+esc(f.id)+'\')">\u2715</button></div>').join('') + '</div>' : '') +
+      '</div>' +
+
+      '<div class="wbox"><div class="wbh">Acquirente</div>' +
+        '<div class="btabs" id="wAcq">' +
+          ACQ.map(x=>'<button class="'+(WL.acq===x.id?'on':'')+'" data-a="'+x.id+'">'+x.flag+' '+esc(x.nome)+'</button>').join('') +
+        '</div>' +
+        '<div class="waddr">'+esc(a.testo).replace(/\n/g,'<br>')+'</div>' +
+        '<div class="wman-h">Oppure inserisci un acquirente diverso manualmente</div>' +
+        '<input id="wAcqN" placeholder="Nome acquirente" value="'+esc(WL.acqMan.nome||'')+'">' +
+        '<textarea id="wAcqA" placeholder="Indirizzo">'+esc(WL.acqMan.testo||'')+'</textarea>' +
+      '</div>' +
+    '</div>' +
+
+    '<div class="wfoot">' +
+      '<div class="wtot"><span>'+scelti.length+' referenze</span><span class="big">'+fmt(cur, lordo)+'</span></div>' +
+      '<div class="wact">' +
+        '<button class="ob" id="bSvuota">Svuota lista</button>' +
+        '<button class="ob gold" id="bStampa">Stampa ordine</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="wsync">Sincronizzato su tutti i dispositivi \u00B7 <span id="syncSt">attivo</span></div>' +
+  '</div>';
+}
+
+function stampaOrdine(){
+  const cur = wlCur();
+  const scelti = items.filter(p => WL.wish.includes(p.ref) && inSel(p.ref));
+  if(!scelti.length){ alert('Seleziona almeno una referenza.'); return; }
+  const iva = WL.detax ? (parseFloat((document.getElementById('wIva')||{}).value) || VAT[cur]*100) / 100 : VAT[cur];
+  const lordo = scelti.reduce((s,p) => s + (priceSet(p.ref)[cur] || 0), 0);
+  const netto = iva ? lordo / (1 + iva) : lordo;
+
+  const f = WL.forn.find(x=>x.id===WL.negSel);
+  const vend = f
+    ? {nome: f.nome, testo: [f.ind, [f.cap,f.citta].filter(Boolean).join(' '), f.paese].filter(Boolean).join('\n')}
+    : {nome: WL.negN || '\u2014', testo: WL.negA || ''};
+  const ap = ACQ.find(x=>x.id===WL.acq) || ACQ[1];
+  const acq = (WL.acqMan.nome || WL.acqMan.testo)
+    ? {nome: WL.acqMan.nome || '\u2014', testo: WL.acqMan.testo || ''}
+    : {nome: ap.nome, testo: ap.testo};
+
+  const oggi = new Date().toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'});
+  const righe = scelti.map((p,i) =>
+    '<tr><td>'+(i+1)+'</td><td>'+esc(p.ref)+'</td><td>'+esc(p.col)+'</td><td>'+esc(p.mat||'')+'</td>' +
+    '<td class="r">'+fmt(cur, priceSet(p.ref)[cur] || 0)+'</td></tr>').join('');
+
+  let detaxHTML = '';
+  if(WL.detax && fx){
+    const nCHF = cur === 'CHF' ? netto : (cur === 'EUR' ? netto * fx.EURCHF : netto * fx.USDCHF);
+    const altre = ['CHF','EUR','USD'].filter(c => c !== cur)
+      .map(c => fmt(c, c === 'CHF' ? nCHF : (c === 'EUR' ? nCHF / fx.EURCHF : nCHF / fx.USDCHF))).join(' \u00B7 ');
+    detaxHTML = '<div class="dtx"><b>Prezzo netto, IVA ' + (iva ? (iva*100).toFixed(1).replace('.0','') + '% esclusa' : 'non applicabile') + ':</b> ' +
+      fmt(cur, netto) + ' \u00B7 equivalente ' + altre +
+      '<br><span class="dtxn">Il rimborso effettivo \u00E8 di norma inferiore per via delle commissioni d\u2019agenzia. ' +
+      'I listini USA sono al netto della sales tax locale, aggiunta alla cassa e non recuperabile.</span></div>';
+  }
+
+  const extra = [];
+  if(WL.cons && WL.consD) extra.push('Consegna prevista: ' + esc(WL.consD));
+  if(WL.pay) extra.push('Pagamento: ' + (WL.payM === 'c' ? 'carta di credito' : 'bonifico bancario') + (WL.payD ? ' \u00B7 ' + esc(WL.payD) : ''));
+
+  const ov = ensureSheet();
+  document.getElementById('sheetBox').innerHTML =
+    '<div class="sheet-btns">' +
+      '<button class="bprint" id="btnPrintSheet" type="button">Stampa / Salva PDF</button>' +
+      '<button class="bclose" id="btnCloseSheet" type="button">Chiudi</button>' +
+    '</div>' +
+    '<div class="sbody">' +
+      '<div class="shd"><div class="pp">Patek Philippe</div><div class="gv">Gen\u00E8ve</div></div>' +
+      '<h1 style="font-size:25px">Conferma d\u2019ordine</h1>' +
+      '<div class="rs">N. ' + esc(WL.ordNo || '\u2014') + ' \u00B7 ' + esc(oggi) + '</div>' +
+      '<div class="grid2">' +
+        '<div><div class="sec">Venditore</div><div class="paddr2"><b>'+esc(vend.nome)+'</b><br>'+esc(vend.testo).replace(/\n/g,'<br>')+'</div></div>' +
+        '<div><div class="sec">Acquirente</div><div class="paddr2"><b>'+esc(acq.nome)+'</b><br>'+esc(acq.testo).replace(/\n/g,'<br>')+'</div></div>' +
+      '</div>' +
+      '<div class="exp"><div class="exph">Referenze</div>' +
+      '<table class="exptab"><thead><tr><th>#</th><th>Referenza</th><th>Collezione</th><th>Materiale</th><th class="r">Prezzo</th></tr></thead>' +
+      '<tbody>' + righe +
+      '<tr class="bestrow"><td colspan="4"><b>Totale</b></td><td class="r"><b>' + fmt(cur, lordo) + '</b></td></tr>' +
+      '</tbody></table>' + detaxHTML +
+      (extra.length ? '<div class="expnote">' + extra.join('<br>') + '</div>' : '') +
+      '</div>' +
+      '<div class="sfoot">Documento non ufficiale a uso interno \u00B7 scheda generata il ' + esc(oggi) + '<br>' +
+      'Listini ufficiali Patek Philippe per Svizzera, Italia e Stati Uniti, rilevati da patek.com. Soggetti a variazione e alle imposte locali. ' +
+      'Patek Philippe\u00AE \u00E8 un marchio di Patek Philippe SA. Nessuna affiliazione.</div>' +
+    '</div>';
+
+  ov.classList.add('open');
+  document.body.classList.add('sheet-open');
+  ov.onclick = e => { if(e.target === ov) closeSheet(); };
+  document.getElementById('btnPrintSheet').onclick = () => window.print();
+  document.getElementById('btnCloseSheet').onclick = closeSheet;
+}
+
+function wlCur(){ return WL.cur || 'CHF'; }
+
+function legaOrdine(list){
+  const g = id => document.getElementById(id);
+  if(g('bAll')) g('bAll').onclick = () => { list.forEach(p=>{ if(!inSel(p.ref)) WL.sel.push(p.ref); }); saveWL(); render(); };
+  if(g('bNone')) g('bNone').onclick = () => { WL.sel = []; saveWL(); render(); };
+  if(g('bOrd')) g('bOrd').onclick = () => { ordineAperto = !ordineAperto; render(); };
+  if(g('bSvuota')) g('bSvuota').onclick = () => { if(confirm('Svuotare la lista desideri?')){ WL.wish = []; WL.sel = []; saveWL(); render(); } };
+  if(g('bStampa')) g('bStampa').onclick = stampaOrdine;
+
+  document.querySelectorAll('#wPick button').forEach(b => b.onclick = () => { WL.cur = b.dataset.c; saveWL(); render(); });
+  document.querySelectorAll('#wAcq button').forEach(b => b.onclick = () => { WL.acq = b.dataset.a; saveWL(); render(); });
+
+  const bind = (id, campo, ev) => { const e = g(id); if(e) e[ev||'oninput'] = () => { WL[campo] = (e.type==='checkbox') ? e.checked : e.value; saveWL(); if(e.type==='checkbox') render(); }; };
+  bind('wOrd','ordNo'); bind('wCons','cons','onchange'); bind('wConsD','consD');
+  bind('wPay','pay','onchange'); bind('wPayM','payM','onchange'); bind('wPayD','payD');
+  bind('wDetax','detax','onchange'); bind('wNegN','negN'); bind('wNegA','negA');
+  const ns = g('wNeg'); if(ns) ns.onchange = () => {
+    WL.negSel = ns.value;
+    const f = WL.forn.find(x=>x.id===ns.value);
+    if(f){ const m = {CH:'CHF', IT:'EUR', US:'USD'}; if(m[f.cc]) WL.cur = m[f.cc]; }
+    saveWL(); render();
+  };
+  const an = g('wAcqN'), aa = g('wAcqA');
+  if(an) an.oninput = () => { WL.acqMan.nome = an.value; saveWL(); };
+  if(aa) aa.oninput = () => { WL.acqMan.testo = aa.value; saveWL(); };
+
+  // selezione referenze dalle card
+  document.querySelectorAll('.card').forEach(c => {
+    const ref = (c.querySelector('.ref')||{}).textContent;
+    if(!ref) return;
+    if(vista === 'wish' && ordineAperto){
+      c.classList.toggle('picked', inSel(ref));
+      c.style.cursor = 'pointer';
+      c.onclick = ev => { if(ev.target.closest('.cacts') || ev.target.closest('.thumb')) return; togSel(ref); };
+    }
+  });
+}
+
+function renderChips(cols, byCol){
+  const box = document.getElementById('chips');
+  box.innerHTML = '';
+  const mk = (label, key, count) => {
+    const c = document.createElement('button');
+    c.className = 'chip' + (activeCol === key ? ' active' : '');
+    c.innerHTML = esc(label) + (count != null ? ' <b>'+count+'</b>' : '');
+    c.onclick = () => { activeCol = key; render(); };
+    box.appendChild(c);
+  };
+  mk('Tutte', 'ALL', items.length);
+  for(const c of cols) mk(c, c, byCol[c].length);
+}
+
+let descCache = (() => { try{ const r = localStorage.getItem('pp_desc_v3'); return r ? JSON.parse(r) : {}; }catch(e){ return {}; } })();
+function saveDesc(){ try{ localStorage.setItem('pp_desc_v3', JSON.stringify(descCache)); }catch(e){} }
+// Estrae le sezioni di "Technical characteristics" lavorando sul testo grezzo
+const TECH_LABELS = ['dial','case','bezel','bracelet','strap','buckle','clasp','movement','caliber','calibre','additional information','chain'];
+function decodeEnt(s){
+  const ta = document.createElement('textarea');
+  ta.innerHTML = s;
+  return ta.value;
+}
+function parseTech(raw){
+  let h = raw.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '');
+  const m = h.search(/technical\s*characteristics/i);
+  if(m === -1) return null;
+  let seg = h.slice(m);
+  const stop = seg.search(/instructions\s+for\s+use|other\s+models|similar\s+watches|explore\s+more|jewelry\s*&amp;\s*accessories/i);
+  if(stop > 40) seg = seg.slice(0, stop);
+  seg = seg.slice(0, 40000);
+  // tag di blocco -> a capo, il resto via
+  seg = seg.replace(/<\s*(br|\/p|\/div|\/li|\/h[1-6]|\/span|\/td|\/tr|\/button|\/section)[^>]*>/gi, '\n')
+           .replace(/<[^>]+>/g, ' ');
+  const lines = decodeEnt(seg).split('\n')
+    .map(x => x.replace(/\s+/g, ' ').trim())
+    .filter(x => x && !/^technical\s*characteristics$/i.test(x));
+  const secs = [];
+  let cur = null;
+  for(const ln of lines){
+    const key = ln.replace(/[:\u2013\u2014-]\s*$/, '').toLowerCase();
+    if(ln.length <= 26 && TECH_LABELS.includes(key)){
+      cur = {t: ln.replace(/[:\u2013\u2014-]\s*$/, ''), b: ''};
+      secs.push(cur);
+      continue;
+    }
+    if(cur && ln.length > 1 && !/^(front|back|download|play video|reduce motion)$/i.test(ln)){
+      if(cur.b.length < 600) cur.b += (cur.b ? ' ' : '') + ln;
+    }
+  }
+  const out = secs.filter(s => s.b.length > 3);
+  return out.length ? out.slice(0, 6) : null;
+}
+let ppLogo = (() => { try{ return localStorage.getItem('pp_logo_v1') || null; }catch(e){ return null; } })();
+function findLogo(raw){
+  const cands = [];
+  const re = /(?:src|href|content)\s*=\s*["']([^"']+\.(?:svg|png))["']/gi;
+  let m;
+  while((m = re.exec(raw))){
+    const u = m[1];
+    if(/logo|calatrava|brand/i.test(u) && !/facebook|instagram|twitter|apple|google/i.test(u)) cands.push(u);
+  }
+  if(!cands.length) return null;
+  let u = cands.sort((a, b) => (/\.svg$/i.test(b) ? 1 : 0) - (/\.svg$/i.test(a) ? 1 : 0))[0];
+  if(u.startsWith('//')) u = 'https:' + u;
+  else if(u.startsWith('/')) u = 'https://www.patek.com' + u;
+  else if(!/^https?:/i.test(u)) u = 'https://www.patek.com/' + u;
+  return u;
+}
+function logoIMG(){
+  if(!ppLogo) return '';
+  const via = 'https://images.weserv.nl/?url=' + encodeURIComponent(ppLogo.replace(/^https?:\/\//,'')) + '&w=420&output=png';
+  return '<img class="pplogo" src="' + esc(via) + '" alt="" onerror="this.style.display=\'none\'">';
+}
+async function fetchDesc(p){
+  const c = descCache[p.ref];
+  if(c && Date.now() - c.ts < PRICE_TTL) return c.v;
+  try{
+    const r = await fetch(PROXY + encodeURIComponent(p.url), {cache:'no-store'});
+    const t = await r.text();
+    if(!ppLogo){
+      const lg = findLogo(t);
+      if(lg){ ppLogo = lg; try{ localStorage.setItem('pp_logo_v1', lg); }catch(e){}
+        const h = document.getElementById('sheetHead'); if(h) h.innerHTML = logoIMG() + '<div class="ppword">Patek Philippe</div>'; }
+    }
+    const secs = parseTech(t);
+    if(secs){ descCache[p.ref] = {v: secs, ts: Date.now()}; saveDesc(); return secs; }
+  }catch(e){}
+  return null;
+}
+function descHTML(secs){
+  return secs.map(s => '<div class="tc"><div class="tct">' + esc(s.t) + '</div><div class="tcb">' + esc(s.b) + '</div></div>').join('');
+}
+// dati sintetici per la colonna Specifiche, ricavati dal testo tecnico
+function specHTML(p, secs){
+  const txt = (secs || []).map(s => s.b).join(' ');
+  const riga = (k, v) => v ? '<div class="kv"><span class="k">' + esc(k) + '</span><span class="v">' + esc(v) + '</span></div>' : '';
+  const cerca = re => { const m = txt.match(re); return m ? m[1].trim() : ''; };
+  const diam = cerca(/Diameter[^:]{0,26}:\s*([\d.,]+\s?mm)/i);
+  const spess = cerca(/Thickness:\s*([\d.,]+\s?mm)/i);
+  const acqua = cerca(/Water-resistant to\s*([\d]+\s?m)/i);
+  const mov = cerca(/\b((?:CH\s|CHR\s)?[0-9]{2}-[0-9]{3}[A-Z0-9\s\/]{0,12}?)\s(?:Self-winding|Manual)/i);
+  return riga('Collezione', p.col) + riga('Referenza', p.ref) + riga('Materiale cassa', p.mat) +
+         riga('Diametro', diam) + riga('Spessore', spess) + riga('Movimento', mov) +
+         riga('Impermeabilit\u00E0', acqua) + riga('Disponibilit\u00E0', 'Collezione attuale');
+}
+window.closeSheet = closeSheet;
+function closeSheet(){
+  const o = document.getElementById('sheetOverlay');
+  if(o) o.classList.remove('open');
+  document.body.classList.remove('sheet-open');
+}
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSheet(); });
+function ensureSheet(){
+  let ov = document.getElementById('sheetOverlay');
+  if(!ov){
+    ov = document.createElement('div');
+    ov.id = 'sheetOverlay';
+    ov.innerHTML = '<div class="sheet" id="sheetBox"></div>';
+    document.body.appendChild(ov);
+  }
+  return ov;
+}
+function openSheet(p, conExport){
+  const ov = ensureSheet();
+  const box = document.getElementById('sheetBox');
+  const cached = descCache[p.ref];
+  const secs = (cached && cached.v) ? cached.v : null;
+  const oggi = new Date().toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'});
+
+  const testa =
+    '<div class="shd"><div class="pp">Patek Philippe</div><div class="gv">Gen\u00E8ve</div></div>' +
+    (p.img ? '<img class="photo" src="' + esc(bigURL(p.img)) + '" onerror="imgFail(this)">' : '') +
+    '<div class="rc">' + esc(p.col || '') + '</div>' +
+    '<h1>' + esc(p.ref) + '</h1>' +
+    '<div class="rs">' + esc(p.mat || '') + '</div>';
+
+  const colonne =
+    '<div class="grid2">' +
+      '<div><div class="sec">Specifiche</div><div id="sheetSpec">' + specHTML(p, secs) + '</div></div>' +
+      '<div><div class="sec">Prezzi ufficiali al pubblico</div>' +
+        '<div class="sprices" id="sheetPrices">' + priceRows(p.ref, true) + bestBlock(p.ref) + '</div></div>' +
+    '</div>';
+
+  const tecnica =
+    '<div class="tech"><div class="sec">Caratteristiche tecniche</div>' +
+    '<div class="tcols" id="sheetDesc">' +
+      (secs ? descHTML(secs) : '<span style="color:#bbb">caricamento\u2026</span>') +
+    '</div></div>';
+
+  const exp = '<div id="sheetExp">' + (conExport ? exportBlock(p.ref) : '') + '</div>';
+
+  const piede =
+    '<div class="sfoot"><b>' + esc(p.ref) + '</b> \u00B7 scheda generata il ' + esc(oggi) + ' \u00B7 patek.com<br>' +
+    'Listini ufficiali Patek Philippe per Svizzera, Italia e Stati Uniti, rilevati da patek.com. ' +
+    'Soggetti a variazione e alle imposte locali. Documento non ufficiale \u2014 Patek Philippe\u00AE \u00E8 un marchio di Patek Philippe SA. Nessuna affiliazione.</div>';
+
+  box.innerHTML =
+    '<div class="sheet-btns">' +
+      '<button class="bprint" id="btnPrintSheet" type="button">Stampa / Salva PDF</button>' +
+      '<button class="bclose" id="btnCloseSheet" type="button">Chiudi</button>' +
+    '</div>' +
+    '<div class="sbody">' + testa + colonne + tecnica + exp + piede + '</div>';
+
+  ov.classList.add('open');
+  document.body.classList.add('sheet-open');
+  ov.onclick = e => { if(e.target === ov) closeSheet(); };
+  const bp = document.getElementById('btnPrintSheet');
+  if(bp) bp.addEventListener('click', () => window.print());
+  const bc = document.getElementById('btnCloseSheet');
+  if(bc) bc.addEventListener('click', closeSheet);
+
+  (async () => {
+    const rinfresca = () => {
+      const pe = document.getElementById('sheetPrices');
+      if(pe) pe.innerHTML = priceRows(p.ref, true) + bestBlock(p.ref);
+      const ex = document.getElementById('sheetExp');
+      if(ex && conExport) ex.innerHTML = exportBlock(p.ref);
+    };
+    await loadFX();
+    rinfresca();
+    if(!priceOf(p.ref)) await loadPrice(p.ref, p.url);
+    rinfresca();
+  })();
+
+  if(!secs){
+    fetchDesc(p).then(d => {
+      const el = document.getElementById('sheetDesc');
+      const sp = document.getElementById('sheetSpec');
+      if(el) el.innerHTML = d ? descHTML(d) : '<span style="color:#bbb">caratteristiche non disponibili</span>';
+      if(sp && d) sp.innerHTML = specHTML(p, d);
+    });
+  }
+}
+
+function retailLine(ref){
+  return '<div class="prices" data-pp="'+esc(ref)+'">' + priceRows(ref) + '</div>';
+}
+function esc(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+// ---------- loader animato ----------
+let countTimer = null;
+function setPhase(t){ const e = document.getElementById('loadPhase'); if(e) e.textContent = t; }
+function setCounts(models, cols){
+  const m = document.getElementById('cModels'), c = document.getElementById('cCols');
+  if(m) m.textContent = models;
+  if(c) c.textContent = cols;
+}
+// conta verso il valore finale con effetto contachilometri
+function countTo(models, cols, ms){
+  clearInterval(countTimer);
+  const m0 = parseInt(document.getElementById('cModels').textContent, 10) || 0;
+  const c0 = parseInt(document.getElementById('cCols').textContent, 10) || 0;
+  const t0 = performance.now();
+  countTimer = setInterval(() => {
+    const k = Math.min(1, (performance.now() - t0) / (ms || 800));
+    const e = 1 - Math.pow(1 - k, 3);
+    setCounts(Math.round(m0 + (models - m0) * e), Math.round(c0 + (cols - c0) * e));
+    if(k >= 1) clearInterval(countTimer);
+  }, 40);
+}
+function loaderOn(){
+  clearInterval(countTimer);
+  setCounts(0, 0);
+  setPhase('Connessione al catalogo');
+  document.getElementById('loader').classList.add('on');
+}
+function loaderOff(){
+  clearInterval(countTimer);
+  document.getElementById('loader').classList.remove('on');
+}
+
+// ---------- azioni ----------
+async function refresh(force){
+  const status = document.getElementById('status');
+  loaderOn();
+  status.textContent = '';
+  try{
+    let usedCache = false;
+    if(!force){
+      const raw = lsGet(CAT_KEY);
+      if(raw){
+        try{
+          const c = JSON.parse(raw);
+          if(Date.now() - c.ts < CAT_TTL && c.items && c.items.length){
+            items = c.items; usedCache = true;
+            setPhase('Catalogo in memoria');
+          }
+        }catch(e){}
+      }
+    }
+    if(!usedCache){
+      setPhase('Lettura patek.com');
+      const html = await getHTML(FINDER);
+      setPhase('Analisi referenze');
+      await new Promise(r => setTimeout(r, 30));   // lascia respirare l'animazione
+      const parsed = parseCatalog(html);
+      if(!parsed.length) throw new Error('catalogo non leggibile');
+      items = parsed;
+      lsSet(CAT_KEY, JSON.stringify({ts: Date.now(), items}));
+    }
+    const nCols = new Set(items.map(p => p.col)).size;
+    setPhase(usedCache ? 'Catalogo pronto' : 'Catalogo aggiornato');
+    countTo(items.length, nCols, 900);
+    await new Promise(r => setTimeout(r, 1000));
+    snapshot = (() => { try{ const r = lsGet(SNAP_KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } })();
+    computeAdded();
+    document.getElementById('lastSync').textContent = new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+    status.innerHTML = '<span class="hl">'+items.length+'</span> modelli a catalogo · ' +
+      new Set(items.map(p=>p.col)).size + ' collezioni' + (usedCache ? ' · cache' : '');
+    renderNews();
+    render();
+    // segna automaticamente come visto: la prossima lettura mostrerà solo le referenze davvero nuove
+    snapshot = { ts: Date.now(), ids: items.map(p => p.id) };
+    lsSet(SNAP_KEY, JSON.stringify(snapshot));
+  }catch(e){
+    setPhase('Lettura non riuscita');
+    status.innerHTML = 'Impossibile leggere il catalogo ('+esc(e.message)+'). Riprova con Aggiorna — e ricorda che nell\'anteprima di Claude le connessioni esterne sono bloccate.';
+  }finally{
+    loaderOff();
+  }
+}
+
+document.getElementById('btnRefresh').onclick = () => refresh(true);
+const setBox = document.getElementById('setBox');
+function setVista(v){
+  vista = (vista === v) ? 'cat' : v;
+  ordineAperto = (vista === 'wish') ? ordineAperto : false;
+  document.getElementById('btnWish').classList.toggle('on', vista === 'wish');
+  document.getElementById('btnOwn').classList.toggle('on', vista === 'own');
+  render();
+}
+document.getElementById('btnWish').onclick = () => setVista('wish');
+document.getElementById('btnOwn').onclick = () => setVista('own');
+document.getElementById('btnSet').onclick = () => { setBox.classList.toggle('on'); chfInfo(); statoListini(); };
+document.getElementById('btnSetClose').onclick = () => setBox.classList.remove('on');
+document.getElementById('btnEsporta').onclick = esportaListini;
+document.getElementById('btnProva').onclick = async () => {
+  setImpInfo('Prova in corso\u2026');
+  const r = await provaDiretta();
+  if(!r.diretta){
+    setImpInfo('<span class="ko">Connessione diretta bloccata.</span> ' + esc(r.errore || '') +
+               '<br>L\u2019aggiornamento automatico non \u00E8 possibile da qui: resta l\u2019importazione manuale.');
+  }else if(r.valuta){
+    setImpInfo('<span class="ok">Connessione diretta attiva.</span> patek.com risponde in <b>' + r.valuta +
+               '</b> (' + r.prezzo.toLocaleString('it-IT') + '). Premi Aggiorna sul mercato corrispondente.');
+  }else{
+    setImpInfo('Connessione riuscita ma nessun prezzo letto. ' + esc(r.errore || ''));
+  }
+};
+document.getElementById('chfSave').onclick = () => {
+  const r = chfImport(document.getElementById('chfText').value.trim());
+  document.getElementById('chfInfo').textContent = r.msg;
+  if(r.ok){ document.getElementById('chfText').value = ''; render(); statoListini(); }
+};
+document.getElementById('chfClear').onclick = () => {
+  chfList = {};
+  try{ localStorage.removeItem(CHF_KEY); }catch(e){}
+  chfInfo(); render();
+};
+document.getElementById('search').addEventListener('input', render);
+
+loadChfRepo();
+pullSync();
+refresh();
+})();
+</script>
+<div id="sheetOverlay"><div class="sheet" id="sheetBox"></div></div>
+</body>
+</html>
