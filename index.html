@@ -33,13 +33,13 @@ h1 img{width:26px;height:26px;border-radius:50%;background:#fff;padding:2px}
 h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#b08d3f;color:#12182b;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;margin-right:6px;vertical-align:middle}
 #lastSync{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)}
 .btn.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
-.cacts{position:absolute;top:8px;right:8px;z-index:3;display:flex;flex-direction:column;gap:6px}
-.ca{width:31px;height:31px;border-radius:50%;border:1px solid var(--line);background:rgba(34,23,16,.82);
+.cacts{position:absolute;top:10px;left:10px;z-index:3;display:flex;gap:6px}
+.ca{width:30px;height:30px;border-radius:3px;border:1px solid var(--line);background:rgba(34,23,16,.72);
   color:var(--dim);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .ca.on{color:var(--gold2);border-color:var(--gold)}
 .ca.own.on{color:var(--green);border-color:var(--green)}
 .card.picked{outline:2px solid var(--gold);outline-offset:-2px}
-.csel{position:absolute;left:8px;top:8px;z-index:3;border:1px solid var(--line);border-radius:20px;
+.csel{position:absolute;left:10px;bottom:auto;top:46px;z-index:3;border:1px solid var(--line);border-radius:20px;
   background:rgba(34,23,16,.86);color:var(--dim);font-family:'Outfit';font-size:11px;padding:6px 11px;
   cursor:pointer;backdrop-filter:blur(4px)}
 .csel.on{background:var(--gold);border-color:var(--gold);color:#221710;font-weight:600}
@@ -187,30 +187,51 @@ main{padding:8px 16px}
 .brand-head h2{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
 .brand-head .cnt{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.card{position:relative;display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .15s}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(215px,1fr))}
+.card{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;
+  background:var(--card);border:1px solid var(--line);border-radius:3px;padding:16px 14px 14px;
+  text-decoration:none;color:inherit;transition:border-color .18s, transform .18s}
+.card:hover{border-color:var(--gold);transform:translateY(-2px)}
 .card:active{border-color:var(--gold)}
-.thumb{width:100%;aspect-ratio:1;background:var(--card);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.thumb img{max-width:88%;max-height:88%;object-fit:contain}
-.thumb img{width:100%;height:100%;object-fit:contain}
-.thumb .noimg{font-family:'DM Mono',monospace;font-size:10px;color:#999}
-.thumb{cursor:zoom-in}
 
+/* riquadro foto: ottagono come su AP, in tono caldo */
+.thumb{width:100%;aspect-ratio:1;max-width:200px;cursor:zoom-in;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 50% 38%, #3f2d1e, #1b120c 78%);
+  clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);
+  display:grid;place-items:center}
+.thumb img{width:76%;height:88%;object-fit:contain;transition:transform .25s}
+.card:hover .thumb img{transform:scale(1.06)}
+.thumb .noimg{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);text-align:center;padding:0 12px}
+
+.meta{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
 .card .ref{cursor:pointer;text-decoration:underline;text-decoration-color:transparent;transition:text-decoration-color .15s}
 .card .ref:hover{text-decoration-color:currentColor}
-.meta{padding:9px 10px 11px}
-.meta .ref{font-family:'DM Mono',monospace;font-size:14px;color:var(--gold2)}
-.meta .mat{font-size:12px;color:var(--txt);margin-top:4px;line-height:1.3;min-height:2.6em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.meta .col{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:5px}
-.meta .price{font-family:'DM Mono',monospace;font-size:14px;color:var(--gold2);margin-top:6px}
-.meta .price.est{font-size:10.5px;color:var(--dim);margin-top:2px}
-.meta .prices{margin-top:6px}
-.meta .prices{border-top:1px solid var(--line);padding-top:7px}
-.meta .prices .price{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:'DM Mono',monospace;margin:2px 0}
-.meta .prices .pc{font-size:11px;letter-spacing:.06em;color:var(--dim);white-space:nowrap}
-.meta .prices .pv{font-size:13px;color:var(--gold2);text-align:right;letter-spacing:.01em}
-.meta .prices .price.wait{color:var(--dim);opacity:.45}
-.badge{position:absolute;top:8px;left:8px;font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.08em;padding:3px 8px;border-radius:6px;z-index:2;background:var(--green);color:#0a1428}
+.meta .ref{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;letter-spacing:.06em;
+  color:var(--txt);text-align:center;line-height:1.25;min-height:1.3em}
+.meta .mat{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);text-align:center;min-height:1.2em;line-height:1.4}
+.meta .col{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);text-align:center}
+.meta .prices{width:100%;border-top:1px solid var(--line);padding-top:9px;margin-top:auto;
+  display:flex;flex-direction:column;gap:3px}
+.meta .prices .price{display:flex;justify-content:space-between;gap:10px;font-family:'DM Mono',monospace;margin:0}
+.meta .prices .pc{font-size:10.5px;letter-spacing:.1em;color:var(--dim);white-space:nowrap}
+.meta .prices .pv{font-size:11.5px;color:var(--gold2);letter-spacing:.04em;font-variant-numeric:tabular-nums;text-align:right}
+.meta .prices .price.wait{opacity:.4}
+.meta .price{font-family:'DM Mono',monospace;font-size:12px;color:var(--gold2)}
+
+.badge{position:absolute;top:10px;right:10px;font-family:'DM Mono',monospace;font-size:8.5px;
+  letter-spacing:.16em;text-transform:uppercase;padding:2px 7px;border-radius:2px;z-index:2;
+  border:1px solid var(--gold);color:var(--gold);background:rgba(34,23,16,.7)}
+
+@media (max-width:640px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:9px}
+  .card{padding:12px 9px 11px;gap:6px}
+  .meta .ref{font-size:15px}
+  .meta .prices .pc{font-size:9.5px}
+  .meta .prices .pv{font-size:10.5px}
+}
 
 #empty{display:none;text-align:center;padding:60px 20px;color:var(--dim);font-size:14px}
 #loader{display:none;flex-direction:column;align-items:center;gap:16px;padding:70px 20px}
@@ -375,7 +396,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 g · miniature su fondo scuro</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 h · card in stile AP</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
