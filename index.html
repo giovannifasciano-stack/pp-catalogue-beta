@@ -1045,6 +1045,8 @@ const SYNC_URL = 'https://watch-proxy.owscan.workers.dev/sync?code=giovanni-fasc
 let vista = 'cat';                       // cat · wish · own
 let ordineAperto = false;
 let trovatiForn = [];
+let fornQ = '';
+let fornMsg = '';
 
 const inWish = r => WL.wish.includes(r);
 const inOwn  = r => WL.own.includes(r);
@@ -1087,11 +1089,11 @@ async function pullSync(){
 // ---------- anagrafica fornitori ----------
 async function cercaFornitore(){
   const q = ((document.getElementById('fq')||{}).value || '').trim();
-  const st = document.getElementById('fstat'), box = document.getElementById('fres');
-  if(q.length < 3){ if(st) st.textContent = 'Scrivi almeno tre lettere.'; return; }
-  st.innerHTML = '<span class="cerca">ricerca in corso\u2026</span>';
-  box.innerHTML = '';
+  fornQ = q;
+  if(q.length < 3){ fornMsg = 'Scrivi almeno tre lettere.'; disegnaForn(); return; }
+  fornMsg = '<span class="cerca">ricerca in corso\u2026</span>';
   trovatiForn = [];
+  disegnaForn();
   try{
     const r = await fetch(VENDOR_API + encodeURIComponent(q));
     if(!r.ok) throw new Error('HTTP ' + r.status);
@@ -1103,20 +1105,31 @@ async function cercaFornitore(){
       : {tipo:'biz', nome: v.name || q, ind: v.addr || '', cap: v.zip || '',
          citta: v.city || '', paese: v.country || '', web: v.web || '',
          cc: ccDaPaese(v.country)});
-    st.textContent = trovatiForn.length
+    fornMsg = trovatiForn.length
       ? trovatiForn.length + ' risultati'
       : 'nessun risultato \u00B7 inserisci il fornitore a mano';
   }catch(e){
-    st.innerHTML = '<span class="ko">ricerca non riuscita: ' + esc(String(e.message||e)) + '</span>';
+    fornMsg = '<span class="ko">ricerca non riuscita: ' + esc(String(e.message||e)) + '</span>';
   }
-  box.innerHTML = trovatiForn.map((v,i) => {
+  disegnaForn();
+}
+
+function fornHTML(){
+  return '<div class="fstat">' + fornMsg + '</div><div id="fres">' + trovatiForn.map((v,i) => {
     const sotto = v.tipo === 'web'
       ? (v.web ? v.web.replace(/^https?:\/\//,'').split('/')[0] : '') + (v.nota ? ' \u00B7 ' + v.nota.slice(0,70) : '')
       : [v.ind, [v.cap, v.citta].filter(Boolean).join(' '), v.paese].filter(Boolean).join(' \u00B7 ');
     return '<div class="fres-r"><div><div class="n">'+esc(v.nome)+'</div>' +
       '<div class="s">'+esc(sotto)+'</div></div>' +
-      '<button class="mini" onclick="importaForn('+i+')">Importa</button></div>';
-  }).join('');
+      '<button class="mini" type="button" data-imp="'+i+'">Importa</button></div>';
+  }).join('') + '</div>';
+}
+
+function disegnaForn(){
+  const w = document.getElementById('fwrap');
+  if(!w) return;
+  w.innerHTML = fornHTML();
+  w.querySelectorAll('[data-imp]').forEach(b => b.onclick = () => importaForn(+b.dataset.imp));
 }
 
 // il Worker restituisce il nome del paese, non la sigla
@@ -1137,11 +1150,11 @@ function ccDaPaese(p){
 async function importaForn(i){
   const v = trovatiForn[i];
   if(!v) return;
-  const st = document.getElementById('fstat');
   let rec = Object.assign({}, v);
   // risultato generico dal web: chiedo al Worker di estrarre nome e indirizzo dal sito
   if(v.tipo === 'web' && v.web){
-    if(st) st.innerHTML = '<span class="cerca">lettura del sito\u2026</span>';
+    fornMsg = '<span class="cerca">lettura del sito\u2026</span>';
+    disegnaForn();
     try{
       const r = await fetch(VENDOR_DETAIL + encodeURIComponent(v.web));
       if(r.ok){
@@ -1165,11 +1178,14 @@ async function importaForn(i){
   WL.negSel = rec.id;
   if(rec.cc){ const m = {CH:'CHF', IT:'EUR', US:'USD'}; if(m[rec.cc]) WL.cur = m[rec.cc]; }
   saveWL();
+  fornMsg = '<span style="color:var(--green)">' + esc(rec.nome) + ' importato in anagrafica</span>';
+  trovatiForn = [];
   render();
-  const st2 = document.getElementById('fstat');
-  if(st2) st2.innerHTML = '<span style="color:var(--green)">' + esc(rec.nome) + ' importato in anagrafica</span>';
 }
 
+window.cercaFornitore = cercaFornitore;
+window.importaForn = importaForn;
+window.rimuoviForn = rimuoviForn;
 function rimuoviForn(id){
   const n = WL.forn.find(x=>x.id===id);
   if(!n || !confirm('Rimuovere ' + n.nome + ' dall\u2019anagrafica?')) return;
@@ -1351,12 +1367,12 @@ function wishBarHTML(scelti){
           : '<input id="wNegN" placeholder="Nome (se manuale)" value="'+esc(WL.negN||'')+'">' +
             '<textarea id="wNegA" placeholder="Via, CAP, citt\u00E0, paese \u00B7 telefono">'+esc(WL.negA||'')+'</textarea>') +
         '<div class="wman-h">Aggiungi fornitore \u00B7 ricerca sul web</div>' +
-        '<div class="srow"><input id="fq" placeholder="Nome del negozio o della boutique">' +
-          '<button class="mini" onclick="cercaFornitore()">\uD83D\uDD0E</button></div>' +
-        '<div class="fstat" id="fstat"></div><div id="fres"></div>' +
+        '<div class="srow"><input id="fq" value="'+esc(fornQ)+'" placeholder="Nome del negozio o della boutique">' +
+          '<button class="mini" id="fbtn" type="button">\uD83D\uDD0E Cerca</button></div>' +
+        '<div id="fwrap">' + fornHTML() + '</div>' +
         (WL.forn.length ? '<div class="flist">' + WL.forn.map(f=>'<div class="fres-r"><div><div class="n">'+esc(f.nome)+'</div>' +
           '<div class="s">'+esc([f.citta,f.paese].filter(Boolean).join(' \u00B7 '))+'</div></div>' +
-          '<button class="mini x" onclick="rimuoviForn(\''+esc(f.id)+'\')">\u2715</button></div>').join('') + '</div>' : '') +
+          '<button class="mini x" type="button" data-rim="'+esc(f.id)+'">\u2715</button></div>').join('') + '</div>' : '') +
       '</div>' +
 
       '<div class="wbox"><div class="wbh">Acquirente</div>' +
@@ -1461,6 +1477,13 @@ function legaOrdine(list){
   if(g('bSvuota')) g('bSvuota').onclick = () => { if(confirm('Svuotare la lista desideri?')){ WL.wish = []; WL.sel = []; saveWL(); render(); } };
   if(g('bStampa')) g('bStampa').onclick = stampaOrdine;
 
+  const fb = document.getElementById('fbtn');
+  if(fb) fb.onclick = cercaFornitore;
+  const fi = document.getElementById('fq');
+  if(fi) fi.onkeydown = e => { if(e.key === 'Enter'){ e.preventDefault(); cercaFornitore(); } };
+  document.querySelectorAll('[data-imp]').forEach(b => b.onclick = () => importaForn(+b.dataset.imp));
+  window.disegnaForn = disegnaForn;
+  document.querySelectorAll('[data-rim]').forEach(b => b.onclick = () => rimuoviForn(b.dataset.rim));
   document.querySelectorAll('#wPick button').forEach(b => b.onclick = () => { WL.cur = b.dataset.c; saveWL(); render(); });
   document.querySelectorAll('#wAcq button').forEach(b => b.onclick = () => { WL.acq = b.dataset.a; saveWL(); render(); });
 
