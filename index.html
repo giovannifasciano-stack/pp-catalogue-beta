@@ -190,7 +190,8 @@ main{padding:8px 16px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
 .card{position:relative;display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:border-color .15s}
 .card:active{border-color:var(--gold)}
-.thumb{width:100%;aspect-ratio:1;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.thumb{width:100%;aspect-ratio:1;background:var(--card);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.thumb img{max-width:88%;max-height:88%;object-fit:contain}
 .thumb img{width:100%;height:100%;object-fit:contain}
 .thumb .noimg{font-family:'DM Mono',monospace;font-size:10px;color:#999}
 .thumb{cursor:zoom-in}
@@ -374,7 +375,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 f · lista desideri</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 g · miniature su fondo scuro</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
@@ -431,7 +432,7 @@ function bigURL(u){
   return 'https://images.weserv.nl/?url=' + encodeURIComponent(u.replace(/^https?:\/\//,'')) + '&w=1100&output=webp&q=88';
 }
 function thumbURL(u){
-  return 'https://images.weserv.nl/?url=' + encodeURIComponent(u.replace(/^https?:\/\//,'')) + '&w=440&h=440&fit=contain&output=webp&q=72';
+  return 'https://images.weserv.nl/?url=' + encodeURIComponent(u.replace(/^https?:\/\//,'')) + '&w=440&h=440&fit=contain&cbg=none&output=webp&q=82';
 }
 let activeCol = 'ALL';
 
