@@ -96,6 +96,45 @@ h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28p
 .wtot .big{font-size:18px;color:var(--gold2)}
 .wsync{font-family:'DM Mono',monospace;font-size:9.5px;color:var(--dim);margin-top:11px}
 .wsync span{color:var(--green)}
+.ordsheet .ohead{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+.ordsheet .obrand .pp{font-family:'Cormorant Garamond',serif;font-size:26px;letter-spacing:.13em;text-transform:uppercase;color:#1a1a1a;font-weight:500;line-height:1.1}
+.ordsheet .obrand .gv{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:#8a8a8a;text-align:center}
+.ordsheet .ometa{text-align:right}
+.ordsheet .olabel{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:#b08d3f}
+.ordsheet .ono{font-family:'DM Mono',monospace;font-size:16px;color:#1a1a1a;margin-top:3px}
+.ordsheet .odate{font-size:10.5px;color:#6d7178;margin-top:2px}
+.ordsheet .ocols{display:flex;gap:26px;margin-top:18px;padding-top:16px;border-top:2px solid #1a1a1a;flex-wrap:wrap}
+.ordsheet .ocol{flex:1;min-width:180px}
+.ordsheet .oh{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#b08d3f;border-bottom:1px solid #e6e0d6;padding-bottom:6px;margin-bottom:8px}
+.ordsheet .pname{font-size:15px;font-weight:500;color:#1a1a1a}
+.ordsheet .paddr2{font-size:12.5px;line-height:1.6;color:#6d7178;margin-top:3px}
+.ordsheet .ordtable{width:100%;border-collapse:collapse;font-size:11px;margin-top:26px}
+.ordsheet .ordtable th{font-weight:400;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#a2a2a2;background:#faf8f4;padding:9px 6px;text-align:left}
+.ordsheet .ordtable th.r,.ordsheet .ordtable td.r{text-align:right;padding-left:8px}
+.ordsheet .ordtable td{padding:9px 6px 9px 0;border-bottom:1px solid #f1ede6;color:#14161a;vertical-align:top}
+.ordsheet .ordtable td.ph{width:58px;padding-left:6px}
+.ordsheet .ordtable td.ph .box{width:50px;height:50px;background:#f7f5f0;border:1px solid #e3ded4;border-radius:4px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ordsheet .ordtable td.ph img{width:100%;height:100%;object-fit:contain;padding:4px}
+.ordsheet .ordtable .d1{font-size:12.5px;font-weight:500;color:#1a1a1a}
+.ordsheet .ordtable .d2{font-size:10px;color:#6d7178;margin-top:2px}
+.ordsheet .ordtable td.r.gold{font-family:'DM Mono',monospace;font-size:12px;color:#1a1a1a;white-space:nowrap}
+.ordsheet .ordtotals{margin-top:14px;margin-left:auto;width:380px;max-width:100%}
+.ordsheet .orow{display:flex;justify-content:space-between;gap:16px;padding:7px 0;font-size:13px;border-bottom:1px solid #f1ede6}
+.ordsheet .orow .v{white-space:nowrap;font-family:'DM Mono',monospace}
+.ordsheet .orow.big{border-bottom:none;border-top:2px solid #1a1a1a;margin-top:3px;padding-top:9px;font-size:15px;font-weight:600}
+.ordsheet .orow .v.gold{color:#b08d3f}
+.ordsheet .orow.small{font-size:11px;color:#6d7178;border-bottom:none}
+.ordsheet .ordpay{margin-top:12px;margin-left:auto;width:380px;max-width:100%;font-size:11.5px;color:#6d7178}
+.ordsheet .ordpay .k{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:#b08d3f;margin-right:6px}
+.ordsheet .ofoot{margin-top:22px;padding-top:11px;border-top:1px solid #f1ede6;font-size:10px;line-height:1.65;color:#a2a2a2}
+.ordsheet .ofoot b{color:#6d7178;font-weight:500}
+.ordsheet .fxrow{margin-top:7px}
+@media (max-width:640px){
+  .ordsheet .ometa{text-align:left}
+  .ordsheet .ohead{gap:10px}
+  .ordsheet .ordtable{font-size:10px;margin-top:16px}
+  .ordsheet .ordtotals,.ordsheet .ordpay{width:100%}
+}
 .sheet .paddr2{font-size:12px;line-height:1.65;color:#2a2a2a}
 .sheet .dtx{margin-top:13px;background:#f6f2e8;border-left:3px solid #b08d3f;padding:11px 13px;
   font-family:'DM Mono',monospace;font-size:11px;color:#3a3a3a;line-height:1.6}
@@ -270,6 +309,9 @@ body.sheet-open{overflow:hidden}
   .sheet .exp{margin-top:16px}
   .sheet .exptab{font-size:8.5px}
   .sheet .exptab tr.bestrow td,.sheet .bestbox,.sheet .sprices .price.best{background:#f6f2e8!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ordsheet .ordtable th,.ordsheet .ordtable td.ph .box{background:#faf8f4!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ordsheet .ordtable img{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ordsheet .ordtable tr{page-break-inside:avoid}
   .sheet .exptab .badge,.sheet .sprices .tag{background:#6b5a34!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
@@ -1338,6 +1380,10 @@ function renderLista(main, q){
 }
 
 function wishBarHTML(scelti){
+  if(!WL.ordNo){
+    WL.ordNo = 'PP-' + new Date().toISOString().slice(2,10).replace(/-/g,'') + '-' + String(Math.floor(Math.random()*90)+10);
+    try{ localStorage.setItem(WL_KEY, JSON.stringify(WL)); }catch(e){}
+  }
   const cur = wlCur();
   const iva = VAT[cur];
   const lordo = scelti.reduce((s,p) => s + (priceSet(p.ref)[cur] || 0), 0);
@@ -1347,7 +1393,7 @@ function wishBarHTML(scelti){
   return '<div class="wishbar">' +
     '<div class="wsec">Ordine</div>' +
     '<div class="wrow">' +
-      '<div class="wf" style="max-width:230px"><label>N. ordine</label><input id="wOrd" value="'+esc(WL.ordNo || ('PP-' + new Date().toISOString().slice(2,10).replace(/-/g,'') + '-' + String(Math.floor(Math.random()*90)+10)))+'"></div>' +
+      '<div class="wf" style="max-width:230px"><label>N. ordine</label><input id="wOrd" value="'+esc(WL.ordNo)+'"></div>' +
       '<div class="wf"><label>Acquisto in</label><div class="pick" id="wPick">' +
         ['CHF','EUR','USD'].map(c=>'<button class="'+(cur===c?'on':'')+'" data-c="'+c+'">'+FLAG[c]+' '+c+'</button>').join('') +
       '</div></div>' +
@@ -1409,38 +1455,55 @@ function stampaOrdine(){
   const cur = wlCur();
   const scelti = items.filter(p => WL.wish.includes(p.ref) && inSel(p.ref));
   if(!scelti.length){ alert('Seleziona almeno una referenza.'); return; }
-  const iva = WL.detax ? (parseFloat((document.getElementById('wIva')||{}).value) || VAT[cur]*100) / 100 : VAT[cur];
-  const lordo = scelti.reduce((s,p) => s + (priceSet(p.ref)[cur] || 0), 0);
-  const netto = iva ? lordo / (1 + iva) : lordo;
 
-  const f = WL.forn.find(x=>x.id===WL.negSel);
+  const iva = WL.detax ? ((parseFloat((document.getElementById('wIva')||{}).value) || VAT[cur]*100) / 100) : VAT[cur];
+  const sub = scelti.reduce((s,p) => s + (priceSet(p.ref)[cur] || 0), 0);
+  const netto = iva ? sub / (1 + iva) : sub;
+
+  const f = WL.forn.find(x => x.id === WL.negSel);
   const vend = f
-    ? {nome: f.nome, testo: [f.ind, [f.cap,f.citta].filter(Boolean).join(' '), f.paese].filter(Boolean).join('\n')}
+    ? {nome: f.nome, testo: [f.ind, [f.cap, f.citta].filter(Boolean).join(' '), f.paese].filter(Boolean).join('\n')}
     : {nome: WL.negN || '\u2014', testo: WL.negA || ''};
-  const ap = ACQ.find(x=>x.id===WL.acq) || ACQ[1];
+  const ap = ACQ.find(x => x.id === WL.acq) || ACQ[1];
   const acq = (WL.acqMan.nome || WL.acqMan.testo)
     ? {nome: WL.acqMan.nome || '\u2014', testo: WL.acqMan.testo || ''}
     : {nome: ap.nome, testo: ap.testo};
 
-  const oggi = new Date().toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'});
-  const righe = scelti.map((p,i) =>
-    '<tr><td>'+(i+1)+'</td><td>'+esc(p.ref)+'</td><td>'+esc(p.col)+'</td><td>'+esc(p.mat||'')+'</td>' +
-    '<td class="r">'+fmt(cur, priceSet(p.ref)[cur] || 0)+'</td></tr>').join('');
+  const dataIt = v => v ? new Date(v + 'T00:00:00').toLocaleDateString('it-IT', {day:'2-digit', month:'long', year:'numeric'}) : '';
+  const oggi = new Date().toLocaleDateString('it-IT', {day:'2-digit', month:'long', year:'numeric'});
+  const cons = (WL.cons && WL.consD) ? dataIt(WL.consD) : '';
+  const ordNo = WL.ordNo || '\u2014';
 
-  let detaxHTML = '';
-  if(WL.detax && fx){
-    const nCHF = cur === 'CHF' ? netto : (cur === 'EUR' ? netto * fx.EURCHF : netto * fx.USDCHF);
-    const altre = ['CHF','EUR','USD'].filter(c => c !== cur)
-      .map(c => fmt(c, c === 'CHF' ? nCHF : (c === 'EUR' ? nCHF / fx.EURCHF : nCHF / fx.USDCHF))).join(' \u00B7 ');
-    detaxHTML = '<div class="dtx"><b>Prezzo netto, IVA ' + (iva ? (iva*100).toFixed(1).replace('.0','') + '% esclusa' : 'non applicabile') + ':</b> ' +
-      fmt(cur, netto) + ' \u00B7 equivalente ' + altre +
-      '<br><span class="dtxn">Il rimborso effettivo \u00E8 di norma inferiore per via delle commissioni d\u2019agenzia. ' +
-      'I listini USA sono al netto della sales tax locale, aggiunta alla cassa e non recuperabile.</span></div>';
+  const righe = scelti.map(p => {
+    const d2 = ['Referenza ' + p.ref, p.mat].filter(Boolean).join(' \u00B7 ');
+    const img = p.img ? thumbURL(p.img) : '';
+    return '<tr>' +
+      '<td class="ph"><div class="box">' + (img ? '<img src="'+esc(img)+'" onerror="this.style.display=\'none\'">' : '') + '</div></td>' +
+      '<td><div class="d1">Patek Philippe ' + esc(p.col || '') + '</div>' +
+      '<div class="d2">' + esc(d2) + '</div></td>' +
+      '<td class="r gold">' + fmt(cur, priceSet(p.ref)[cur] || 0) + '</td></tr>';
+  }).join('');
+
+  let detaxRow = '';
+  if(WL.detax){
+    detaxRow = '<div class="orow small"><span>Netto IVA ' + (iva ? (iva*100).toFixed(1).replace('.0','') + '% esclusa' : 'non applicabile') +
+               '</span><span class="v">' + fmt(cur, netto) + '</span></div>';
   }
 
-  const extra = [];
-  if(WL.cons && WL.consD) extra.push('Consegna prevista: ' + esc(WL.consD));
-  if(WL.pay) extra.push('Pagamento: ' + (WL.payM === 'c' ? 'carta di credito' : 'bonifico bancario') + (WL.payD ? ' \u00B7 ' + esc(WL.payD) : ''));
+  let fxLine = '';
+  if(fx){
+    const base = cur === 'CHF' ? sub : (cur === 'EUR' ? sub * fx.EURCHF : sub * fx.USDCHF);
+    const altre = ['CHF','EUR','USD'].filter(c => c !== cur)
+      .map(c => fmt(c, c === 'CHF' ? base : (c === 'EUR' ? base / fx.EURCHF : base / fx.USDCHF))).join(' \u00B7 ');
+    fxLine = '<div class="fxrow">Al cambio attuale \u2014 ' + fmt(cur, sub) + ' \u00B7 ' + altre +
+             ' (1 CHF = ' + (1/fx.EURCHF).toFixed(4) + ' EUR = ' + (1/fx.USDCHF).toFixed(4) + ' USD)</div>';
+  }
+
+  const pagamento = WL.pay
+    ? '<div class="ordpay"><span class="k">Pagamento</span> ' +
+      (WL.payM === 'c' ? 'Carta di credito' : 'Bonifico bancario') +
+      (WL.payD ? ' \u00B7 scadenza ' + esc(dataIt(WL.payD)) : '') + '</div>'
+    : '';
 
   const ov = ensureSheet();
   document.getElementById('sheetBox').innerHTML =
@@ -1448,24 +1511,39 @@ function stampaOrdine(){
       '<button class="bprint" id="btnPrintSheet" type="button">Stampa / Salva PDF</button>' +
       '<button class="bclose" id="btnCloseSheet" type="button">Chiudi</button>' +
     '</div>' +
-    '<div class="sbody">' +
-      '<div class="shd"><div class="pp">Patek Philippe</div><div class="gv">Gen\u00E8ve</div></div>' +
-      '<h1 style="font-size:25px">Conferma d\u2019ordine</h1>' +
-      '<div class="rs">N. ' + esc(WL.ordNo || '\u2014') + ' \u00B7 ' + esc(oggi) + '</div>' +
-      '<div class="grid2">' +
-        '<div><div class="sec">Venditore</div><div class="paddr2"><b>'+esc(vend.nome)+'</b><br>'+esc(vend.testo).replace(/\n/g,'<br>')+'</div></div>' +
-        '<div><div class="sec">Acquirente</div><div class="paddr2"><b>'+esc(acq.nome)+'</b><br>'+esc(acq.testo).replace(/\n/g,'<br>')+'</div></div>' +
+    '<div class="sbody ordsheet">' +
+      '<div class="ohead">' +
+        '<div class="obrand"><div class="pp">Patek Philippe</div><div class="gv">Gen\u00E8ve</div></div>' +
+        '<div class="ometa">' +
+          '<div class="olabel">Conferma d\u2019ordine</div>' +
+          '<div class="ono">' + esc(ordNo) + '</div>' +
+          '<div class="odate">' + esc(oggi) + (cons ? ' \u00B7 consegna: ' + esc(cons) : '') + '</div>' +
+        '</div>' +
       '</div>' +
-      '<div class="exp"><div class="exph">Referenze</div>' +
-      '<table class="exptab"><thead><tr><th>#</th><th>Referenza</th><th>Collezione</th><th>Materiale</th><th class="r">Prezzo</th></tr></thead>' +
-      '<tbody>' + righe +
-      '<tr class="bestrow"><td colspan="4"><b>Totale</b></td><td class="r"><b>' + fmt(cur, lordo) + '</b></td></tr>' +
-      '</tbody></table>' + detaxHTML +
-      (extra.length ? '<div class="expnote">' + extra.join('<br>') + '</div>' : '') +
+      '<div class="ocols">' +
+        '<div class="ocol"><div class="oh">Venditore</div>' +
+          '<div class="pname">' + esc(vend.nome) + '</div>' +
+          (vend.testo ? '<div class="paddr2">' + esc(vend.testo).replace(/\n/g,'<br>') + '</div>' : '') + '</div>' +
+        '<div class="ocol"><div class="oh">Acquirente</div>' +
+          '<div class="pname">' + esc(acq.nome) + '</div>' +
+          (acq.testo ? '<div class="paddr2">' + esc(acq.testo).replace(/\n/g,'<br>') + '</div>' : '') + '</div>' +
       '</div>' +
-      '<div class="sfoot">Documento non ufficiale a uso interno \u00B7 scheda generata il ' + esc(oggi) + '<br>' +
-      'Listini ufficiali Patek Philippe per Svizzera, Italia e Stati Uniti, rilevati da patek.com. Soggetti a variazione e alle imposte locali. ' +
-      'Patek Philippe\u00AE \u00E8 un marchio di Patek Philippe SA. Nessuna affiliazione.</div>' +
+      '<table class="ordtable"><thead><tr>' +
+        '<th colspan="2">Articolo</th><th class="r">Prezzo unitario</th>' +
+      '</tr></thead><tbody>' + righe + '</tbody></table>' +
+      '<div class="ordtotals">' +
+        '<div class="orow"><span>Subtotale</span><span class="v">' + fmt(cur, sub) + '</span></div>' +
+        '<div class="orow big"><span>Totale</span><span class="v gold">' + fmt(cur, sub) + '</span></div>' +
+        detaxRow +
+      '</div>' +
+      pagamento +
+      '<div class="ofoot"><b>' + esc(ordNo) + '</b> \u00B7 ' + scelti.length + ' ' + (scelti.length > 1 ? 'orologi' : 'orologio') +
+        ' \u00B7 generato il ' + esc(oggi) + '<br>' +
+        'I prezzi sono i listini ufficiali Patek Philippe, rilevati da patek.com. Soggetti a variazione e alle imposte locali. ' +
+        'Questo documento \u00E8 una conferma d\u2019ordine da parte del cliente e non costituisce fattura. ' +
+        'Documento non ufficiale \u2014 Patek Philippe\u00AE \u00E8 un marchio di Patek Philippe SA.' +
+        fxLine +
+      '</div>' +
     '</div>';
 
   ov.classList.add('open');
