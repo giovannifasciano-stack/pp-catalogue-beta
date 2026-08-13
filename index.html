@@ -1039,6 +1039,7 @@ const ACQ = [
   {id:'ch', flag:'\uD83C\uDDE8\uD83C\uDDED', nome:'Giovanni Fasciano', testo:'Via Zorzi 28\n6900 Paradiso\nSvizzera'}
 ];
 const VENDOR_API = 'https://watch-proxy.owscan.workers.dev/vendorsearch?q=';
+const VENDOR_DETAIL = 'https://watch-proxy.owscan.workers.dev/vendordetail?u=';
 const SYNC_URL = 'https://watch-proxy.owscan.workers.dev/sync?code=giovanni-fasciano-pp-wl-7f3k2';
 
 let vista = 'cat';                       // cat · wish · own
@@ -1062,7 +1063,7 @@ function pushSync(){
   clearTimeout(syncTimer);
   syncTimer = setTimeout(async () => {
     try{
-      await fetch(SYNC_URL, {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(WL)});
+      await fetch(SYNC_URL, {method:'PUT', headers:{'content-type':'application/json'}, body: JSON.stringify(WL)});
       const el = document.getElementById('syncSt');
       if(el) el.textContent = 'sincronizzato ' + new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
     }catch(e){}
@@ -1073,6 +1074,7 @@ async function pullSync(){
     const r = await fetch(SYNC_URL, {cache:'no-store'});
     if(!r.ok) return;
     const d = await r.json();
+    if(d && d.found === false) return;
     const dati = d && d.wish ? d : (d && d.value) ? d.value : null;
     if(dati && Array.isArray(dati.wish)){
       WL = Object.assign(WL, dati);
@@ -1084,40 +1086,90 @@ async function pullSync(){
 
 // ---------- anagrafica fornitori ----------
 async function cercaFornitore(){
-  const q = (document.getElementById('fq')||{}).value || '';
+  const q = ((document.getElementById('fq')||{}).value || '').trim();
   const st = document.getElementById('fstat'), box = document.getElementById('fres');
-  if(q.trim().length < 3){ if(st) st.textContent = 'Scrivi almeno tre lettere.'; return; }
+  if(q.length < 3){ if(st) st.textContent = 'Scrivi almeno tre lettere.'; return; }
   st.innerHTML = '<span class="cerca">ricerca in corso\u2026</span>';
   box.innerHTML = '';
   trovatiForn = [];
   try{
-    const r = await fetch(VENDOR_API + encodeURIComponent(q.trim()));
+    const r = await fetch(VENDOR_API + encodeURIComponent(q));
     if(!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
-    const arr = d.results || d.vendors || d.items || (Array.isArray(d) ? d : []);
-    trovatiForn = arr.map(v => ({
-      nome: v.name || v.nome || q, ind: v.street || v.address || v.ind || '',
-      cap: v.postcode || v.zip || v.cap || '', citta: v.city || v.citta || '',
-      paese: v.country || v.paese || '', cc: String(v.countryCode || v.cc || '').toUpperCase()
-    }));
-    st.textContent = trovatiForn.length ? trovatiForn.length + ' risultati dal web' : 'nessun risultato';
+    const arr = Array.isArray(d) ? d : (d.results || d.vendors || d.items || []);
+    trovatiForn = arr.map(v => v.kind === 'web'
+      ? {tipo:'web', nome: v.title || q, web: v.url || '', nota: v.snippet || '',
+         ind:'', cap:'', citta:'', paese:'', cc:''}
+      : {tipo:'biz', nome: v.name || q, ind: v.addr || '', cap: v.zip || '',
+         citta: v.city || '', paese: v.country || '', web: v.web || '',
+         cc: ccDaPaese(v.country)});
+    st.textContent = trovatiForn.length
+      ? trovatiForn.length + ' risultati'
+      : 'nessun risultato \u00B7 inserisci il fornitore a mano';
   }catch(e){
-    st.innerHTML = '<span class="ko">ricerca non riuscita</span> \u00B7 inserisci il fornitore a mano';
+    st.innerHTML = '<span class="ko">ricerca non riuscita: ' + esc(String(e.message||e)) + '</span>';
   }
-  box.innerHTML = trovatiForn.map((v,i) =>
-    '<div class="fres-r"><div><div class="n">'+esc(v.nome)+'</div><div class="s">'+
-    esc([v.ind,[v.cap,v.citta].filter(Boolean).join(' '),v.paese].filter(Boolean).join(' \u00B7 '))+
-    '</div></div><button class="mini" onclick="importaForn('+i+')">Importa</button></div>').join('');
+  box.innerHTML = trovatiForn.map((v,i) => {
+    const sotto = v.tipo === 'web'
+      ? (v.web ? v.web.replace(/^https?:\/\//,'').split('/')[0] : '') + (v.nota ? ' \u00B7 ' + v.nota.slice(0,70) : '')
+      : [v.ind, [v.cap, v.citta].filter(Boolean).join(' '), v.paese].filter(Boolean).join(' \u00B7 ');
+    return '<div class="fres-r"><div><div class="n">'+esc(v.nome)+'</div>' +
+      '<div class="s">'+esc(sotto)+'</div></div>' +
+      '<button class="mini" onclick="importaForn('+i+')">Importa</button></div>';
+  }).join('');
 }
-function importaForn(i){
+
+// il Worker restituisce il nome del paese, non la sigla
+const PAESI = {
+  'switzerland':'CH','suisse':'CH','svizzera':'CH','schweiz':'CH',
+  'italy':'IT','italia':'IT','italie':'IT',
+  'united states':'US','usa':'US','united states of america':'US','stati uniti':'US',
+  'united kingdom':'GB','uk':'GB','england':'GB','regno unito':'GB',
+  'france':'FR','francia':'FR','germany':'DE','germania':'DE','deutschland':'DE',
+  'spain':'ES','spagna':'ES','austria':'AT','monaco':'MC',
+  'united arab emirates':'AE','uae':'AE','hong kong':'HK','singapore':'SG','japan':'JP','giappone':'JP'
+};
+function ccDaPaese(p){
+  const k = String(p||'').trim().toLowerCase();
+  return PAESI[k] || '';
+}
+
+async function importaForn(i){
   const v = trovatiForn[i];
   if(!v) return;
-  const rec = Object.assign({id: 'f' + Date.now()}, v);
+  const st = document.getElementById('fstat');
+  let rec = Object.assign({}, v);
+  // risultato generico dal web: chiedo al Worker di estrarre nome e indirizzo dal sito
+  if(v.tipo === 'web' && v.web){
+    if(st) st.innerHTML = '<span class="cerca">lettura del sito\u2026</span>';
+    try{
+      const r = await fetch(VENDOR_DETAIL + encodeURIComponent(v.web));
+      if(r.ok){
+        const d = await r.json();
+        if(d && (d.name || d.addr)){
+          rec.nome = d.name || rec.nome;
+          rec.ind = d.addr || '';
+          const c = String(d.city||'');
+          const mm = c.match(/^\s*([0-9A-Z\-\s]{3,10})\s+(.+)$/);
+          if(mm){ rec.cap = mm[1].trim(); rec.citta = mm[2].trim(); }
+          else rec.citta = c;
+          rec.paese = d.country || '';
+          rec.cc = ccDaPaese(rec.paese);
+        }
+      }
+    }catch(e){}
+  }
+  delete rec.tipo; delete rec.nota;
+  rec.id = 'f' + Date.now();
   WL.forn.push(rec);
   WL.negSel = rec.id;
+  if(rec.cc){ const m = {CH:'CHF', IT:'EUR', US:'USD'}; if(m[rec.cc]) WL.cur = m[rec.cc]; }
   saveWL();
   render();
+  const st2 = document.getElementById('fstat');
+  if(st2) st2.innerHTML = '<span style="color:var(--green)">' + esc(rec.nome) + ' importato in anagrafica</span>';
 }
+
 function rimuoviForn(id){
   const n = WL.forn.find(x=>x.id===id);
   if(!n || !confirm('Rimuovere ' + n.nome + ' dall\u2019anagrafica?')) return;
