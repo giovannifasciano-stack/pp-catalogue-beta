@@ -39,6 +39,10 @@ h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28p
 .ca.on{color:var(--gold2);border-color:var(--gold)}
 .ca.own.on{color:var(--green);border-color:var(--green)}
 .card.picked{outline:2px solid var(--gold);outline-offset:-2px}
+.csel{position:absolute;left:8px;top:8px;z-index:3;border:1px solid var(--line);border-radius:20px;
+  background:rgba(34,23,16,.86);color:var(--dim);font-family:'Outfit';font-size:11px;padding:6px 11px;
+  cursor:pointer;backdrop-filter:blur(4px)}
+.csel.on{background:var(--gold);border-color:var(--gold);color:#221710;font-weight:600}
 .vuoto{text-align:center;color:var(--dim);font-size:13.5px;line-height:1.8;padding:40px 12px}
 .ordhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:9px;margin-bottom:14px}
 .ordhead h2{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin:0}
@@ -1267,7 +1271,10 @@ function render(){
 
 // ---------- viste Lista desideri e Posseduti, con barra ordine in stile AP ----------
 function cardMini(p){
-  return '<div class="card">' +
+  const selMode = (vista === 'wish' && ordineAperto);
+  return '<div class="card' + (selMode && inSel(p.ref) ? ' picked' : '') + '">' +
+    (selMode ? '<button class="csel'+(inSel(p.ref)?' on':'')+'" data-x="'+esc(p.ref)+'">'+
+       (inSel(p.ref) ? '\u2713 In ordine' : 'Aggiungi all\u2019ordine') + '</button>' : '') +
     '<div class="cacts">' +
       '<button class="ca'+(inWish(p.ref)?' on':'')+'" data-w="'+esc(p.ref)+'">'+(inWish(p.ref)?'\u2665':'\u2661')+'</button>' +
       '<button class="ca own'+(inOwn(p.ref)?' on':'')+'" data-o="'+esc(p.ref)+'">\u2713</button>' +
@@ -1319,6 +1326,7 @@ function renderLista(main, q){
     main.appendChild(e);
   }
 
+  main.querySelectorAll('[data-x]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togSel(b.dataset.x); });
   main.querySelectorAll('[data-w]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togWish(b.dataset.w); });
   main.querySelectorAll('[data-o]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togOwn(b.dataset.o); });
   main.querySelectorAll('[data-s]').forEach(t => t.onclick = () => {
@@ -1473,7 +1481,14 @@ function legaOrdine(list){
   const g = id => document.getElementById(id);
   if(g('bAll')) g('bAll').onclick = () => { list.forEach(p=>{ if(!inSel(p.ref)) WL.sel.push(p.ref); }); saveWL(); render(); };
   if(g('bNone')) g('bNone').onclick = () => { WL.sel = []; saveWL(); render(); };
-  if(g('bOrd')) g('bOrd').onclick = () => { ordineAperto = !ordineAperto; render(); };
+  if(g('bOrd')) g('bOrd').onclick = () => {
+    ordineAperto = !ordineAperto;
+    if(ordineAperto && !WL.sel.filter(r => WL.wish.includes(r)).length){
+      WL.sel = WL.wish.slice();
+      saveWL();
+    }
+    render();
+  };
   if(g('bSvuota')) g('bSvuota').onclick = () => { if(confirm('Svuotare la lista desideri?')){ WL.wish = []; WL.sel = []; saveWL(); render(); } };
   if(g('bStampa')) g('bStampa').onclick = stampaOrdine;
 
