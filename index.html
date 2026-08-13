@@ -33,6 +33,10 @@ h1 img{width:26px;height:26px;border-radius:50%;background:#fff;padding:2px}
 h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#b08d3f;color:#12182b;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;margin-right:6px;vertical-align:middle}
 #lastSync{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)}
 .btn.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
+#langPick{display:inline-flex;gap:5px;margin-left:2px}
+#langPick button{background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--dim);
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;padding:9px 10px;cursor:pointer}
+#langPick button.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
 
 .ca{position:absolute;top:10px;left:10px;z-index:3;width:32px;height:32px;border-radius:3px;
   border:1px solid var(--line);background:rgba(27,18,12,.75);color:var(--dim);font-size:15px;cursor:pointer;
@@ -363,6 +367,7 @@ body.sheet-open{overflow:hidden}
     <button class="btn" id="btnWish" title="Lista desideri">♡ Lista</button>
     <button class="btn" id="btnOwn" title="Posseduti">✓ Posseduti</button>
     <button class="btn" id="btnSet" title="Impostazioni e aggiornamento listini">Impostazioni</button>
+    <span id="langPick"><button data-l="it">🇮🇹 IT</button><button data-l="en">🇬🇧 EN</button></span>
   </div>
   <div class="chips" id="chips"></div>
   <div class="betaflag">Versione di prova · lista desideri e ordine</div>
@@ -408,7 +413,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 i · card AP con nome modello</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 l · bilingue IT/EN</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
@@ -862,7 +867,7 @@ function esportaListini(){
 // ---------- analisi export, netto IVA ----------
 // CH 8.1%, IT 22%; il listino USA e' gia' al netto (la sales tax si aggiunge alla cassa e non si recupera)
 const VAT = {CHF: 0.081, EUR: 0.22, USD: 0};
-const MERCATI = {CHF: ['\uD83C\uDDE8\uD83C\uDDED', 'Svizzera'], EUR: ['\uD83C\uDDEA\uD83C\uDDFA', 'Italia (UE)'], USD: ['\uD83C\uDDFA\uD83C\uDDF8', 'Stati Uniti']};
+function MERCATI_(){ return {CHF: ['\uD83C\uDDE8\uD83C\uDDED', t('svizzera')], EUR: ['\uD83C\uDDEA\uD83C\uDDFA', t('italia')], USD: ['\uD83C\uDDFA\uD83C\uDDF8', t('statiUniti')]}; }
 function n2(cur, v){
   const o = {minimumFractionDigits: 2, maximumFractionDigits: 2};
   if(cur === 'CHF') return v.toLocaleString('en-US', o).replace(/,/g, '\u2019');
@@ -888,40 +893,44 @@ function exportRows(ref){
   return {rows, best};
 }
 function exportBlock(ref){
+  const MERCATI = MERCATI_();
   const d = exportRows(ref);
   if(!d) return '';
   const {rows, best} = d;
-  let t = '<div class="exp"><div class="exph">Analisi export \u00B7 netto IVA</div>' +
+  let t2 = '<div class="exp"><div class="exph">'+esc(t('analisiExport'))+'</div>' +
     '<table class="exptab"><thead><tr>' +
-    '<th>Mercato</th><th class="r">Listino</th><th class="r">IVA</th>' +
+    '<th>'+esc(t('mercato'))+'</th><th class="r">'+esc(t('listino'))+'</th><th class="r">'+esc(t('iva'))+'</th>' +
     '<th class="r">Net CHF</th><th class="r">Net EUR</th><th class="r">Net USD</th><th class="r">\u0394</th>' +
     '</tr></thead><tbody>';
   for(const r of rows){
     const isBest = r === best;
-    t += '<tr' + (isBest ? ' class="bestrow"' : '') + '>' +
+    t2 += '<tr' + (isBest ? ' class="bestrow"' : '') + '>' +
       '<td>' + MERCATI[r.cur][0] + ' ' + MERCATI[r.cur][1] + '</td>' +
       '<td class="r">' + r.cur + ' ' + n2(r.cur, r.listino) + '</td>' +
       '<td class="r">' + (r.vat ? (r.vat * 100).toFixed(1).replace('.0', '') + '%' : '\u2014') + '</td>' +
       '<td class="r nch">' + n2('CHF', r.netCHF) + '</td>' +
       '<td class="r">' + n2('EUR', r.netEUR) + '</td>' +
       '<td class="r">' + n2('USD', r.netUSD) + '</td>' +
-      '<td class="r">' + (isBest ? '<span class="badge">Migliore</span>' : '+' + r.delta.toFixed(1) + '%') + '</td>' +
+      '<td class="r">' + (isBest ? '<span class="badge">'+esc(t('migliore'))+'</span>' : '+' + r.delta.toFixed(1) + '%') + '</td>' +
       '</tr>';
   }
-  t += '</tbody></table>';
-  t += '<div class="bestbox"><div class="bl">Mercato migliore</div>' +
+  t2 += '</tbody></table>';
+  t2 += '<div class="bestbox"><div class="bl">'+esc(t('mercatoMigliore'))+'</div>' +
     '<div class="bb">' + MERCATI[best.cur][0] + ' <b>' + MERCATI[best.cur][1] + ' \u00B7 ' +
-    best.cur + ' ' + n2(best.cur, best.net) + ' netto</b> ' +
+    best.cur + ' ' + n2(best.cur, best.net) + (LANG === 'en' ? ' net' : ' netto') + '</b> ' +
     '<span class="eq">(CHF ' + n2('CHF', best.netCHF) + ') (USD ' + n2('USD', best.netUSD) + ')</span></div></div>';
-  t += '<div class="expnote">I prezzi netti escludono l\u2019IVA (Svizzera 8.1%, Italia 22%) e sono indicativi di un acquisto in esenzione/export; il rimborso reale \u00E8 di norma inferiore per via delle commissioni d\u2019agenzia. I listini USA sono al netto della sales tax locale, aggiunta alla cassa e non recuperabile. Cambi: 1 CHF = ' +
-    (1 / fx.EURCHF).toFixed(4) + ' EUR = ' + (1 / fx.USDCHF).toFixed(4) + ' USD. Dazi, sdoganamento e condizioni di garanzia non sono inclusi in questo confronto.</div></div>';
-  return t;
+  const notaIt = 'I prezzi netti escludono l\u2019IVA (Svizzera 8.1%, Italia 22%) e sono indicativi di un acquisto in esenzione/export; il rimborso reale \u00E8 di norma inferiore per via delle commissioni d\u2019agenzia. I listini USA sono al netto della sales tax locale, aggiunta alla cassa e non recuperabile. Cambi: 1 CHF = @E EUR = @U USD. Dazi, sdoganamento e condizioni di garanzia non sono inclusi in questo confronto.';
+  const notaEn = 'Net prices exclude VAT (Switzerland 8.1%, Italy 22%) and reflect a tax-free/export purchase; the actual refund is usually lower due to agency fees. US list prices exclude local sales tax, which is added at checkout and is not recoverable. Rates: 1 CHF = @E EUR = @U USD. Duties, customs clearance and warranty terms are not included in this comparison.';
+  t2 += '<div class="expnote">' + (LANG === 'en' ? notaEn : notaIt)
+    .replace('@E', (1 / fx.EURCHF).toFixed(4)).replace('@U', (1 / fx.USDCHF).toFixed(4)) + '</div></div>';
+  return t2;
 }
 function bestBlock(ref){
   const b = bestMarket(ref);
   if(!b || !fx) return '';
   const nf = v => Math.round(v).toLocaleString('en-US').replace(/,/g, '\u2019');
-  const MERCATO = {CHF: 'Svizzera', EUR: 'Italia', USD: 'Stati Uniti'};
+  const M2 = MERCATI_();
+  const MERCATO = {CHF: M2.CHF[1], EUR: M2.EUR[1], USD: M2.USD[1]};
   const riga = ['CHF','EUR','USD'].filter(c => b.tutti[c] != null)
     .map(c => MERCATO[c] + ' ' + nf(b.tutti[c])).join(' \u00B7 ');
   let dt = '';
@@ -931,11 +940,11 @@ function bestBlock(ref){
   }
   const nomi = MERCATO;
   return '<div class="fxnote">' +
-    'Costo effettivo in franchi' + (dt ? ', cambio del ' + esc(dt) : ', cambio del giorno') + '<br>' +
+    esc(t('costoFranchi')) + (dt ? ', ' + esc(t('cambioDel')) + ' ' + esc(dt) : ', ' + esc(t('cambioGiorno'))) + '<br>' +
     riga + '<br>' +
     '1 USD = ' + fx.USDCHF.toFixed(4) + ' CHF \u00B7 1 EUR = ' + fx.EURCHF.toFixed(4) + ' CHF<br>' +
-    '<span class="save">' + nomi[b.cur] + ' pi\u00F9 conveniente di CHF ' + nf(b.scarto) +
-    ' sul secondo mercato</span></div>';
+    '<span class="save">' + nomi[b.cur][1] + ' ' + esc(t('piuConveniente')) + ' ' + nf(b.scarto) +
+    ' ' + esc(t('sulSecondo')) + '</span></div>';
 }
 // insieme dei tre listini per una referenza
 function priceSet(ref){
@@ -961,7 +970,7 @@ function priceRows(ref){
       const best = b && b.cur === cur;
       out += '<div class="price' + (best ? ' best' : '') + '">' +
              '<span class="pc">' + FLAG[cur] + ' ' + cur +
-             (best ? '<span class="tag">Migliore</span>' : '') + '</span>' +
+             (best ? '<span class="tag">'+esc(t('migliore'))+'</span>' : '') + '</span>' +
              '<span class="pv">' + fmtAmount(cur, rec[cur]) + '</span></div>';
       any = true;
     }
@@ -1106,6 +1115,118 @@ function renderNews(){
 }
 
 // ---------- render ----------
+// ---------- lingua ----------
+const I18N = {
+  aggiorna:{it:'Aggiorna', en:'Refresh'},
+  lista:{it:'Lista desideri', en:'Wishlist'},
+  posseduti:{it:'Posseduti', en:'Owned'},
+  impostazioni:{it:'Impostazioni', en:'Settings'},
+  tutte:{it:'Tutte', en:'All'},
+  modelli:{it:'modelli', en:'models'},
+  cerca:{it:'Cerca referenza, materiale\u2026', en:'Search reference, material\u2026'},
+  orologi:{it:'orologi', en:'watches'},
+  selezionati:{it:'selezionati', en:'selected'},
+  selTutti:{it:'Seleziona tutti', en:'Select all'},
+  deselTutti:{it:'Deseleziona tutti', en:'Deselect all'},
+  creaOrdine:{it:'Crea ordine', en:'Create order'},
+  chiudiOrdine:{it:'Chiudi ordine', en:'Close order'},
+  valoreListino:{it:'valore a listino', en:'list value'},
+  vuotaLista:{it:'Nessun orologio in lista.<br>Tocca il cuore su una card del catalogo.',
+              en:'No watches in the list.<br>Tap the heart on a catalogue card.'},
+  vuotaPoss:{it:'Nessun orologio registrato.<br>Tocca Segna come posseduto in lista desideri.',
+             en:'No watches recorded.<br>Tap Mark as owned in the wishlist.'},
+  segnaPoss:{it:'Segna come posseduto', en:'Mark as owned'},
+  posseduto:{it:'Posseduto', en:'Owned'},
+  secOrdine:{it:'Ordine', en:'Order'},
+  secTax:{it:'Tax', en:'Tax'},
+  secParties:{it:'Parties', en:'Parties'},
+  nOrdine:{it:'N. ordine', en:'Order no.'},
+  acquistoIn:{it:'Acquisto in', en:'Buying from'},
+  inclConsegna:{it:'Includi data di consegna', en:'Include delivery date'},
+  dataConsegna:{it:'Data di consegna', en:'Delivery date'},
+  inclPagamento:{it:'Includi dettagli di pagamento', en:'Include payment details'},
+  metodo:{it:'Metodo', en:'Payment method'},
+  bonifico:{it:'Bonifico bancario', en:'Bank transfer'},
+  carta:{it:'Carta di credito', en:'Credit card'},
+  dataPagamento:{it:'Data pagamento', en:'Payment date'},
+  detax:{it:'Mostra prezzo netto (detax)', en:'Show detax (net of VAT)'},
+  venditore:{it:'Venditore', en:'Sold by'},
+  acquirente:{it:'Acquirente', en:'Buyer'},
+  altroRiv:{it:'\u2014 Altro rivenditore (inserisci manualmente) \u2014', en:'\u2014 Other retailer (enter manually) \u2014'},
+  nomeManuale:{it:'Nome (se manuale)', en:'Name (if manual)'},
+  indManuale:{it:'Via, CAP, citt\u00E0, paese \u00B7 telefono', en:'Street, postcode, city, country \u00B7 phone'},
+  aggFornitore:{it:'Aggiungi fornitore \u00B7 ricerca sul web', en:'Add supplier \u00B7 web search'},
+  nomeNegozio:{it:'Nome del negozio o della boutique', en:'Shop or boutique name'},
+  cercaBtn:{it:'Cerca', en:'Search'},
+  oppureManuale:{it:'Oppure inserisci un acquirente diverso manualmente', en:'Or enter a different buyer manually'},
+  nomeAcq:{it:'Nome acquirente', en:'Buyer name'},
+  indirizzo:{it:'Indirizzo', en:'Address'},
+  referenze:{it:'referenze', en:'references'},
+  svuotaLista:{it:'Svuota lista', en:'Clear wishlist'},
+  stampaOrdine:{it:'Stampa ordine', en:'Print order'},
+  sincro:{it:'Sincronizzato su tutti i dispositivi', en:'Synced across devices'},
+  importa:{it:'Importa', en:'Import'},
+  specifiche:{it:'Specifiche', en:'Specifications'},
+  prezziUff:{it:'Prezzi ufficiali al pubblico', en:'Official retail prices'},
+  carTecniche:{it:'Caratteristiche tecniche', en:'Technical characteristics'},
+  analisiExport:{it:'Analisi export \u00B7 netto IVA', en:'Export analysis \u00B7 net of VAT'},
+  mercatoMigliore:{it:'Mercato migliore', en:'Best market'},
+  migliore:{it:'Migliore', en:'Best'},
+  mercato:{it:'Mercato', en:'Market'},
+  listino:{it:'Listino', en:'List price'},
+  iva:{it:'IVA', en:'VAT'},
+  confOrdine:{it:'Conferma d\u2019ordine', en:'Order confirmation'},
+  articolo:{it:'Articolo', en:'Item'},
+  prezzoUnit:{it:'Prezzo unitario', en:'Unit price'},
+  subtotale:{it:'Subtotale', en:'Subtotal'},
+  totale:{it:'Totale', en:'Total'},
+  stampaPdf:{it:'Stampa / Salva PDF', en:'Print / Save PDF'},
+  chiudi:{it:'Chiudi', en:'Close'},
+  collezione:{it:'Collezione', en:'Collection'},
+  referenza:{it:'Referenza', en:'Reference'},
+  materiale:{it:'Materiale cassa', en:'Case material'},
+  diametro:{it:'Diametro', en:'Diameter'},
+  spessore:{it:'Spessore', en:'Thickness'},
+  movimento:{it:'Movimento', en:'Movement'},
+  impermeabilita:{it:'Impermeabilit\u00E0', en:'Water resistance'},
+  disponibilita:{it:'Disponibilit\u00E0', en:'Availability'},
+  collAttuale:{it:'Collezione attuale', en:'Current collection'},
+  svizzera:{it:'Svizzera', en:'Switzerland'},
+  italia:{it:'Italia (UE)', en:'Italy (EU)'},
+  statiUniti:{it:'Stati Uniti', en:'United States'},
+  consegna:{it:'consegna', en:'delivery'},
+  pagamento:{it:'Pagamento', en:'Payment'},
+  scadenza:{it:'scadenza', en:'due'},
+  generatoIl:{it:'generato il', en:'generated on'},
+  orologio1:{it:'orologio', en:'watch'},
+  costoFranchi:{it:'Costo effettivo in franchi', en:'Actual cost in Swiss francs'},
+  cambioDel:{it:'cambio del', en:'rate of'},
+  cambioGiorno:{it:'cambio del giorno', en:'today\u2019s rate'},
+  piuConveniente:{it:'pi\u00F9 conveniente di CHF', en:'cheaper by CHF'},
+  sulSecondo:{it:'sul secondo mercato', en:'than the second market'},
+  alCambio:{it:'Al cambio attuale', en:'At current exchange rates'},
+  nettoIvaEsclusa:{it:'Prezzo netto, IVA', en:'Net price, VAT'},
+  esclusa:{it:'esclusa', en:'excluded'},
+  nonApplicabile:{it:'non applicabile', en:'not applicable'}
+};
+let LANG = (() => { try{ return localStorage.getItem('pp_lang') || 'it'; }catch(e){ return 'it'; } })();
+function t(k){ const v = I18N[k]; return v ? (v[LANG] || v.it) : k; }
+function setLang(l){
+  LANG = l;
+  try{ localStorage.setItem('pp_lang', l); }catch(e){}
+  applicaLingua();
+  render();
+}
+function applicaLingua(){
+  const g = id => document.getElementById(id);
+  if(g('btnRefresh')) g('btnRefresh').textContent = t('aggiorna');
+  if(g('btnWish')) g('btnWish').innerHTML = '\u2661 ' + esc(t('lista'));
+  if(g('btnOwn')) g('btnOwn').innerHTML = '\u2713 ' + esc(t('posseduti'));
+  if(g('btnSet')) g('btnSet').textContent = t('impostazioni');
+  if(g('search')) g('search').placeholder = t('cerca');
+  document.querySelectorAll('#langPick button').forEach(b => b.classList.toggle('on', b.dataset.l === LANG));
+}
+
 // ---------- lista desideri, posseduti, ordine ----------
 const WL_KEY = 'pp_wl_beta_v1';
 let WL = (()=>{ try{ const r = localStorage.getItem(WL_KEY); if(r) return JSON.parse(r); }catch(e){}
@@ -1201,7 +1322,7 @@ function fornHTML(){
       : [v.ind, [v.cap, v.citta].filter(Boolean).join(' '), v.paese].filter(Boolean).join(' \u00B7 ');
     return '<div class="fres-r"><div><div class="n">'+esc(v.nome)+'</div>' +
       '<div class="s">'+esc(sotto)+'</div></div>' +
-      '<button class="mini" type="button" data-imp="'+i+'">Importa</button></div>';
+      '<button class="mini" type="button" data-imp="'+i+'">'+esc(t('importa'))+'</button></div>';
   }).join('') + '</div>';
 }
 
@@ -1351,7 +1472,7 @@ function cardMini(p){
     (selMode ? '<button class="cbox'+(inSel(p.ref)?' on':'')+'" data-x="'+esc(p.ref)+'" title="Metti in ordine">'+(inSel(p.ref)?'\u2713':'')+'</button>' : '') +
     '<div class="thumb" data-s="'+esc(p.ref)+'">' + (p.img ? '<img loading="lazy" src="'+esc(thumbURL(p.img))+'" data-orig="'+esc(p.img)+'" onerror="imgFail(this)">' : '<span class="noimg">NO IMG</span>') + '</div>' +
     '<button class="cown'+(inOwn(p.ref)?' on':'')+'" data-o="'+esc(p.ref)+'">' +
-      (inOwn(p.ref) ? '\u2713 Posseduto' : '\u25A2 Segna come posseduto') + '</button>' +
+      (inOwn(p.ref) ? '\u2713 ' + esc(t('posseduto')) : '\u25A2 ' + esc(t('segnaPoss'))) + '</button>' +
     '<div class="meta">' +
       '<div class="mname">'+esc(nomeModello(p))+'</div>' +
       '<div class="ref">'+esc(p.ref)+'</div>' +
@@ -1388,20 +1509,20 @@ function renderLista(main, q){
 
   if(vista === 'wish'){
     sec.innerHTML =
-      '<div class="ordhead"><h2>Lista desideri</h2>' +
-      '<span class="cnt">'+list.length+' orologi \u00B7 '+scelti.length+' selezionati</span>' +
+      '<div class="ordhead"><h2>'+esc(t('lista'))+'</h2>' +
+      '<span class="cnt">'+list.length+' '+esc(t('orologi'))+' \u00B7 '+scelti.length+' '+esc(t('selezionati'))+'</span>' +
       '<div class="obtns">' +
-        '<button class="ob sel" id="bAll">Seleziona tutti</button>' +
-        '<button class="ob" id="bNone">Deseleziona tutti</button>' +
-        '<button class="ob gold" id="bOrd">'+(ordineAperto?'Chiudi ordine':'Crea ordine')+'</button>' +
+        '<button class="ob sel" id="bAll">'+esc(t('selTutti'))+'</button>' +
+        '<button class="ob" id="bNone">'+esc(t('deselTutti'))+'</button>' +
+        '<button class="ob gold" id="bOrd">'+esc(ordineAperto?t('chiudiOrdine'):t('creaOrdine'))+'</button>' +
       '</div></div>' +
       (ordineAperto ? wishBarHTML(scelti) : '');
   }else{
     const tot = {};
     for(const p of list){ const r = priceSet(p.ref); for(const c of ['CHF','EUR','USD']) if(r[c]!=null) tot[c] = (tot[c]||0) + r[c]; }
     const righe = ['CHF','EUR','USD'].filter(c=>tot[c]).map(c=>fmt(c, tot[c])).join(' \u00B7 ');
-    sec.innerHTML = '<div class="ordhead"><h2>Posseduti</h2>' +
-      '<span class="cnt">'+list.length+' orologi'+(righe?' \u00B7 valore a listino '+righe:'')+'</span></div>';
+    sec.innerHTML = '<div class="ordhead"><h2>'+esc(t('posseduti'))+'</h2>' +
+      '<span class="cnt">'+list.length+' '+esc(t('orologi'))+(righe?' \u00B7 '+esc(t('valoreListino'))+' '+righe:'')+'</span></div>';
   }
 
   const grid = document.createElement('div');
@@ -1413,9 +1534,7 @@ function renderLista(main, q){
   if(!list.length){
     const e = document.createElement('div');
     e.className = 'vuoto';
-    e.innerHTML = vista === 'wish'
-      ? 'Nessun orologio in lista.<br>Tocca il cuore su una card del catalogo.'
-      : 'Nessun orologio registrato.<br>Tocca la spunta su una card del catalogo.';
+    e.innerHTML = vista === 'wish' ? t('vuotaLista') : t('vuotaPoss');
     main.appendChild(e);
   }
 
@@ -1443,63 +1562,63 @@ function wishBarHTML(scelti){
   const a = ACQ.find(x => x.id === WL.acq) || ACQ[1];
 
   return '<div class="wishbar">' +
-    '<div class="wsec">Ordine</div>' +
+    '<div class="wsec">'+esc(t('secOrdine'))+'</div>' +
     '<div class="wrow">' +
-      '<div class="wf" style="max-width:230px"><label>N. ordine</label><input id="wOrd" value="'+esc(WL.ordNo)+'"></div>' +
-      '<div class="wf"><label>Acquisto in</label><div class="pick" id="wPick">' +
+      '<div class="wf" style="max-width:230px"><label>'+esc(t('nOrdine'))+'</label><input id="wOrd" value="'+esc(WL.ordNo)+'"></div>' +
+      '<div class="wf"><label>'+esc(t('acquistoIn'))+'</label><div class="pick" id="wPick">' +
         ['CHF','EUR','USD'].map(c=>'<button class="'+(cur===c?'on':'')+'" data-c="'+c+'">'+FLAG[c]+' '+c+'</button>').join('') +
       '</div></div>' +
     '</div>' +
-    '<label class="wchk"><input type="checkbox" id="wCons"'+(WL.cons?' checked':'')+'> Includi data di consegna</label>' +
-    (WL.cons ? '<div class="wf" style="max-width:230px"><label>Data di consegna</label><input type="date" id="wConsD" value="'+esc(WL.consD||'')+'"></div>' : '') +
-    '<label class="wchk"><input type="checkbox" id="wPay"'+(WL.pay?' checked':'')+'> Includi dettagli di pagamento</label>' +
+    '<label class="wchk"><input type="checkbox" id="wCons"'+(WL.cons?' checked':'')+'> '+esc(t('inclConsegna'))+'</label>' +
+    (WL.cons ? '<div class="wf" style="max-width:230px"><label>'+esc(t('dataConsegna'))+'</label><input type="date" id="wConsD" value="'+esc(WL.consD||'')+'"></div>' : '') +
+    '<label class="wchk"><input type="checkbox" id="wPay"'+(WL.pay?' checked':'')+'> '+esc(t('inclPagamento'))+'</label>' +
     (WL.pay ? '<div class="wrow">' +
-      '<div class="wf"><label>Metodo</label><select id="wPayM"><option value="b"'+(WL.payM==='b'?' selected':'')+'>Bonifico bancario</option><option value="c"'+(WL.payM==='c'?' selected':'')+'>Carta di credito</option></select></div>' +
-      '<div class="wf"><label>Data pagamento</label><input type="date" id="wPayD" value="'+esc(WL.payD||'')+'"></div></div>' : '') +
+      '<div class="wf"><label>'+esc(t('metodo'))+'</label><select id="wPayM"><option value="b"'+(WL.payM==='b'?' selected':'')+'>'+esc(t('bonifico'))+'</option><option value="c"'+(WL.payM==='c'?' selected':'')+'>'+esc(t('carta'))+'</option></select></div>' +
+      '<div class="wf"><label>'+esc(t('dataPagamento'))+'</label><input type="date" id="wPayD" value="'+esc(WL.payD||'')+'"></div></div>' : '') +
 
-    '<div class="wsec">Tax</div>' +
-    '<label class="wchk"><input type="checkbox" id="wDetax"'+(WL.detax?' checked':'')+'> Mostra prezzo netto (detax)' +
+    '<div class="wsec">'+esc(t('secTax'))+'</div>' +
+    '<label class="wchk"><input type="checkbox" id="wDetax"'+(WL.detax?' checked':'')+'> '+esc(t('detax')) +
       (WL.detax ? ' <input class="wpc" id="wIva" value="'+((iva*100).toFixed(1).replace('.0',''))+'"> %' : '') + '</label>' +
 
-    '<div class="wsec">Parties</div>' +
+    '<div class="wsec">'+esc(t('secParties'))+'</div>' +
     '<div class="wboxes">' +
-      '<div class="wbox"><div class="wbh">Venditore</div>' +
+      '<div class="wbox"><div class="wbh">'+esc(t('venditore'))+'</div>' +
         '<select id="wNeg">' +
-          '<option value="">\u2014 Altro rivenditore (inserisci manualmente) \u2014</option>' +
+          '<option value="">'+esc(t('altroRiv'))+'</option>' +
           WL.forn.map(f=>'<option value="'+esc(f.id)+'"'+(WL.negSel===f.id?' selected':'')+'>'+esc(f.nome)+' \u00B7 '+esc(f.citta||'')+'</option>').join('') +
         '</select>' +
         (forn
           ? '<div class="waddr">'+esc([forn.ind,[forn.cap,forn.citta].filter(Boolean).join(' '),forn.paese].filter(Boolean).join('\n')).replace(/\n/g,'<br>')+'</div>'
-          : '<input id="wNegN" placeholder="Nome (se manuale)" value="'+esc(WL.negN||'')+'">' +
-            '<textarea id="wNegA" placeholder="Via, CAP, citt\u00E0, paese \u00B7 telefono">'+esc(WL.negA||'')+'</textarea>') +
-        '<div class="wman-h">Aggiungi fornitore \u00B7 ricerca sul web</div>' +
-        '<div class="srow"><input id="fq" value="'+esc(fornQ)+'" placeholder="Nome del negozio o della boutique">' +
-          '<button class="mini" id="fbtn" type="button">\uD83D\uDD0E Cerca</button></div>' +
+          : '<input id="wNegN" placeholder="'+esc(t('nomeManuale'))+'" value="'+esc(WL.negN||'')+'">' +
+            '<textarea id="wNegA" placeholder="'+esc(t('indManuale'))+'">'+esc(WL.negA||'')+'</textarea>') +
+        '<div class="wman-h">'+esc(t('aggFornitore'))+'</div>' +
+        '<div class="srow"><input id="fq" value="'+esc(fornQ)+'" placeholder="'+esc(t('nomeNegozio'))+'">' +
+          '<button class="mini" id="fbtn" type="button">\uD83D\uDD0E '+esc(t('cercaBtn'))+'</button></div>' +
         '<div id="fwrap">' + fornHTML() + '</div>' +
         (WL.forn.length ? '<div class="flist">' + WL.forn.map(f=>'<div class="fres-r"><div><div class="n">'+esc(f.nome)+'</div>' +
           '<div class="s">'+esc([f.citta,f.paese].filter(Boolean).join(' \u00B7 '))+'</div></div>' +
           '<button class="mini x" type="button" data-rim="'+esc(f.id)+'">\u2715</button></div>').join('') + '</div>' : '') +
       '</div>' +
 
-      '<div class="wbox"><div class="wbh">Acquirente</div>' +
+      '<div class="wbox"><div class="wbh">'+esc(t('acquirente'))+'</div>' +
         '<div class="btabs" id="wAcq">' +
           ACQ.map(x=>'<button class="'+(WL.acq===x.id?'on':'')+'" data-a="'+x.id+'">'+x.flag+' '+esc(x.nome)+'</button>').join('') +
         '</div>' +
         '<div class="waddr">'+esc(a.testo).replace(/\n/g,'<br>')+'</div>' +
-        '<div class="wman-h">Oppure inserisci un acquirente diverso manualmente</div>' +
-        '<input id="wAcqN" placeholder="Nome acquirente" value="'+esc(WL.acqMan.nome||'')+'">' +
-        '<textarea id="wAcqA" placeholder="Indirizzo">'+esc(WL.acqMan.testo||'')+'</textarea>' +
+        '<div class="wman-h">'+esc(t('oppureManuale'))+'</div>' +
+        '<input id="wAcqN" placeholder="'+esc(t('nomeAcq'))+'" value="'+esc(WL.acqMan.nome||'')+'">' +
+        '<textarea id="wAcqA" placeholder="'+esc(t('indirizzo'))+'">'+esc(WL.acqMan.testo||'')+'</textarea>' +
       '</div>' +
     '</div>' +
 
     '<div class="wfoot">' +
-      '<div class="wtot"><span>'+scelti.length+' referenze</span><span class="big">'+fmt(cur, lordo)+'</span></div>' +
+      '<div class="wtot"><span>'+scelti.length+' '+esc(t('referenze'))+'</span><span class="big">'+fmt(cur, lordo)+'</span></div>' +
       '<div class="wact">' +
-        '<button class="ob" id="bSvuota">Svuota lista</button>' +
-        '<button class="ob gold" id="bStampa">Stampa ordine</button>' +
+        '<button class="ob" id="bSvuota">'+esc(t('svuotaLista'))+'</button>' +
+        '<button class="ob gold" id="bStampa">'+esc(t('stampaOrdine'))+'</button>' +
       '</div>' +
     '</div>' +
-    '<div class="wsync">Sincronizzato su tutti i dispositivi \u00B7 <span id="syncSt">attivo</span></div>' +
+    '<div class="wsync">'+esc(t('sincro'))+' \u00B7 <span id="syncSt"></span></div>' +
   '</div>';
 }
 
@@ -1527,7 +1646,7 @@ function stampaOrdine(){
   const ordNo = WL.ordNo || '\u2014';
 
   const righe = scelti.map(p => {
-    const d2 = ['Referenza ' + p.ref, p.mat].filter(Boolean).join(' \u00B7 ');
+    const d2 = [t('referenza') + ' ' + p.ref, p.mat].filter(Boolean).join(' \u00B7 ');
     const img = p.img ? thumbURL(p.img) : '';
     return '<tr>' +
       '<td class="ph"><div class="box">' + (img ? '<img src="'+esc(img)+'" onerror="this.style.display=\'none\'">' : '') + '</div></td>' +
@@ -1538,7 +1657,7 @@ function stampaOrdine(){
 
   let detaxRow = '';
   if(WL.detax){
-    detaxRow = '<div class="orow small"><span>Netto IVA ' + (iva ? (iva*100).toFixed(1).replace('.0','') + '% esclusa' : 'non applicabile') +
+    detaxRow = '<div class="orow small"><span>' + esc(t('nettoIvaEsclusa')) + ' ' + (iva ? (iva*100).toFixed(1).replace('.0','') + '% ' + esc(t('esclusa')) : esc(t('nonApplicabile'))) +
                '</span><span class="v">' + fmt(cur, netto) + '</span></div>';
   }
 
@@ -1547,53 +1666,53 @@ function stampaOrdine(){
     const base = cur === 'CHF' ? sub : (cur === 'EUR' ? sub * fx.EURCHF : sub * fx.USDCHF);
     const altre = ['CHF','EUR','USD'].filter(c => c !== cur)
       .map(c => fmt(c, c === 'CHF' ? base : (c === 'EUR' ? base / fx.EURCHF : base / fx.USDCHF))).join(' \u00B7 ');
-    fxLine = '<div class="fxrow">Al cambio attuale \u2014 ' + fmt(cur, sub) + ' \u00B7 ' + altre +
+    fxLine = '<div class="fxrow">' + esc(t('alCambio')) + ' \u2014 ' + fmt(cur, sub) + ' \u00B7 ' + altre +
              ' (1 CHF = ' + (1/fx.EURCHF).toFixed(4) + ' EUR = ' + (1/fx.USDCHF).toFixed(4) + ' USD)</div>';
   }
 
   const pagamento = WL.pay
-    ? '<div class="ordpay"><span class="k">Pagamento</span> ' +
-      (WL.payM === 'c' ? 'Carta di credito' : 'Bonifico bancario') +
-      (WL.payD ? ' \u00B7 scadenza ' + esc(dataIt(WL.payD)) : '') + '</div>'
+    ? '<div class="ordpay"><span class="k">'+esc(t('pagamento'))+'</span> ' +
+      (WL.payM === 'c' ? t('carta') : t('bonifico')) +
+      (WL.payD ? ' \u00B7 ' + esc(t('scadenza')) + ' ' + esc(dataIt(WL.payD)) : '') + '</div>'
     : '';
 
   const ov = ensureSheet();
   document.getElementById('sheetBox').innerHTML =
     '<div class="sheet-btns">' +
-      '<button class="bprint" id="btnPrintSheet" type="button">Stampa / Salva PDF</button>' +
-      '<button class="bclose" id="btnCloseSheet" type="button">Chiudi</button>' +
+      '<button class="bprint" id="btnPrintSheet" type="button">'+esc(t('stampaPdf'))+'</button>' +
+      '<button class="bclose" id="btnCloseSheet" type="button">'+esc(t('chiudi'))+'</button>' +
     '</div>' +
     '<div class="sbody ordsheet">' +
       '<div class="ohead">' +
         '<div class="obrand"><div class="pp">Patek Philippe</div><div class="gv">Gen\u00E8ve</div></div>' +
         '<div class="ometa">' +
-          '<div class="olabel">Conferma d\u2019ordine</div>' +
+          '<div class="olabel">'+esc(t('confOrdine'))+'</div>' +
           '<div class="ono">' + esc(ordNo) + '</div>' +
-          '<div class="odate">' + esc(oggi) + (cons ? ' \u00B7 consegna: ' + esc(cons) : '') + '</div>' +
+          '<div class="odate">' + esc(oggi) + (cons ? ' \u00B7 ' + esc(t('consegna')) + ': ' + esc(cons) : '') + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="ocols">' +
-        '<div class="ocol"><div class="oh">Venditore</div>' +
+        '<div class="ocol"><div class="oh">'+esc(t('venditore'))+'</div>' +
           '<div class="pname">' + esc(vend.nome) + '</div>' +
           (vend.testo ? '<div class="paddr2">' + esc(vend.testo).replace(/\n/g,'<br>') + '</div>' : '') + '</div>' +
-        '<div class="ocol"><div class="oh">Acquirente</div>' +
+        '<div class="ocol"><div class="oh">'+esc(t('acquirente'))+'</div>' +
           '<div class="pname">' + esc(acq.nome) + '</div>' +
           (acq.testo ? '<div class="paddr2">' + esc(acq.testo).replace(/\n/g,'<br>') + '</div>' : '') + '</div>' +
       '</div>' +
       '<table class="ordtable"><thead><tr>' +
-        '<th colspan="2">Articolo</th><th class="r">Prezzo unitario</th>' +
+        '<th colspan="2">'+esc(t('articolo'))+'</th><th class="r">'+esc(t('prezzoUnit'))+'</th>' +
       '</tr></thead><tbody>' + righe + '</tbody></table>' +
       '<div class="ordtotals">' +
-        '<div class="orow"><span>Subtotale</span><span class="v">' + fmt(cur, sub) + '</span></div>' +
-        '<div class="orow big"><span>Totale</span><span class="v gold">' + fmt(cur, sub) + '</span></div>' +
+        '<div class="orow"><span>'+esc(t('subtotale'))+'</span><span class="v">' + fmt(cur, sub) + '</span></div>' +
+        '<div class="orow big"><span>'+esc(t('totale'))+'</span><span class="v gold">' + fmt(cur, sub) + '</span></div>' +
         detaxRow +
       '</div>' +
       pagamento +
-      '<div class="ofoot"><b>' + esc(ordNo) + '</b> \u00B7 ' + scelti.length + ' ' + (scelti.length > 1 ? 'orologi' : 'orologio') +
-        ' \u00B7 generato il ' + esc(oggi) + '<br>' +
-        'I prezzi sono i listini ufficiali Patek Philippe, rilevati da patek.com. Soggetti a variazione e alle imposte locali. ' +
-        'Questo documento \u00E8 una conferma d\u2019ordine da parte del cliente e non costituisce fattura. ' +
-        'Documento non ufficiale \u2014 Patek Philippe\u00AE \u00E8 un marchio di Patek Philippe SA.' +
+      '<div class="ofoot"><b>' + esc(ordNo) + '</b> \u00B7 ' + scelti.length + ' ' + (scelti.length > 1 ? t('orologi') : t('orologio1')) +
+        ' \u00B7 ' + esc(t('generatoIl')) + ' ' + esc(oggi) + '<br>' +
+        (LANG === 'en'
+          ? 'Prices are official Patek Philippe list prices, retrieved from patek.com. Subject to change and to local taxes. This document is a customer order confirmation and does not constitute an invoice. Unofficial document \u2014 Patek Philippe\u00AE is a trademark of Patek Philippe SA.'
+          : 'I prezzi sono i listini ufficiali Patek Philippe, rilevati da patek.com. Soggetti a variazione e alle imposte locali. Questo documento \u00E8 una conferma d\u2019ordine da parte del cliente e non costituisce fattura. Documento non ufficiale \u2014 Patek Philippe\u00AE \u00E8 un marchio di Patek Philippe SA.') +
         fxLine +
       '</div>' +
     '</div>';
@@ -1752,9 +1871,9 @@ function specHTML(p, secs){
   const spess = cerca(/Thickness:\s*([\d.,]+\s?mm)/i);
   const acqua = cerca(/Water-resistant to\s*([\d]+\s?m)/i);
   const mov = cerca(/\b((?:CH\s|CHR\s)?[0-9]{2}-[0-9]{3}[A-Z0-9\s\/]{0,12}?)\s(?:Self-winding|Manual)/i);
-  return riga('Collezione', p.col) + riga('Referenza', p.ref) + riga('Materiale cassa', p.mat) +
-         riga('Diametro', diam) + riga('Spessore', spess) + riga('Movimento', mov) +
-         riga('Impermeabilit\u00E0', acqua) + riga('Disponibilit\u00E0', 'Collezione attuale');
+  return riga(t('collezione'), p.col) + riga(t('referenza'), p.ref) + riga(t('materiale'), p.mat) +
+         riga(t('diametro'), diam) + riga(t('spessore'), spess) + riga(t('movimento'), mov) +
+         riga(t('impermeabilita'), acqua) + riga(t('disponibilita'), t('collAttuale'));
 }
 window.closeSheet = closeSheet;
 function closeSheet(){
@@ -1789,13 +1908,13 @@ function openSheet(p, conExport){
 
   const colonne =
     '<div class="grid2">' +
-      '<div><div class="sec">Specifiche</div><div id="sheetSpec">' + specHTML(p, secs) + '</div></div>' +
-      '<div><div class="sec">Prezzi ufficiali al pubblico</div>' +
+      '<div><div class="sec">'+esc(t('specifiche'))+'</div><div id="sheetSpec">' + specHTML(p, secs) + '</div></div>' +
+      '<div><div class="sec">'+esc(t('prezziUff'))+'</div>' +
         '<div class="sprices" id="sheetPrices">' + priceRows(p.ref, true) + bestBlock(p.ref) + '</div></div>' +
     '</div>';
 
   const tecnica =
-    '<div class="tech"><div class="sec">Caratteristiche tecniche</div>' +
+    '<div class="tech"><div class="sec">'+esc(t('carTecniche'))+'</div>' +
     '<div class="tcols" id="sheetDesc">' +
       (secs ? descHTML(secs) : '<span style="color:#bbb">caricamento\u2026</span>') +
     '</div></div>';
@@ -1809,8 +1928,8 @@ function openSheet(p, conExport){
 
   box.innerHTML =
     '<div class="sheet-btns">' +
-      '<button class="bprint" id="btnPrintSheet" type="button">Stampa / Salva PDF</button>' +
-      '<button class="bclose" id="btnCloseSheet" type="button">Chiudi</button>' +
+      '<button class="bprint" id="btnPrintSheet" type="button">'+esc(t('stampaPdf'))+'</button>' +
+      '<button class="bclose" id="btnCloseSheet" type="button">'+esc(t('chiudi'))+'</button>' +
     '</div>' +
     '<div class="sbody">' + testa + colonne + tecnica + exp + piede + '</div>';
 
@@ -1942,6 +2061,8 @@ function setVista(v){
   document.getElementById('btnOwn').classList.toggle('on', vista === 'own');
   render();
 }
+document.querySelectorAll('#langPick button').forEach(b => b.onclick = () => setLang(b.dataset.l));
+applicaLingua();
 document.getElementById('btnWish').onclick = () => setVista('wish');
 document.getElementById('btnOwn').onclick = () => setVista('own');
 document.getElementById('btnSet').onclick = () => { setBox.classList.toggle('on'); chfInfo(); statoListini(); };
