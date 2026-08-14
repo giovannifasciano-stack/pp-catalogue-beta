@@ -390,6 +390,9 @@ body.sheet-open{overflow:hidden}
 
 @media print{
   @page{margin:10mm}
+  html,body{padding-top:0!important;padding-bottom:0!important;margin:0!important}
+  header{display:none!important}
+  footer{display:none!important}
   html,body{background:#fff!important}
   body.sheet-open > *:not(#sheetOverlay){display:none!important}
   #sheetOverlay{position:static!important;inset:auto;background:#fff!important;padding:0!important;overflow:visible;height:auto}
@@ -407,6 +410,10 @@ body.sheet-open{overflow:hidden}
   .ordsheet .ordtable th,.ordsheet .ordtable td.ph .box{background:#faf8f4!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .ordsheet .ordtable img{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .ordsheet .ordtable tr{page-break-inside:avoid}
+  .ordsheet .ofoot,.ordsheet .ordtotals,.ordsheet .ordpay{page-break-inside:avoid}
+  .ordsheet .ohead{margin-top:0}
+  .ordsheet .ordtable{margin-top:16px}
+  .ordsheet .ofoot{margin-top:14px}
   .sheet .exptab .badge,.sheet .sprices .tag{background:#6b5a34!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 </style>
@@ -476,7 +483,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 r · testata compatta</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 s · stampa senza vuoto iniziale</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
