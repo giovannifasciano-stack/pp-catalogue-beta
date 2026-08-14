@@ -38,8 +38,6 @@ h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28p
 .btn.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
 #brandline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0}
 .brandwrap{position:relative;padding-bottom:4px}
-.gvline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--txt);
-  opacity:.9;margin-top:-2px;padding-left:2px}
 #lastSync{position:absolute;top:2px;right:0}
 
 .navrow{display:flex;gap:7px;margin-top:10px}
@@ -73,8 +71,7 @@ h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28p
   .nb.sm{padding:7px 10px;font-size:11.5px}
   .nb .ni{font-size:12px}
   .nb .cnt{min-width:18px;height:18px;font-size:10px;padding:0 5px}
-  .gvline{font-size:12px;margin-top:-3px}
-}
+  }
 .hlogo{height:26px;width:auto;filter:brightness(0) invert(1);opacity:.94}
 .hcat{font-family:'Cormorant Garamond',serif;font-size:17px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2)}
 @media (max-width:430px){.hlogo{height:19px}.hcat{font-size:13px;letter-spacing:.12em}}
@@ -423,8 +420,7 @@ body.sheet-open{overflow:hidden}
 <header>
   <div class="brandwrap">
     <h1 id="brandline"><span class="mark">PP</span>Patek Philippe <span>Catalogue</span></h1>
-    <div class="gvline">Genève</div>
-    <div id="lastSync">—</div>
+      <div id="lastSync">—</div>
   </div>
 
   <div class="navrow">
@@ -483,7 +479,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 s · stampa senza vuoto iniziale</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 t</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
@@ -1934,11 +1930,25 @@ function logoIMG(){
   if(!ppLogo) return '';
   return '<img class="pplogo" src="' + esc(logoURL(420)) + '" alt="Patek Philippe" onerror="this.style.display=\'none\'">';
 }
+// se il catalogo arriva dalla cache la pagina non viene letta: recupero il marchio a parte
+async function assicuraLogo(){
+  if(ppLogo){ applicaLogo(); return; }
+  try{
+    const h = await getHTML(FINDER);
+    const lg = findLogo(h);
+    if(lg){
+      ppLogo = lg;
+      try{ localStorage.setItem('pp_logo_v1', lg); }catch(e){}
+      applicaLogo();
+      altezzaTestata();
+    }
+  }catch(e){}
+}
 // marchio in testata: chiaro sul fondo scuro
 function applicaLogo(){
   const h = document.getElementById('brandline');
   if(!h || !ppLogo) return;
-  h.innerHTML = '<img class="hlogo" src="' + esc(logoURL(520)) + '" alt="Patek Philippe" ' +
+  h.innerHTML = '<img class="hlogo" src="' + esc(logoURL(560)) + '" alt="Patek Philippe" ' +
     'onerror="this.parentNode.innerHTML=\'<span class=&quot;mark&quot;>PP</span>Patek Philippe <span>Catalogue</span>\'">' +
     '<span class="hcat">Catalogue</span>';
 }
@@ -2145,7 +2155,7 @@ async function refresh(force){
     document.getElementById('lastSync').textContent = new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
     status.innerHTML = '<span class="hl">'+items.length+'</span> modelli a catalogo · ' +
       new Set(items.map(p=>p.col)).size + ' collezioni' + (usedCache ? ' · cache' : '');
-    applicaLogo();
+    assicuraLogo();
     renderNews();
     render();
     // segna automaticamente come visto: la prossima lettura mostrerà solo le referenze davvero nuove
@@ -2207,7 +2217,7 @@ document.getElementById('chfClear').onclick = () => {
 };
 document.getElementById('search').addEventListener('input', render);
 
-applicaLogo();
+assicuraLogo();
 altezzaTestata();
 loadChfRepo();
 pullSync();
