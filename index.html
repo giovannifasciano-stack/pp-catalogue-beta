@@ -27,7 +27,7 @@ body{background:var(--navy);color:var(--txt);font-family:'Outfit',sans-serif;min
   overflow-x:hidden;max-width:100%}
 img{max-width:100%}
 
-header{position:sticky;top:0;left:0;right:0;width:100%;max-width:100vw;z-index:50;background:linear-gradient(180deg,var(--navy) 70%,rgba(34,23,16,.94));backdrop-filter:blur(8px);padding:calc(12px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line)}
+header{position:fixed;top:0;left:0;right:0;width:100%;max-width:100vw;z-index:50;background:linear-gradient(180deg,var(--navy) 70%,rgba(34,23,16,.94));backdrop-filter:blur(8px);padding:calc(12px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line)}
 .brandline{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
 h1{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0;min-width:0}
 h1 span{color:var(--gold2)}
@@ -36,7 +36,43 @@ h1 img{width:26px;height:26px;border-radius:50%;background:#fff;padding:2px}
 h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#b08d3f;color:#12182b;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.5px;margin-right:6px;vertical-align:middle}
 #lastSync{font-family:'DM Mono',monospace;font-size:10px;color:var(--dim)}
 .btn.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
-#brandline{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#brandline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0}
+.brandwrap{position:relative;padding-bottom:4px}
+.gvline{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--txt);
+  opacity:.9;margin-top:-2px;padding-left:2px}
+#lastSync{position:absolute;top:2px;right:0}
+
+.navrow{display:flex;gap:11px;margin-top:14px}
+.navrow.second{margin-top:11px}
+.nb{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;gap:9px;
+  background:transparent;border:1px solid var(--line);border-radius:9px;color:var(--txt);
+  font-family:'Outfit',sans-serif;font-size:16px;padding:14px 12px;cursor:pointer;
+  white-space:nowrap;transition:border-color .15s,color .15s}
+.nb:hover{border-color:var(--gold)}
+.nb.on{border-color:var(--gold);color:var(--gold2)}
+.nb.ico{flex:0 0 62px;font-size:19px;padding:14px 0}
+.nb.sm{flex:0 0 auto;padding:14px 18px}
+.navrow.second .nb.sm:last-child{flex:1 1 0}
+.nb .ni{font-size:17px;line-height:1;opacity:.85}
+.nb .nt{overflow:hidden;text-overflow:ellipsis}
+.nb .cnt{min-width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Outfit';font-size:14px;font-weight:600;padding:0 8px}
+.nb .cnt.gold{background:var(--gold);color:#221710}
+.nb .cnt.green{background:var(--green);color:#14210c}
+
+#searchRow{display:none;margin-top:11px}
+#searchRow.on{display:block}
+#searchRow input{width:100%;background:var(--navy2);border:1px solid var(--line);border-radius:9px;
+  color:var(--txt);font-family:'DM Mono',monospace;font-size:16px;padding:13px 14px;outline:none}
+
+@media (max-width:430px){
+  .navrow{gap:8px;margin-top:12px}
+  .nb{font-size:14px;padding:12px 8px;gap:7px}
+  .nb.ico{flex:0 0 52px;font-size:17px;padding:12px 0}
+  .nb.sm{padding:12px 13px;font-size:13px}
+  .nb .cnt{min-width:26px;height:26px;font-size:12.5px}
+  .gvline{font-size:13px}
+}
 .hlogo{height:26px;width:auto;filter:brightness(0) invert(1);opacity:.94}
 .hcat{font-family:'Cormorant Garamond',serif;font-size:17px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2)}
 @media (max-width:430px){.hlogo{height:19px}.hcat{font-size:13px;letter-spacing:.12em}}
@@ -376,18 +412,24 @@ body.sheet-open{overflow:hidden}
 <body>
 
 <header>
-  <div class="brandline">
+  <div class="brandwrap">
     <h1 id="brandline"><span class="mark">PP</span>Patek Philippe <span>Catalogue</span></h1>
+    <div class="gvline">Genève</div>
     <div id="lastSync">—</div>
   </div>
-  <div class="toolbar">
-    <input id="search" type="search" placeholder="Cerca referenza, materiale…" autocomplete="off">
-    <button class="btn gold" id="btnRefresh">Aggiorna</button>
-    <button class="btn" id="btnWish" title="Lista desideri">♡ Lista</button>
-    <button class="btn" id="btnOwn" title="Posseduti">✓ Posseduti</button>
-    <button class="btn" id="btnSet" title="Impostazioni e aggiornamento listini">Impostazioni</button>
-    <span id="langPick"><button data-l="it">🇮🇹 IT</button><button data-l="en">🇬🇧 EN</button></span>
+
+  <div class="navrow">
+    <button class="nb ico" id="btnSearch" title="Cerca">🔍</button>
+    <button class="nb" id="btnWish"><span class="ni">♥</span><span class="nt">Lista desideri</span><span class="cnt gold" id="cWish">0</span></button>
+    <button class="nb" id="btnOwn"><span class="ni">📦</span><span class="nt">Posseduti</span><span class="cnt green" id="cOwn">0</span></button>
   </div>
+  <div class="navrow second">
+    <button class="nb sm" data-l="en">🇬🇧 EN</button>
+    <button class="nb sm" data-l="it">🇮🇹 IT</button>
+    <button class="nb ico" id="btnSet" title="Impostazioni">⚙︎</button>
+    <button class="nb sm" id="btnRefresh">Aggiorna</button>
+  </div>
+  <div id="searchRow"><input id="search" type="search" placeholder="Cerca referenza, materiale…" autocomplete="off"></div>
   <div class="chips" id="chips"></div>
   <div class="betaflag">Versione di prova · lista desideri e ordine</div>
   <div id="setBox">
@@ -432,7 +474,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 p · miniature a tutta larghezza</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 q · testata fissa</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
@@ -1239,12 +1281,20 @@ function setLang(l){
 function applicaLingua(){
   const g = id => document.getElementById(id);
   if(g('btnRefresh')) g('btnRefresh').textContent = t('aggiorna');
-  if(g('btnWish')) g('btnWish').innerHTML = '\u2661 ' + esc(t('lista'));
-  if(g('btnOwn')) g('btnOwn').innerHTML = '\u2713 ' + esc(t('posseduti'));
-  if(g('btnSet')) g('btnSet').textContent = t('impostazioni');
+  const nt = (id, testo) => { const e = g(id); if(e){ const s = e.querySelector('.nt'); if(s) s.textContent = testo; } };
+  nt('btnWish', t('lista'));
+  nt('btnOwn', t('posseduti'));
   if(g('search')) g('search').placeholder = t('cerca');
-  document.querySelectorAll('#langPick button').forEach(b => b.classList.toggle('on', b.dataset.l === LANG));
+  document.querySelectorAll('.nb[data-l]').forEach(b => b.classList.toggle('on', b.dataset.l === LANG));
+  altezzaTestata();
 }
+// la testata e' fissa: riservo lo spazio sotto, cosi' scorre solo il catalogo
+function altezzaTestata(){
+  const h = document.querySelector('header');
+  if(h) document.body.style.paddingTop = h.offsetHeight + 'px';
+}
+window.addEventListener('resize', altezzaTestata);
+window.addEventListener('orientationchange', () => setTimeout(altezzaTestata, 250));
 
 // ---------- lista desideri, posseduti, ordine ----------
 const WL_KEY = 'pp_wl_beta_v1';
@@ -1416,6 +1466,12 @@ function rimuoviForn(id){
 }
 
 function render(){
+  const cw = document.getElementById('cWish'), co = document.getElementById('cOwn');
+  if(cw) cw.textContent = WL.wish.length;
+  if(co) co.textContent = WL.own.length;
+  const bw = document.getElementById('btnWish'), bo = document.getElementById('btnOwn');
+  if(bw) bw.classList.toggle('on', vista === 'wish');
+  if(bo) bo.classList.toggle('on', vista === 'own');
   const q = document.getElementById('search').value.trim().toLowerCase();
   const main = document.getElementById('main');
   main.innerHTML = '';
@@ -1425,6 +1481,7 @@ function render(){
   const cols = Object.values(COLLECTIONS).filter(c => byCol[c]);
 
   renderChips(cols, byCol);
+  altezzaTestata();
 
   if(vista !== 'cat'){ renderLista(main, q); return; }
 
@@ -2098,15 +2155,22 @@ const setBox = document.getElementById('setBox');
 function setVista(v){
   vista = (vista === v) ? 'cat' : v;
   ordineAperto = (vista === 'wish') ? ordineAperto : false;
-  document.getElementById('btnWish').classList.toggle('on', vista === 'wish');
-  document.getElementById('btnOwn').classList.toggle('on', vista === 'own');
   render();
+  window.scrollTo({top: 0});
 }
-document.querySelectorAll('#langPick button').forEach(b => b.onclick = () => setLang(b.dataset.l));
+document.querySelectorAll('.nb[data-l]').forEach(b => b.onclick = () => setLang(b.dataset.l));
+document.getElementById('btnSearch').onclick = () => {
+  const r = document.getElementById('searchRow');
+  r.classList.toggle('on');
+  document.getElementById('btnSearch').classList.toggle('on', r.classList.contains('on'));
+  if(r.classList.contains('on')) document.getElementById('search').focus();
+  else { document.getElementById('search').value = ''; render(); }
+  altezzaTestata();
+};
 applicaLingua();
 document.getElementById('btnWish').onclick = () => setVista('wish');
 document.getElementById('btnOwn').onclick = () => setVista('own');
-document.getElementById('btnSet').onclick = () => { setBox.classList.toggle('on'); chfInfo(); statoListini(); };
+document.getElementById('btnSet').onclick = () => { setBox.classList.toggle('on'); chfInfo(); statoListini(); altezzaTestata(); };
 document.getElementById('btnSetClose').onclick = () => setBox.classList.remove('on');
 document.getElementById('btnEsporta').onclick = esportaListini;
 document.getElementById('btnProva').onclick = async () => {
@@ -2135,6 +2199,7 @@ document.getElementById('chfClear').onclick = () => {
 document.getElementById('search').addEventListener('input', render);
 
 applicaLogo();
+altezzaTestata();
 loadChfRepo();
 pullSync();
 refresh();
