@@ -72,7 +72,10 @@ h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28p
   .nb .ni{font-size:12px}
   .nb .cnt{min-width:18px;height:18px;font-size:10px;padding:0 5px}
   }
-.hlogo{height:26px;width:auto;filter:brightness(0) invert(1);opacity:.94}
+.hlogo{height:26px;width:auto;filter:brightness(0) invert(1);opacity:.95}
+.wordmark{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:25px;letter-spacing:.13em;
+  text-transform:uppercase;color:#fff;line-height:1;white-space:nowrap}
+@media (max-width:430px){.wordmark{font-size:19px;letter-spacing:.09em}}
 .hcat{font-family:'Cormorant Garamond',serif;font-size:17px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2)}
 @media (max-width:430px){.hlogo{height:19px}.hcat{font-size:13px;letter-spacing:.12em}}
 .sheet .olog{display:block;height:38px;width:auto;margin:0 auto 4px;object-fit:contain}
@@ -479,7 +482,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 t</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 u · marchio</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
@@ -1944,13 +1947,53 @@ async function assicuraLogo(){
     }
   }catch(e){}
 }
-// marchio in testata: chiaro sul fondo scuro
+// marchio in testata: prima il file del sito, poi le fonti pubbliche,
+// infine il marchio tipografico che non dipende da nessuno
+const LOGO_FONTI = [
+  'https://upload.wikimedia.org/wikipedia/commons/0/02/Patek_Philippe_Logo.png',
+  'https://upload.wikimedia.org/wikipedia/commons/d/d8/Patek_Philippe_Logo2.png'
+];
+function viaImg(u, w){
+  return 'https://images.weserv.nl/?url=' + encodeURIComponent(String(u).replace(/^https?:\/\//,'')) +
+         '&w=' + (w || 560) + '&cbg=none&output=png';
+}
+const MARCHIO_TESTO = '<span class="wordmark">Patek Philippe</span>';
+
 function applicaLogo(){
   const h = document.getElementById('brandline');
-  if(!h || !ppLogo) return;
-  h.innerHTML = '<img class="hlogo" src="' + esc(logoURL(560)) + '" alt="Patek Philippe" ' +
-    'onerror="this.parentNode.innerHTML=\'<span class=&quot;mark&quot;>PP</span>Patek Philippe <span>Catalogue</span>\'">' +
-    '<span class="hcat">Catalogue</span>';
+  if(!h) return;
+  const fonti = (ppLogo ? [ppLogo] : []).concat(LOGO_FONTI);
+  let i = 0;
+  const metti = () => {
+    if(i >= fonti.length){
+      h.innerHTML = MARCHIO_TESTO + '<span class="hcat">Catalogue</span>';
+      altezzaTestata();
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      h.innerHTML = '<img class="hlogo" src="' + esc(img.src) + '" alt="Patek Philippe">' +
+                    '<span class="hcat">Catalogue</span>';
+      altezzaTestata();
+    };
+    img.onerror = () => { i++; metti(); };
+    img.src = viaImg(fonti[i], 560);
+  };
+  metti();
+}
+// il marchio del sito, quando c'e', ha la precedenza
+async function assicuraLogo(){
+  applicaLogo();
+  if(ppLogo) return;
+  try{
+    const h = await getHTML(FINDER);
+    const lg = findLogo(h);
+    if(lg){
+      ppLogo = lg;
+      try{ localStorage.setItem('pp_logo_v1', lg); }catch(e){}
+      applicaLogo();
+    }
+  }catch(e){}
 }
 async function fetchDesc(p){
   const c = descCache[p.ref];
