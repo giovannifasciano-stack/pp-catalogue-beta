@@ -48,17 +48,19 @@ h1 .mark{display:inline-flex;align-items:center;justify-content:center;width:28p
   font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;padding:9px 10px;cursor:pointer}
 #langPick button.on{border-color:var(--gold);color:var(--gold2);background:#3a2a1c}
 
-.ca{position:absolute;top:10px;left:10px;z-index:3;width:32px;height:32px;border-radius:3px;
-  border:1px solid var(--line);background:rgba(27,18,12,.75);color:var(--dim);font-size:15px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.ca.on{color:#e0577a;border-color:#e0577a;background:rgba(224,87,122,.14)}
+.ca{position:absolute;top:9px;left:9px;z-index:3;width:32px;height:32px;border-radius:8px;
+  border:1px solid rgba(34,23,16,.18);background:rgba(255,255,255,.86);color:#8a8175;font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+  box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.ca.on{color:#d6456a;border-color:#d6456a;background:rgba(255,255,255,.95)}
 .ca.own.on{color:var(--green);border-color:var(--green)}
 .card.picked{border-color:var(--green)}
-.cbox{position:absolute;top:10px;right:10px;z-index:3;width:32px;height:32px;border-radius:3px;
-  border:1px solid var(--green);background:rgba(27,18,12,.75);color:var(--green);font-size:15px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.cbox.on{background:var(--green);color:#1b120c;font-weight:700}
-.cown{width:100%;background:rgba(27,18,12,.6);border:1px solid var(--line);border-radius:20px;
+.cbox{position:absolute;top:9px;right:9px;z-index:3;width:32px;height:32px;border-radius:8px;
+  border:1px solid #6d9455;background:rgba(255,255,255,.86);color:#4f7a3a;font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);
+  box-shadow:0 1px 4px rgba(0,0,0,.14)}
+.cbox.on{background:#6d9455;color:#fff;font-weight:700;border-color:#6d9455}
+.cown{width:calc(100% - 24px);margin:10px 12px 0;background:rgba(27,18,12,.6);border:1px solid var(--line);border-radius:20px;
   color:var(--dim);font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
   padding:7px 8px;cursor:pointer;margin-top:2px}
 .cown.on{border-color:var(--gold);color:var(--gold2)}
@@ -214,27 +216,22 @@ main{padding:8px 16px;max-width:100%;overflow-x:hidden}
 .brand-head h2{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
 .brand-head .cnt{font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
 
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(245px,1fr))}
-.card{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;
-  background:var(--card);border:1px solid var(--line);border-radius:3px;padding:12px 12px 14px;
+.grid{display:grid;gap:13px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{position:relative;display:flex;flex-direction:column;height:100%;overflow:hidden;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;
   text-decoration:none;color:inherit;transition:border-color .18s, transform .18s}
 .card:hover{border-color:var(--gold);transform:translateY(-2px)}
 .card:active{border-color:var(--gold)}
 
 /* riquadro foto: ottagono come su AP, in tono caldo */
 .thumb{width:100%;aspect-ratio:1;cursor:zoom-in;position:relative;overflow:hidden;
-  background:radial-gradient(circle at 50% 34%, #402e1f, #17100a 82%);
-  border:1px solid rgba(176,141,87,.28);border-radius:6px;
-  box-shadow:inset 0 1px 0 rgba(216,188,138,.10), 0 2px 10px rgba(0,0,0,.35);
-  display:grid;place-items:center;transition:border-color .2s, box-shadow .2s}
-.card:hover .thumb{border-color:rgba(176,141,87,.55);
-  box-shadow:inset 0 1px 0 rgba(216,188,138,.18), 0 4px 16px rgba(0,0,0,.45)}
-.thumb img{width:86%;height:90%;object-fit:contain;transition:transform .25s}
+  background:#fff;display:grid;place-items:center}
+.thumb img{width:100%;height:100%;object-fit:contain;transition:transform .3s}
 .card:hover .thumb img{transform:scale(1.06)}
 .thumb .noimg{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--dim);text-align:center;padding:0 12px}
 
-.meta{width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.meta{width:100%;display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;padding:11px 12px 13px}
 .card .ref{cursor:pointer;text-decoration:underline;text-decoration-color:transparent;transition:text-decoration-color .15s}
 .card .ref:hover{text-decoration-color:currentColor}
 .meta .mname{font-family:'Outfit',sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;
@@ -260,7 +257,8 @@ main{padding:8px 16px;max-width:100%;overflow-x:hidden}
 
 @media (max-width:640px){
   .grid{grid-template-columns:repeat(2,1fr);gap:9px}
-  .card{padding:9px 8px 11px;gap:6px}
+  .card{gap:0}
+  .meta{padding:9px 9px 11px}
   .meta .mname{font-size:10.5px;min-height:2.6em}
   .meta .ref{font-size:11px}
   .ca,.cbox{width:28px;height:28px;font-size:13px;top:7px}
@@ -434,7 +432,7 @@ body.sheet-open{overflow:hidden}
 
 <footer>
   <div class="src">patek.com · listino EU gen 2026 (€) · novità W&amp;W in CHF</div>
-  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 o · impaginazione iPhone</div>
+  <div class="src" style="opacity:.35;font-size:8px">versione 13.08 p · miniature a tutta larghezza</div>
   <div class="src dis">Strumento privato non ufficiale · marchi e contenuti Patek Philippe SA · nessuna affiliazione</div>
 </footer>
 
