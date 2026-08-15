@@ -1630,7 +1630,16 @@ function renderLista(main, q){
   main.querySelectorAll('[data-o]').forEach(b => b.onclick = ev => { ev.stopPropagation(); togOwn(b.dataset.o); });
   main.querySelectorAll('[data-s]').forEach(t => t.onclick = () => {
     const p = items.find(x => x.ref === t.dataset.s);
-    if(p) openSheet(p, true);
+    if(p) openSheet(p);
+  });
+  main.querySelectorAll('.card .prices').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.title = t('analisiExport');
+    el.onclick = ev => {
+      ev.stopPropagation();
+      const p = items.find(x => x.ref === el.dataset.pp);
+      if(p) openSheet(p, true);
+    };
   });
   legaOrdine(list);
   document.getElementById('empty').style.display = 'none';
